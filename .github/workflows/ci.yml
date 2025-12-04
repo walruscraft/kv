@@ -30,25 +30,33 @@ jobs:
           - target: x86_64-unknown-linux-musl
             alias: x64
             qemu: ""
+            features: ""
           - target: i686-unknown-linux-musl
             alias: x86
             qemu: qemu-i386-static
+            features: ""
+          # ARM, RISC-V, and PowerPC include 'dt' feature - devicetrees are standard on these platforms
+          # (matches .cargo/config.toml aliases)
           - target: aarch64-unknown-linux-musl
             alias: arm64
             linker: gcc-aarch64-linux-gnu
             qemu: qemu-aarch64-static
+            features: dt
           - target: arm-unknown-linux-musleabihf
             alias: arm
             linker: gcc-arm-linux-gnueabihf
             qemu: qemu-arm-static
+            features: dt
           - target: riscv64gc-unknown-linux-musl
             alias: riscv64
             linker: gcc-riscv64-linux-gnu
             qemu: qemu-riscv64-static
+            features: dt
           - target: powerpc-unknown-linux-gnu
             alias: ppc
             linker: gcc-powerpc-linux-gnu
             qemu: qemu-ppc-static
+            features: dt
 
     steps:
       - uses: actions/checkout@v4
@@ -68,10 +76,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y qemu-user-static
 
       - name: Build release binary
-        run: cargo build --release --target ${{ matrix.target }}
+        run: cargo build --release --target ${{ matrix.target }} ${{ matrix.features && format('--features {0}', matrix.features) || '' }}
 
       - name: Build integration tests
-        run: cargo test --release --target ${{ matrix.target }} --no-run
+        run: cargo test --release --target ${{ matrix.target }} ${{ matrix.features && format('--features {0}', matrix.features) || '' }} --no-run
 
       - name: Check binary
         run: |
@@ -80,7 +88,7 @@ jobs:
 
       - name: Run integration tests (native)
         if: matrix.qemu == ''
-        run: cargo test --release --target ${{ matrix.target }} --verbose
+        run: cargo test --release --target ${{ matrix.target }} ${{ matrix.features && format('--features {0}', matrix.features) || '' }} --verbose
 
       - name: Run integration tests (QEMU)
         if: matrix.qemu

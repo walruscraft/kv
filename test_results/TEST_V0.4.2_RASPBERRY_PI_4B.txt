@@ -1,0 +1,4696 @@
+==============================================
+KV TEST RESULTS (REMOTE)
+==============================================
+Version:       0.4.2
+Platform:      RPI4B
+Date:          2025-12-04 13:30:11 UTC
+Target:        aarch64-unknown-linux-musl
+Binary size:   581K
+
+Kernel:        6.6.74+rpt-rpi-v8
+Architecture:  aarch64
+OS:            Debian GNU/Linux 12 (bookworm)
+DT Model:      Raspberry Pi 4 Model B Rev 1.1
+==============================================
+
+==============================================
+DEBUG OUTPUT (from kv snapshot -vp)
+==============================================
+
+Shows what files kv reads from /sys and /proc.
+FAIL lines indicate missing/inaccessible files (often expected).
+
+[DEBUG] kv 0.4.2 starting
+[DEBUG] subcommand: Some("snapshot")
+[DEBUG] SCAN /sys/bus/pci/devices (2 entries)
+[DEBUG] SCAN /sys/bus/usb/devices (11 entries)
+[DEBUG] FAIL /sys/bus/usb/devices/1-1/manufacturer: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/bus/usb/devices/1-1/serial: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/bus/usb/devices/1-1.1/serial: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/bus/usb/devices/1-1.2/serial: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block (25 entries)
+[DEBUG] FAIL /sys/block/loop0/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop0/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop1/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop1/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop2/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop2/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop3/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop3/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop4/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop4/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop5/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop5/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop6/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop6/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop7/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop7/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/mmcblk0/device/model: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/mmcblk0 (31 entries)
+[DEBUG] FAIL /sys/block/ram0/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram0/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram0/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram0 (26 entries)
+[DEBUG] FAIL /sys/block/ram1/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram1/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram1/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram1 (26 entries)
+[DEBUG] FAIL /sys/block/ram10/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram10/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram10/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram10 (26 entries)
+[DEBUG] FAIL /sys/block/ram11/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram11/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram11/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram11 (26 entries)
+[DEBUG] FAIL /sys/block/ram12/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram12/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram12/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram12 (26 entries)
+[DEBUG] FAIL /sys/block/ram13/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram13/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram13/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram13 (26 entries)
+[DEBUG] FAIL /sys/block/ram14/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram14/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram14/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram14 (26 entries)
+[DEBUG] FAIL /sys/block/ram15/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram15/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram15/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram15 (26 entries)
+[DEBUG] FAIL /sys/block/ram2/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram2/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram2/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram2 (26 entries)
+[DEBUG] FAIL /sys/block/ram3/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram3/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram3/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram3 (26 entries)
+[DEBUG] FAIL /sys/block/ram4/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram4/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram4/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram4 (26 entries)
+[DEBUG] FAIL /sys/block/ram5/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram5/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram5/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram5 (26 entries)
+[DEBUG] FAIL /sys/block/ram6/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram6/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram6/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram6 (26 entries)
+[DEBUG] FAIL /sys/block/ram7/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram7/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram7/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram7 (26 entries)
+[DEBUG] FAIL /sys/block/ram8/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram8/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram8/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram8 (26 entries)
+[DEBUG] FAIL /sys/block/ram9/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram9/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram9/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram9 (26 entries)
+[DEBUG] SCAN /sys/class/net (3 entries)
+[DEBUG] FAIL /sys/class/net/lo/speed: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/lo/duplex: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/wlan0/speed: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/wlan0/duplex: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/devices/system/cpu/cpu0/topology/arch: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/class/thermal (1 entries)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_1_temp: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_1_type: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_2_temp: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_2_type: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/class/power_supply (0 entries)
+
+==============================================
+SNAPSHOT OUTPUT (kv snapshot -vp)
+==============================================
+
+{
+  "kv_version": "0.4.2",
+  "subcommand": "snapshot",
+  "data": {
+    "pci": [
+      {
+        "bdf": "*:*:*:*",
+        "vendor_id": "0x14e4",
+        "device_id": "0x2711",
+        "class": "0x060400",
+        "driver": "pcieport",
+        "subsystem_vendor_id": "0x0000",
+        "subsystem_device_id": "0x0000",
+        "revision": "0x10",
+        "numa_node": 18446744073709551615,
+        "enabled": true,
+        "power_state": "D0",
+        "is_bridge": true
+      },
+      {
+        "bdf": "*:*:*:*",
+        "vendor_id": "0x1106",
+        "device_id": "0x3483",
+        "class": "0x0c0330",
+        "driver": "xhci_hcd",
+        "subsystem_vendor_id": "0x1106",
+        "subsystem_device_id": "0x3483",
+        "revision": "0x01",
+        "numa_node": 18446744073709551615,
+        "enabled": true,
+        "power_state": "D0",
+        "is_bridge": false
+      }
+    ],
+    "usb": [
+      {
+        "name": "1-1",
+        "vendor_id": "0x2109",
+        "product_id": "0x3431",
+        "product": "USB2.0 Hub",
+        "speed_mbps": 480,
+        "device_class": "0x09",
+        "busnum": 1,
+        "devnum": 2,
+        "usb_version": "2.10",
+        "num_configurations": 1,
+        "configuration": 1,
+        "max_power_ma": 100,
+        "driver": "usb"
+      },
+      {
+        "name": "1-1.1",
+        "vendor_id": "0x046d",
+        "product_id": "0xc31c",
+        "manufacturer": "Logitech",
+        "product": "USB Keyboard",
+        "device_class": "0x00",
+        "busnum": 1,
+        "devnum": 3,
+        "usb_version": "1.10",
+        "num_configurations": 1,
+        "configuration": 1,
+        "max_power_ma": 90,
+        "driver": "usb"
+      },
+      {
+        "name": "1-1.2",
+        "vendor_id": "0x046d",
+        "product_id": "0xc077",
+        "manufacturer": "Logitech",
+        "product": "USB Optical Mouse",
+        "device_class": "0x00",
+        "busnum": 1,
+        "devnum": 4,
+        "usb_version": "2.00",
+        "num_configurations": 1,
+        "configuration": 1,
+        "max_power_ma": 100,
+        "driver": "usb"
+      }
+    ],
+    "block": [
+      {
+        "name": "mmcblk0",
+        "type": "disk",
+        "major": 179,
+        "minor": 0,
+        "size_sectors": 31116288,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "model": "SC16G",
+        "rotational": false,
+        "scheduler": "mq-deadline"
+      },
+      {
+        "name": "mmcblk0p1",
+        "type": "part",
+        "major": 179,
+        "minor": 1,
+        "size_sectors": 1048576,
+        "parent": "mmcblk0",
+        "mountpoint": "/boot/firmware",
+        "sector_size": 512,
+        "removable": false,
+        "ro": false
+      },
+      {
+        "name": "mmcblk0p2",
+        "type": "part",
+        "major": 179,
+        "minor": 2,
+        "size_sectors": 30059520,
+        "parent": "mmcblk0",
+        "mountpoint": "/",
+        "sector_size": 512,
+        "removable": false,
+        "ro": false
+      },
+      {
+        "name": "ram0",
+        "type": "ram",
+        "major": 1,
+        "minor": 0,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram1",
+        "type": "ram",
+        "major": 1,
+        "minor": 1,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram10",
+        "type": "ram",
+        "major": 1,
+        "minor": 10,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram11",
+        "type": "ram",
+        "major": 1,
+        "minor": 11,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram12",
+        "type": "ram",
+        "major": 1,
+        "minor": 12,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram13",
+        "type": "ram",
+        "major": 1,
+        "minor": 13,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram14",
+        "type": "ram",
+        "major": 1,
+        "minor": 14,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram15",
+        "type": "ram",
+        "major": 1,
+        "minor": 15,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram2",
+        "type": "ram",
+        "major": 1,
+        "minor": 2,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram3",
+        "type": "ram",
+        "major": 1,
+        "minor": 3,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram4",
+        "type": "ram",
+        "major": 1,
+        "minor": 4,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram5",
+        "type": "ram",
+        "major": 1,
+        "minor": 5,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram6",
+        "type": "ram",
+        "major": 1,
+        "minor": 6,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram7",
+        "type": "ram",
+        "major": 1,
+        "minor": 7,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram8",
+        "type": "ram",
+        "major": 1,
+        "minor": 8,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram9",
+        "type": "ram",
+        "major": 1,
+        "minor": 9,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      }
+    ],
+    "net": [
+      {
+        "name": "eth0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1500,
+        "operstate": "up",
+        "speed_mbps": 1000,
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*"
+        ],
+        "ipv6_addresses": [
+          "*:*:*:*"
+        ],
+        "duplex": "full",
+        "if_type": 1,
+        "tx_queue_len": 1000,
+        "carrier": true,
+        "rx_bytes": 9279069,
+        "tx_bytes": 804144,
+        "rx_packets": 46747,
+        "tx_packets": 2877,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 969,
+        "tx_dropped": 0
+      },
+      {
+        "name": "lo",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 65536,
+        "operstate": "unknown",
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*"
+        ],
+        "ipv6_addresses": [
+          "*:*:*:*"
+        ],
+        "if_type": 772,
+        "tx_queue_len": 1000,
+        "carrier": true,
+        "rx_bytes": 17350,
+        "tx_bytes": 17350,
+        "rx_packets": 93,
+        "tx_packets": 93,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      },
+      {
+        "name": "wlan0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1500,
+        "operstate": "down",
+        "if_type": 1,
+        "tx_queue_len": 1000,
+        "carrier": false,
+        "rx_bytes": 0,
+        "tx_bytes": 0,
+        "rx_packets": 0,
+        "tx_packets": 0,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      }
+    ],
+    "cpu": {
+      "logical_cpus": 4,
+      "model_name": "ARM Part 0xd08",
+      "vendor_id": "ARM (0x41)",
+      "architecture": "aarch64"
+    },
+    "mem": {
+      "mem_total_kb": 1891116,
+      "mem_free_kb": 725216,
+      "mem_available_kb": 1431704,
+      "swap_total_kb": 524284,
+      "swap_free_kb": 524284,
+      "buffers_kb": 107852,
+      "cached_kb": 643160,
+      "swap_cached_kb": 0,
+      "shmem_kb": 42828,
+      "sreclaimable_kb": 100768,
+      "sunreclaim_kb": 28976,
+      "dirty_kb": 1244,
+      "writeback_kb": 0
+    },
+    "mounts": [
+      {
+        "source": "sysfs",
+        "target": "/sys",
+        "fstype": "sysfs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "proc",
+        "target": "/proc",
+        "fstype": "proc",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "udev",
+        "target": "/dev",
+        "fstype": "devtmpfs",
+        "options": "rw,nosuid,relatime,size=674504k,nr_inodes=168626,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "devpts",
+        "target": "/dev/pts",
+        "fstype": "devpts",
+        "options": "rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/run",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,noexec,relatime,size=189112k,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "/dev/mmcblk0p2",
+        "target": "/",
+        "fstype": "ext4",
+        "options": "rw,noatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "securityfs",
+        "target": "/sys/kernel/security",
+        "fstype": "securityfs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/dev/shm",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/run/lock",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,noexec,relatime,size=5120k",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "cgroup2",
+        "target": "/sys/fs/cgroup",
+        "fstype": "cgroup2",
+        "options": "rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "pstore",
+        "target": "/sys/fs/pstore",
+        "fstype": "pstore",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "bpf",
+        "target": "/sys/fs/bpf",
+        "fstype": "bpf",
+        "options": "rw,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "systemd-1",
+        "target": "/proc/sys/fs/binfmt_misc",
+        "fstype": "autofs",
+        "options": "rw,relatime,fd=29,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=129",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tracefs",
+        "target": "/sys/kernel/tracing",
+        "fstype": "tracefs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "mqueue",
+        "target": "/dev/mqueue",
+        "fstype": "mqueue",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "debugfs",
+        "target": "/sys/kernel/debug",
+        "fstype": "debugfs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "configfs",
+        "target": "/sys/kernel/config",
+        "fstype": "configfs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "fusectl",
+        "target": "/sys/fs/fuse/connections",
+        "fstype": "fusectl",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-sysctl.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-sysusers.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-tmpfiles-setup-dev.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "/dev/mmcblk0p1",
+        "target": "/boot/firmware",
+        "fstype": "vfat",
+        "options": "rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,errors=remount-ro",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-tmpfiles-setup.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "sunrpc",
+        "target": "/run/rpc_pipefs",
+        "fstype": "rpc_pipefs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "binfmt_misc",
+        "target": "/proc/sys/fs/binfmt_misc",
+        "fstype": "binfmt_misc",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/run/user/1000",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,relatime,size=189108k,nr_inodes=47277,mode=700,uid=1000,gid=1000",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "gvfsd-fuse",
+        "target": "/run/user/1000/gvfs",
+        "fstype": "fuse.gvfsd-fuse",
+        "options": "rw,nosuid,nodev,relatime,user_id=1000,group_id=1000",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tracefs",
+        "target": "/sys/kernel/debug/tracing",
+        "fstype": "tracefs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      }
+    ],
+    "thermal": [
+      {
+        "sensor": "cpu-thermal",
+        "temp_millicelsius": 49660,
+        "name": "thermal_zone0",
+        "temp_crit_millicelsius": 110000,
+        "policy": "step_wise"
+      }
+    ],
+    "dt": [
+      {
+        "path": "/",
+        "name": "/",
+        "compatible": "raspberrypi,4-model-b, brcm,bcm2711",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 01",
+          "compatible": "raspberrypi,4-model-b, brcm,bcm2711",
+          "interrupt-parent": "00 00 00 01",
+          "memreserve": "3b 40 00 00 04 c0 00 00",
+          "model": "Raspberry Pi 4 Model B Rev 1.1",
+          "serial-number": "*:*:*:*"
+        }
+      },
+      {
+        "path": "/regulator-sd-vcc",
+        "name": "regulator-sd-vcc",
+        "compatible": "regulator-fixed",
+        "properties": {
+          "compatible": "regulator-fixed",
+          "enable-active-high": "",
+          "gpio": "00 00 00 0b 00 00 00 06 00 00 00 00",
+          "phandle": "8",
+          "regulator-boot-on": "",
+          "regulator-max-microvolt": "00 32 5a a0",
+          "regulator-min-microvolt": "00 32 5a a0",
+          "regulator-name": "vcc-sd"
+        }
+      },
+      {
+        "path": "/fixedregulator_3v3",
+        "name": "fixedregulator_3v3",
+        "compatible": "regulator-fixed",
+        "properties": {
+          "compatible": "regulator-fixed",
+          "phandle": "00 00 00 ef",
+          "regulator-always-on": "",
+          "regulator-max-microvolt": "00 32 5a a0",
+          "regulator-min-microvolt": "00 32 5a a0",
+          "regulator-name": "3v3"
+        }
+      },
+      {
+        "path": "/fixedregulator_5v0",
+        "name": "fixedregulator_5v0",
+        "compatible": "regulator-fixed",
+        "properties": {
+          "compatible": "regulator-fixed",
+          "phandle": "00 00 00 f0",
+          "regulator-always-on": "",
+          "regulator-max-microvolt": "LK@",
+          "regulator-min-microvolt": "LK@",
+          "regulator-name": "5v0"
+        }
+      },
+      {
+        "path": "/gpu",
+        "name": "gpu",
+        "compatible": "brcm,bcm2711-vc5",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-vc5",
+          "phandle": "00 00 00 e4",
+          "raspberrypi,firmware": "00 00 00 06",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/memory@0",
+        "name": "memory@0",
+        "properties": {
+          "device_type": "memory",
+          "reg": ";@, @, @"
+        }
+      },
+      {
+        "path": "/scb",
+        "name": "scb",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 02",
+          "compatible": "simple-bus",
+          "dma-ranges": "00 00 00 04 7c 00 00 00 00 00 00 00 fc 00 00 00 00 00 00 00 03 80 00 00 00 00 00 00 00 00 00 00...",
+          "phandle": "00 00 00 e7",
+          "ranges": "00 00 00 00 7c 00 00 00 00 00 00 00 fc 00 00 00 00 00 00 00 03 80 00 00 00 00 00 00 40 00 00 00..."
+        }
+      },
+      {
+        "path": "/scb/codec@7eb10000",
+        "name": "codec@7eb10000",
+        "compatible": "raspberrypi,rpivid-vid-decoder",
+        "properties": {
+          "clock-names": "hevc",
+          "clocks": "00 00 00 14 00 00 00 0b",
+          "compatible": "raspberrypi,rpivid-vid-decoder",
+          "interrupts": "00 00 00 00 00 00 00 62 00 00 00 04",
+          "reg": "00 00 00 00 7e b1 00 00 00 00 00 00 00 00 10 00 00 00 00 00 7e b0 00 00 00 00 00 00 00 01 00 00",
+          "reg-names": "intc, hevc"
+        }
+      },
+      {
+        "path": "/scb/ethernet@7d580000",
+        "name": "ethernet@7d580000",
+        "compatible": "brcm,bcm2711-genet-v5",
+        "status": "okay",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "compatible": "brcm,bcm2711-genet-v5",
+          "interrupts": "00 00 00 00 00 00 00 9d 00 00 00 04 00 00 00 00 00 00 00 9e 00 00 00 04",
+          "local-mac-address": "dc a6 32 56 76 50",
+          "phandle": "00 00 00 e8",
+          "phy-handle": "@",
+          "phy-mode": "rgmii-rxid",
+          "reg": "00 00 00 00 7d 58 00 00 00 00 00 00 00 01 00 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/scb/ethernet@7d580000/mdio@e14",
+        "name": "mdio@e14",
+        "compatible": "brcm,genet-mdio-v5",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "brcm,genet-mdio-v5",
+          "phandle": "00 00 00 e9",
+          "reg": "00 00 0e 14 00 00 00 08",
+          "reg-names": "mdio"
+        }
+      },
+      {
+        "path": "/scb/ethernet@7d580000/mdio@e14/ethernet-phy@1",
+        "name": "ethernet-phy@1",
+        "properties": {
+          "led-modes": "00 00 00 00 00 00 00 08",
+          "phandle": "@",
+          "reg": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/scb/pcie@7d500000",
+        "name": "pcie@7d500000",
+        "compatible": "brcm,bcm2711-pcie",
+        "properties": {
+          "#address-cells": "00 00 00 03",
+          "#interrupt-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 02",
+          "brcm,enable-ssc": "",
+          "compatible": "brcm,bcm2711-pcie",
+          "device_type": "pci",
+          "dma-ranges": "02 00 00 00 00 00 00 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 80 00 00 00",
+          "interrupt-map": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 01 00 00 00 00 00 00 00 8f 00 00 00 04...",
+          "interrupt-map-mask": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 07",
+          "interrupt-names": "pcie, msi",
+          "interrupts": "00 00 00 00 00 00 00 93 00 00 00 04 00 00 00 00 00 00 00 94 00 00 00 04",
+          "msi-controller": "",
+          "msi-parent": ">",
+          "phandle": ">",
+          "ranges": "02 00 00 00 00 00 00 00 80 00 00 00 00 00 00 06 00 00 00 00 00 00 00 00 80 00 00 00",
+          "reg": "00 00 00 00 7d 50 00 00 00 00 00 00 00 00 93 10"
+        }
+      },
+      {
+        "path": "/scb/pcie@7d500000/pci@0,0",
+        "name": "pci@0,0",
+        "properties": {
+          "#address-cells": "00 00 00 03",
+          "#size-cells": "00 00 00 02",
+          "device_type": "pci",
+          "ranges": "",
+          "reg": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"
+        }
+      },
+      {
+        "path": "/scb/pcie@7d500000/pci@0,0/usb@0,0",
+        "name": "usb@0,0",
+        "properties": {
+          "reg": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+          "resets": "?"
+        }
+      },
+      {
+        "path": "/scb/xhci@7e9c0000",
+        "name": "xhci@7e9c0000",
+        "compatible": "generic-xhci",
+        "status": "disabled",
+        "properties": {
+          "compatible": "generic-xhci",
+          "interrupts": "00 00 00 00 00 00 00 b0 00 00 00 04",
+          "phandle": "00 00 00 ea",
+          "power-domains": "00 00 00 10 00 00 00 06",
+          "reg": "00 00 00 00 7e 9c 00 00 00 00 00 00 00 10 00 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/scb/dma@7e007b00",
+        "name": "dma@7e007b00",
+        "compatible": "brcm,bcm2711-dma",
+        "properties": {
+          "#dma-cells": "00 00 00 01",
+          "brcm,dma-channel-mask": "0",
+          "compatible": "brcm,bcm2711-dma",
+          "dma-channel-mask": "0",
+          "interrupt-names": "dma11, dma12, dma13, dma14",
+          "interrupts": "00 00 00 00 00 00 00 59 00 00 00 04 00 00 00 00 00 00 00 5a 00 00 00 04 00 00 00 00 00 00 00 5b...",
+          "phandle": ".",
+          "reg": "00 00 00 00 7e 00 7b 00 00 00 00 00 00 00 04 00"
+        }
+      },
+      {
+        "path": "/clk-108M",
+        "name": "clk-108M",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "06 6f f3 00",
+          "clock-output-names": "108MHz-clock",
+          "compatible": "fixed-clock",
+          "phandle": "*"
+        }
+      },
+      {
+        "path": "/arm-pmu",
+        "name": "arm-pmu",
+        "compatible": "arm,cortex-a72-pmu, arm,armv8-pmuv3, arm,cortex-a7-pmu",
+        "properties": {
+          "compatible": "arm,cortex-a72-pmu, arm,armv8-pmuv3, arm,cortex-a7-pmu",
+          "interrupt-affinity": "9, :, ;, <",
+          "interrupts": "00 00 00 00 00 00 00 10 00 00 00 04 00 00 00 00 00 00 00 11 00 00 00 04 00 00 00 00 00 00 00 12..."
+        }
+      },
+      {
+        "path": "/thermal-zones",
+        "name": "thermal-zones"
+      },
+      {
+        "path": "/thermal-zones/cpu-thermal",
+        "name": "cpu-thermal",
+        "properties": {
+          "coefficients": "ff ff fe 19 00 06 41 b8",
+          "phandle": "`",
+          "polling-delay": "00 00 03 e8",
+          "polling-delay-passive": "00 00 00 00",
+          "thermal-sensors": "00 00 00 02"
+        }
+      },
+      {
+        "path": "/thermal-zones/cpu-thermal/trips",
+        "name": "trips",
+        "properties": {
+          "phandle": "a"
+        }
+      },
+      {
+        "path": "/thermal-zones/cpu-thermal/trips/cpu-crit",
+        "name": "cpu-crit",
+        "properties": {
+          "hysteresis": "00 00 00 00",
+          "temperature": "00 01 ad b0",
+          "type": "critical"
+        }
+      },
+      {
+        "path": "/thermal-zones/cpu-thermal/cooling-maps",
+        "name": "cooling-maps",
+        "properties": {
+          "phandle": "b"
+        }
+      },
+      {
+        "path": "/soc",
+        "name": "soc",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "compatible": "simple-bus",
+          "dma-ranges": "c0 00 00 00 00 00 00 00 00 00 00 00 40 00 00 00 7c 00 00 00 00 00 00 00 fc 00 00 00 03 80 00 00",
+          "phandle": "c",
+          "ranges": "7e 00 00 00 00 00 00 00 fe 00 00 00 01 80 00 00 7c 00 00 00 00 00 00 00 fc 00 00 00 02 00 00 00..."
+        }
+      },
+      {
+        "path": "/soc/watchdog@7e100000",
+        "name": "watchdog@7e100000",
+        "compatible": "brcm,bcm2711-pm, brcm,bcm2835-pm-wdt",
+        "properties": {
+          "#power-domain-cells": "00 00 00 01",
+          "#reset-cells": "00 00 00 01",
+          "clock-names": "v3d, peri_image, h264, isp",
+          "clocks": "00 00 00 08 00 00 00 15 00 00 00 08 00 00 00 1d 00 00 00 08 00 00 00 17 00 00 00 08 00 00 00 16",
+          "compatible": "brcm,bcm2711-pm, brcm,bcm2835-pm-wdt",
+          "phandle": "I",
+          "reg": "7e 10 00 00 00 00 01 14 7e 00 a0 00 00 00 00 24 7e c1 10 00 00 00 00 20",
+          "reg-names": "pm, asb, rpivid_asb",
+          "system-power-controller": ""
+        }
+      },
+      {
+        "path": "/soc/spi@7e204600",
+        "name": "spi@7e204600",
+        "compatible": "brcm,bcm2835-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-spi",
+          "interrupts": "00 00 00 00 00 00 00 76 00 00 00 04",
+          "phandle": "00 00 00 cc",
+          "pinctrl-0": "00 00 00 1c 00 00 00 1d",
+          "pinctrl-names": "default",
+          "reg": "7e 20 46 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/vec@7ec13000",
+        "name": "vec@7ec13000",
+        "compatible": "brcm,bcm2711-vec",
+        "status": "disabled",
+        "properties": {
+          "clocks": "00 00 00 14 00 00 00 0f",
+          "compatible": "brcm,bcm2711-vec",
+          "interrupts": "00 00 00 00 00 00 00 7b 00 00 00 04",
+          "phandle": "00 00 00 da",
+          "power-domains": "00 00 00 10 00 00 00 07",
+          "reg": "7e c1 30 00 00 00 10 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/gpiomem",
+        "name": "gpiomem",
+        "compatible": "brcm,bcm2835-gpiomem",
+        "properties": {
+          "compatible": "brcm,bcm2835-gpiomem",
+          "reg": "7e 20 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/soc/i2c@7e804000",
+        "name": "i2c@7e804000",
+        "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-frequency": "00 01 86 a0",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+          "interrupts": "00 00 00 00 00 00 00 75 00 00 00 04",
+          "phandle": "H",
+          "pinctrl-0": "00 00 00 15",
+          "pinctrl-names": "default",
+          "reg": "7e 80 40 00 00 00 10 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/hdmi@7ef05700",
+        "name": "hdmi@7ef05700",
+        "compatible": "brcm,bcm2711-hdmi1",
+        "status": "okay",
+        "properties": {
+          "clock-names": "hdmi, bvb, audio, cec",
+          "clocks": "00 00 00 14 00 00 00 0d 00 00 00 14 00 00 00 0e 00 00 00 2b 00 00 00 01 00 00 00 2f",
+          "compatible": "brcm,bcm2711-hdmi1",
+          "ddc": "0",
+          "dma-names": "audio-rx",
+          "dmas": "00 00 00 2e 41 fa 00 11",
+          "interrupt-names": "cec-tx, cec-rx, cec-low, wakeup, hpd-connected, hpd-removed",
+          "interrupt-parent": ",",
+          "interrupts": "00 00 00 08 00 00 00 07 00 00 00 06 00 00 00 09 00 00 00 0a 00 00 00 0b",
+          "phandle": "V",
+          "reg": "7e f0 57 00 00 00 03 00 7e f0 53 00 00 00 02 00 7e f0 5f 00 00 00 00 80 7e f0 5f 80 00 00 00 80...",
+          "reg-names": "hdmi, dvp, phy, rm, packet, metadata, csc, cec, hd, intr2",
+          "resets": "00 00 00 2b 00 00 00 01",
+          "status": "okay",
+          "wifi-2.4ghz-coexistence": ""
+        }
+      },
+      {
+        "path": "/soc/aux@7e215000",
+        "name": "aux@7e215000",
+        "compatible": "brcm,bcm2835-aux",
+        "properties": {
+          "#clock-cells": "00 00 00 01",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-aux",
+          "phandle": "00 00 00 11",
+          "reg": "7e 21 50 00 00 00 00 08"
+        }
+      },
+      {
+        "path": "/soc/interrupt-controller@40041000",
+        "name": "interrupt-controller@40041000",
+        "compatible": "arm,gic-400",
+        "properties": {
+          "#interrupt-cells": "00 00 00 03",
+          "compatible": "arm,gic-400",
+          "interrupt-controller": "",
+          "interrupts": "00 00 00 01 00 00 00 09 00 00 0f 04",
+          "phandle": "00 00 00 01",
+          "reg": "40 04 10 00 00 00 10 00 40 04 20 00 00 00 20 00 40 04 40 00 00 00 20 00 40 04 60 00 00 00 20 00"
+        }
+      },
+      {
+        "path": "/soc/pwm@7e20c800",
+        "name": "pwm@7e20c800",
+        "compatible": "brcm,bcm2835-pwm",
+        "status": "disabled",
+        "properties": {
+          "#pwm-cells": "00 00 00 03",
+          "assigned-clock-rates": "02 fa f0 80",
+          "assigned-clocks": "00 00 00 08 00 00 00 1e",
+          "clocks": "00 00 00 08 00 00 00 1e",
+          "compatible": "brcm,bcm2835-pwm",
+          "phandle": "00 00 00 d7",
+          "pinctrl-0": "(, )",
+          "pinctrl-names": "default",
+          "reg": "7e 20 c8 00 00 00 00 28",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/csi@7e801000",
+        "name": "csi@7e801000",
+        "compatible": "brcm,bcm2835-unicam",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#clock-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "brcm,num-data-lanes": "00 00 00 02",
+          "clock-names": "lp, vpu",
+          "clocks": "00 00 00 08 00 00 00 2e 00 00 00 14 00 00 00 04",
+          "compatible": "brcm,bcm2835-unicam",
+          "interrupts": "00 00 00 00 00 00 00 67 00 00 00 04",
+          "phandle": "P",
+          "power-domains": "00 00 00 10 00 00 00 0d",
+          "reg": "7e 80 10 00 00 00 08 00 7e 80 20 04 00 00 00 04",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000",
+        "name": "gpio@7e200000",
+        "compatible": "brcm,bcm2711-gpio",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "#interrupt-cells": "00 00 00 02",
+          "compatible": "brcm,bcm2711-gpio",
+          "gpio-controller": "",
+          "gpio-line-names": "ID_SDA, ID_SCL, GPIO2, GPIO3, GPIO4, GPIO5, GPIO6, GPIO7, GPIO8, GPIO9, GPIO10, GPIO11, GPIO12, GPIO13, GPIO14, GPIO15, GPIO16, GPIO17, GPIO18, GPIO19, GPIO20, GPIO21, GPIO22, GPIO23, GPIO24, GPIO25, GPIO26, GPIO27, RGMII_MDIO, RGMIO_MDC, CTS0, RTS0, TXD0, RXD0, SD1_CLK, SD1_CMD, SD1_DATA0, SD1_DATA1, SD1_DATA2, SD1_DATA3, PWM0_MISO, PWM1_MOSI, STATUS_LED_G_CLK, SPIFLASH_CE_N, SDA0, SCL0, RGMII_RXCLK, RGMII_RXCTL, RGMII_RXD0, RGMII_RXD1, RGMII_RXD2, RGMII_RXD3, RGMII_TXCLK, RGMII_TXCTL, RGMII_TXD0, RGMII_TXD1, RGMII_TXD2, RGMII_TXD3",
+          "gpio-ranges": "00 00 00 07 00 00 00 00 00 00 00 00 00 00 00 3a",
+          "interrupt-controller": "",
+          "interrupts": "00 00 00 00 00 00 00 71 00 00 00 04 00 00 00 00 00 00 00 72 00 00 00 04",
+          "phandle": "00 00 00 07",
+          "reg": "7e 20 00 00 00 00 00 b4"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3",
+        "name": "i2c3",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 04 00 00 00 05",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "$"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1-ctsrts-gpio16",
+        "name": "uart1-ctsrts-gpio16",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 10 00 00 00 11",
+          "phandle": "00 00 00 81"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pcm-gpio28",
+        "name": "pcm-gpio28",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 1c 00 00 00 1d 00 00 00 1e 00 00 00 1f",
+          "phandle": "t"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/emmc-gpio22",
+        "name": "emmc-gpio22",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 16 00 00 00 17 00 00 00 18 00 00 00 19 00 00 00 1a 00 00 00 1b",
+          "phandle": "g"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi5_pins",
+        "name": "spi5_pins",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 0d 00 00 00 0e 00 00 00 0f",
+          "phandle": " "
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-mdio-gpio28",
+        "name": "rgmii-mdio-gpio28",
+        "properties": {
+          "phandle": "00 00 00 a2"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-mdio-gpio28/pins-mdio",
+        "name": "pins-mdio",
+        "properties": {
+          "function": "alt5",
+          "pins": "gpio28, gpio29"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pcm-gpio18",
+        "name": "pcm-gpio18",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 12 00 00 00 13 00 00 00 14 00 00 00 15",
+          "phandle": "s"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0-gpio14",
+        "name": "uart0-gpio14",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 0e 00 00 00 0f",
+          "phandle": "z"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio13",
+        "name": "pwm0-1-gpio13",
+        "properties": {
+          "phandle": "00 00 00 9a"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio13/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt0",
+          "pins": "gpio13"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk2-gpio51",
+        "name": "gpclk2-gpio51",
+        "properties": {
+          "phandle": "00 00 00 88"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk2-gpio51/pin-gpclk",
+        "name": "pin-gpclk",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt1",
+          "pins": "gpio51"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2-ctsrts-gpio2",
+        "name": "uart2-ctsrts-gpio2",
+        "properties": {
+          "phandle": "00 00 00 ab"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-cts",
+        "name": "pin-cts",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio2"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2-ctsrts-gpio2/pin-rts",
+        "name": "pin-rts",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio3"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0-gpio32",
+        "name": "uart0-gpio32",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": " , !",
+          "brcm,pull": "00 00 00 00 00 00 00 02",
+          "phandle": "}"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c1",
+        "name": "i2c1",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 02 00 00 00 03",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "00 00 00 15"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/alt0",
+        "name": "alt0",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 04 00 00 00 05 00 00 00 07 00 00 00 08 00 00 00 09 00 00 00 0a 00 00 00 0b",
+          "phandle": "00 00 00 bb"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c1-gpio46",
+        "name": "i2c1-gpio46",
+        "properties": {
+          "phandle": "00 00 00 8a"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c1-gpio46/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt1",
+          "pins": "gpio47"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c1-gpio46/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt1",
+          "pins": "gpio46"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1-gpio14",
+        "name": "uart1-gpio14",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 0e 00 00 00 0f",
+          "phandle": "00 00 00 80"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1-ctsrts-gpio42",
+        "name": "uart1-ctsrts-gpio42",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "*, +",
+          "phandle": "00 00 00 85"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1-gpio32",
+        "name": "uart1-gpio32",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": " , !",
+          "phandle": "00 00 00 82"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi3-gpio0",
+        "name": "spi3-gpio0",
+        "properties": {
+          "phandle": "00 00 00 a6"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi3-gpio0/pins-spi",
+        "name": "pins-spi",
+        "properties": {
+          "function": "alt3",
+          "pins": "gpio0, gpio1, gpio2, gpio3"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_16bit_gpio2",
+        "name": "dpi_16bit_gpio2",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09...",
+          "phandle": "00 00 00 b7"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5_pins",
+        "name": "uart5_pins",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "00 00 00 0c 00 00 00 0d",
+          "brcm,pull": "00 00 00 00 00 00 00 02",
+          "phandle": "00 00 00 1b"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi4_pins",
+        "name": "spi4_pins",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 05 00 00 00 06 00 00 00 07",
+          "phandle": "00 00 00 1e"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0if-gpio28",
+        "name": "i2c0if-gpio28",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 1c 00 00 00 1d",
+          "phandle": "o"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-irq-gpio34",
+        "name": "rgmii-irq-gpio34",
+        "properties": {
+          "phandle": "00 00 00 a0"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-irq-gpio34/pin-irq",
+        "name": "pin-irq",
+        "properties": {
+          "function": "alt5",
+          "pins": "gpio34"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3-ctsrts-gpio6",
+        "name": "uart3-ctsrts-gpio6",
+        "properties": {
+          "phandle": "00 00 00 ad"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-cts",
+        "name": "pin-cts",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio6"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3-ctsrts-gpio6/pin-rts",
+        "name": "pin-rts",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio7"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c1-gpio44",
+        "name": "i2c1-gpio44",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": ",, -",
+          "phandle": "q"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1-gpio40",
+        "name": "uart1-gpio40",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "(, )",
+          "phandle": "00 00 00 84"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0if-gpio46",
+        "name": "i2c0if-gpio46",
+        "properties": {
+          "phandle": "00 00 00 89"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0if-gpio46/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt0",
+          "pins": "gpio47"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0if-gpio46/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt0",
+          "pins": "gpio46"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk1-gpio5",
+        "name": "gpclk1-gpio5",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 05",
+          "phandle": "j"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1-ctsrts-gpio30",
+        "name": "uart1-ctsrts-gpio30",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 1e 00 00 00 1f",
+          "phandle": "00 00 00 83"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi-gpio0",
+        "name": "dpi-gpio0",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07...",
+          "phandle": "f"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi3_cs_pins",
+        "name": "spi3_cs_pins",
+        "properties": {
+          "brcm,function": "00 00 00 01",
+          "brcm,pins": "00 00 00 00 00 00 00 18",
+          "phandle": "00 00 00 1d"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi4-gpio4",
+        "name": "spi4-gpio4",
+        "properties": {
+          "phandle": "00 00 00 a7"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi4-gpio4/pins-spi",
+        "name": "pins-spi",
+        "properties": {
+          "function": "alt3",
+          "pins": "gpio4, gpio5, gpio6, gpio7"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-0-gpio18",
+        "name": "pwm0-0-gpio18",
+        "properties": {
+          "phandle": "00 00 00 99"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-0-gpio18/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio18"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_16bit_gpio0",
+        "name": "dpi_16bit_gpio0",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07...",
+          "phandle": "00 00 00 b6"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2",
+        "name": "dpi_18bit_cpadhi_gpio2",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09...",
+          "phandle": "00 00 00 b3"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm1-1-gpio41",
+        "name": "pwm1-1-gpio41",
+        "properties": {
+          "phandle": ")"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm1-1-gpio41/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt0",
+          "pins": "gpio41"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c-slave-gpio8",
+        "name": "i2c-slave-gpio8",
+        "properties": {
+          "phandle": "00 00 00 93"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c-slave-gpio8/pins-i2c-slave",
+        "name": "pins-i2c-slave",
+        "properties": {
+          "function": "alt3",
+          "pins": "gpio8, gpio9, gpio10, gpio11"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi0-gpio46",
+        "name": "spi0-gpio46",
+        "properties": {
+          "phandle": "00 00 00 a4"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi0-gpio46/pins-spi",
+        "name": "pins-spi",
+        "properties": {
+          "function": "alt2",
+          "pins": "gpio46, gpio47, gpio48, gpio49"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pcm-gpio50",
+        "name": "pcm-gpio50",
+        "properties": {
+          "phandle": "00 00 00 97"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pcm-gpio50/pins-pcm",
+        "name": "pins-pcm",
+        "properties": {
+          "function": "alt2",
+          "pins": "gpio50, gpio51, gpio52, gpio53"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0if-gpio44",
+        "name": "i2c0if-gpio44",
+        "properties": {
+          "brcm,function": "00 00 00 05",
+          "brcm,pins": ",, -",
+          "phandle": "4"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-gpio35",
+        "name": "rgmii-gpio35",
+        "properties": {
+          "phandle": "00 00 00 9f"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-gpio35/pin-start-stop",
+        "name": "pin-start-stop",
+        "properties": {
+          "function": "alt4",
+          "pins": "gpio35"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-gpio35/pin-rx-ok",
+        "name": "pin-rx-ok",
+        "properties": {
+          "function": "alt4",
+          "pins": "gpio36"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4_pins",
+        "name": "uart4_pins",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "00 00 00 08 00 00 00 09",
+          "brcm,pull": "00 00 00 00 00 00 00 02",
+          "phandle": "00 00 00 1a"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi3_pins",
+        "name": "spi3_pins",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 01 00 00 00 02 00 00 00 03",
+          "phandle": "00 00 00 1c"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6",
+        "name": "i2c6",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 16 00 00 00 17",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "'"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/sdio_pins",
+        "name": "sdio_pins",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "\", #, $, %, &, '",
+          "brcm,pull": "00 00 00 00 00 00 00 02 00 00 00 02 00 00 00 02 00 00 00 02 00 00 00 02",
+          "phandle": "1"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0",
+        "name": "dpi_18bit_cpadhi_gpio0",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07...",
+          "brcm,pull": "00 00 00 00",
+          "phandle": "00 00 00 b2"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk1-gpio44",
+        "name": "gpclk1-gpio44",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": ",",
+          "phandle": "l"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi5_cs_pins",
+        "name": "spi5_cs_pins",
+        "properties": {
+          "brcm,function": "00 00 00 01",
+          "brcm,pins": "00 00 00 0c 00 00 00 1a",
+          "phandle": "!"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5-gpio12",
+        "name": "uart5-gpio12",
+        "properties": {
+          "phandle": "00 00 00 b0"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5-gpio12/pin-tx",
+        "name": "pin-tx",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio12"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5-gpio12/pin-rx",
+        "name": "pin-rx",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio13"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi2-gpio46",
+        "name": "spi2-gpio46",
+        "properties": {
+          "phandle": "00 00 00 a5"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi2-gpio46/pins-spi",
+        "name": "pins-spi",
+        "properties": {
+          "function": "alt5",
+          "pins": "gpio46, gpio47, gpio48, gpio49, gpio50"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3-gpio4",
+        "name": "i2c3-gpio4",
+        "properties": {
+          "phandle": "00 00 00 8c"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3-gpio4/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio5"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3-gpio4/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio4"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0-ctsrts-gpio38",
+        "name": "uart0-ctsrts-gpio38",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "&, '",
+          "phandle": "00 00 00 7f"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6-gpio0",
+        "name": "i2c6-gpio0",
+        "properties": {
+          "phandle": "00 00 00 91"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6-gpio0/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio1"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6-gpio0/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio0"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-0-gpio52",
+        "name": "pwm0-0-gpio52",
+        "properties": {
+          "phandle": "00 00 00 9d"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-0-gpio52/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt1",
+          "pins": "gpio52"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi1-gpio16",
+        "name": "spi1-gpio16",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "00 00 00 10 00 00 00 11 00 00 00 12 00 00 00 13 00 00 00 14 00 00 00 15",
+          "phandle": "x"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-irq-gpio39",
+        "name": "rgmii-irq-gpio39",
+        "properties": {
+          "phandle": "00 00 00 a1"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-irq-gpio39/pin-irq",
+        "name": "pin-irq",
+        "properties": {
+          "function": "alt4",
+          "pins": "gpio39"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4",
+        "name": "i2c4",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 08 00 00 00 09",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "%"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk1-gpio42",
+        "name": "gpclk1-gpio42",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "*",
+          "phandle": "k"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3_pins",
+        "name": "uart3_pins",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "00 00 00 04 00 00 00 05",
+          "brcm,pull": "00 00 00 00 00 00 00 02",
+          "phandle": "00 00 00 19"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4-gpio8",
+        "name": "i2c4-gpio8",
+        "properties": {
+          "phandle": "00 00 00 8e"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4-gpio8/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio9"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4-gpio8/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio8"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi0-gpio7",
+        "name": "spi0-gpio7",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 07 00 00 00 08 00 00 00 09 00 00 00 0a 00 00 00 0b",
+          "phandle": "v"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk0-gpio4",
+        "name": "gpclk0-gpio4",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 04",
+          "phandle": "i"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3-gpio2",
+        "name": "i2c3-gpio2",
+        "properties": {
+          "phandle": "00 00 00 8b"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3-gpio2/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio3"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c3-gpio2/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio2"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/jtag-gpio48",
+        "name": "jtag-gpio48",
+        "properties": {
+          "phandle": "00 00 00 94"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/jtag-gpio48/pins-jtag",
+        "name": "pins-jtag",
+        "properties": {
+          "function": "alt4",
+          "pins": "gpio48, gpio49, gpio50, gpio51, gpio52, gpio53"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/sdhost-gpio48",
+        "name": "sdhost-gpio48",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "0, 1, 2, 3, 4, 5",
+          "phandle": "u"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-0-gpio12",
+        "name": "pwm0-0-gpio12",
+        "properties": {
+          "phandle": "00 00 00 98"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-0-gpio12/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt0",
+          "pins": "gpio12"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk1-gpio50",
+        "name": "gpclk1-gpio50",
+        "properties": {
+          "phandle": "00 00 00 87"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk1-gpio50/pin-gpclk",
+        "name": "pin-gpclk",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt1",
+          "pins": "gpio50"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2",
+        "name": "dpi_16bit_cpadhi_gpio2",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 0c...",
+          "phandle": "00 00 00 b9"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-mdio-gpio37",
+        "name": "rgmii-mdio-gpio37",
+        "properties": {
+          "phandle": "00 00 00 a3"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/rgmii-mdio-gpio37/pins-mdio",
+        "name": "pins-mdio",
+        "properties": {
+          "function": "alt4",
+          "pins": "gpio37, gpio38"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi0_cs_pins",
+        "name": "spi0_cs_pins",
+        "properties": {
+          "brcm,function": "00 00 00 01",
+          "brcm,pins": "00 00 00 08 00 00 00 07",
+          "phandle": "00 00 00 0f"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0-ctsrts-gpio16",
+        "name": "uart0-ctsrts-gpio16",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 10 00 00 00 11",
+          "phandle": "{"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5-gpio12",
+        "name": "i2c5-gpio12",
+        "properties": {
+          "phandle": "00 00 00 90"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5-gpio12/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio13"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5-gpio12/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio12"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2-gpio0",
+        "name": "uart2-gpio0",
+        "properties": {
+          "phandle": "00 00 00 aa"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2-gpio0/pin-tx",
+        "name": "pin-tx",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio0"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2-gpio0/pin-rx",
+        "name": "pin-rx",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio1"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk0-gpio49",
+        "name": "gpclk0-gpio49",
+        "properties": {
+          "phandle": "00 00 00 86"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk0-gpio49/pin-gpclk",
+        "name": "pin-gpclk",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt1",
+          "pins": "gpio49"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4-gpio6",
+        "name": "i2c4-gpio6",
+        "properties": {
+          "phandle": "00 00 00 8d"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4-gpio6/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio7"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c4-gpio6/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio6"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi6-gpio18",
+        "name": "spi6-gpio18",
+        "properties": {
+          "phandle": "00 00 00 a9"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi6-gpio18/pins-spi",
+        "name": "pins-spi",
+        "properties": {
+          "function": "alt3",
+          "pins": "gpio18, gpio19, gpio20, gpio21"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6-gpio22",
+        "name": "i2c6-gpio22",
+        "properties": {
+          "phandle": "00 00 00 92"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6-gpio22/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio23"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c6-gpio22/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio22"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2s",
+        "name": "i2s",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 12 00 00 00 13 00 00 00 14 00 00 00 15",
+          "phandle": "00 00 00 0d"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4-ctsrts-gpio10",
+        "name": "uart4-ctsrts-gpio10",
+        "properties": {
+          "phandle": "00 00 00 af"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-cts",
+        "name": "pin-cts",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio10"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4-ctsrts-gpio10/pin-rts",
+        "name": "pin-rts",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio11"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_18bit_gpio2",
+        "name": "dpi_18bit_gpio2",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07 00 00 00 08 00 00 00 09...",
+          "phandle": "00 00 00 b5"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0",
+        "name": "i2c0",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 00 00 00 00 01",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "00 00 00 bc"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart2_pins",
+        "name": "uart2_pins",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "00 00 00 00 00 00 00 01",
+          "brcm,pull": "00 00 00 00 00 00 00 02",
+          "phandle": "00 00 00 18"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0",
+        "name": "dpi_16bit_cpadhi_gpio0",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07...",
+          "phandle": "00 00 00 b8"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/mii-gpio28",
+        "name": "mii-gpio28",
+        "properties": {
+          "phandle": "00 00 00 95"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/mii-gpio28/pins-mii",
+        "name": "pins-mii",
+        "properties": {
+          "function": "alt4",
+          "pins": "gpio28, gpio29, gpio30, gpio31"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3-gpio4",
+        "name": "uart3-gpio4",
+        "properties": {
+          "phandle": "00 00 00 ac"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3-gpio4/pin-tx",
+        "name": "pin-tx",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio4"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart3-gpio4/pin-rx",
+        "name": "pin-rx",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio5"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/emmc-gpio48",
+        "name": "emmc-gpio48",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "0, 1, 2, 3, 4, 5",
+          "phandle": "00 00 00 13"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5-gpio10",
+        "name": "i2c5-gpio10",
+        "properties": {
+          "phandle": "00 00 00 8f"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5-gpio10/pin-scl",
+        "name": "pin-scl",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio11"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5-gpio10/pin-sda",
+        "name": "pin-sda",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt5",
+          "pins": "gpio10"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi2-gpio40",
+        "name": "spi2-gpio40",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "(, ), *, +, ,, -",
+          "phandle": "y"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/dpi_18bit_gpio0",
+        "name": "dpi_18bit_gpio0",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00 06 00 00 00 07...",
+          "phandle": "00 00 00 b4"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/mii-gpio36",
+        "name": "mii-gpio36",
+        "properties": {
+          "phandle": "00 00 00 96"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/mii-gpio36/pins-mii",
+        "name": "pins-mii",
+        "properties": {
+          "function": "alt5",
+          "pins": "gpio36, gpio37, gpio38, gpio39"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4-gpio8",
+        "name": "uart4-gpio8",
+        "properties": {
+          "phandle": "00 00 00 ae"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4-gpio8/pin-tx",
+        "name": "pin-tx",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio8"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart4-gpio8/pin-rx",
+        "name": "pin-rx",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio9"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio19",
+        "name": "pwm0-1-gpio19",
+        "properties": {
+          "phandle": "00 00 00 9b"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio19/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt5",
+          "pins": "gpio19"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm1-0-gpio40",
+        "name": "pwm1-0-gpio40",
+        "properties": {
+          "phandle": "("
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm1-0-gpio40/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt0",
+          "pins": "gpio40"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c0if-gpio0",
+        "name": "i2c0if-gpio0",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 00 00 00 00 01",
+          "phandle": "3"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0-ctsrts-gpio30",
+        "name": "uart0-ctsrts-gpio30",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 1e 00 00 00 1f",
+          "brcm,pull": "00 00 00 02 00 00 00 00",
+          "phandle": "|"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1_pins",
+        "name": "uart1_pins",
+        "properties": {
+          "brcm,function": "",
+          "brcm,pins": "",
+          "brcm,pull": "",
+          "phandle": "00 00 00 12"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi0_pins",
+        "name": "spi0_pins",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 09 00 00 00 0a 00 00 00 0b",
+          "phandle": "00 00 00 0e"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi4_cs_pins",
+        "name": "spi4_cs_pins",
+        "properties": {
+          "brcm,function": "00 00 00 01",
+          "brcm,pins": "00 00 00 04 00 00 00 19",
+          "phandle": "00 00 00 1f"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi5-gpio12",
+        "name": "spi5-gpio12",
+        "properties": {
+          "phandle": "00 00 00 a8"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi5-gpio12/pins-spi",
+        "name": "pins-spi",
+        "properties": {
+          "function": "alt3",
+          "pins": "gpio12, gpio13, gpio14, gpio15"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5-ctsrts-gpio14",
+        "name": "uart5-ctsrts-gpio14",
+        "properties": {
+          "phandle": "00 00 00 b1"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-cts",
+        "name": "pin-cts",
+        "properties": {
+          "bias-pull-up": "",
+          "function": "alt4",
+          "pins": "gpio14"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart5-ctsrts-gpio14/pin-rts",
+        "name": "pin-rts",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt4",
+          "pins": "gpio15"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/jtag-gpio22",
+        "name": "jtag-gpio22",
+        "properties": {
+          "brcm,function": "00 00 00 03",
+          "brcm,pins": "00 00 00 16 00 00 00 17 00 00 00 18 00 00 00 19 00 00 00 1a 00 00 00 1b",
+          "phandle": "r"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi6_pins",
+        "name": "spi6_pins",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 13 00 00 00 14 00 00 00 15",
+          "phandle": "\""
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio45",
+        "name": "pwm0-1-gpio45",
+        "properties": {
+          "phandle": "00 00 00 9c"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio45/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt0",
+          "pins": "gpio45"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi0-gpio35",
+        "name": "spi0-gpio35",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "#, $, %, &, '",
+          "phandle": "w"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart1_bt_pins",
+        "name": "uart1_bt_pins",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 20 00 00 00 21 00 00 00 1e 00 00 00 1f",
+          "brcm,pull": "00 00 00 00 00 00 00 02 00 00 00 02 00 00 00 00",
+          "phandle": "00 00 00 bd"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/emmc-gpio34",
+        "name": "emmc-gpio34",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "\", #, $, %, &, '",
+          "brcm,pull": "00 00 00 00 00 00 00 02 00 00 00 02 00 00 00 02 00 00 00 02 00 00 00 02",
+          "phandle": "h"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/bt_pins",
+        "name": "bt_pins",
+        "properties": {
+          "brcm,function": "00 00 00 00",
+          "brcm,pins": "-",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "\n"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0-gpio36",
+        "name": "uart0-gpio36",
+        "properties": {
+          "brcm,function": "00 00 00 06",
+          "brcm,pins": "$, %",
+          "phandle": "~"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c5",
+        "name": "i2c5",
+        "properties": {
+          "brcm,function": "00 00 00 02",
+          "brcm,pins": "00 00 00 0c 00 00 00 0d",
+          "brcm,pull": "00 00 00 02",
+          "phandle": "&"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio53",
+        "name": "pwm0-1-gpio53",
+        "properties": {
+          "phandle": "00 00 00 9e"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/pwm0-1-gpio53/pin-pwm",
+        "name": "pin-pwm",
+        "properties": {
+          "bias-disable": "",
+          "function": "alt1",
+          "pins": "gpio53"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/spi6_cs_pins",
+        "name": "spi6_cs_pins",
+        "properties": {
+          "brcm,function": "00 00 00 01",
+          "brcm,pins": "00 00 00 12 00 00 00 1b",
+          "phandle": "#"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/i2c1-gpio2",
+        "name": "i2c1-gpio2",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 02 00 00 00 03",
+          "phandle": "p"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/uart0_pins",
+        "name": "uart0_pins",
+        "properties": {
+          "brcm,function": "00 00 00 07",
+          "brcm,pins": "00 00 00 1e 00 00 00 1f 00 00 00 20 00 00 00 21",
+          "brcm,pull": "00 00 00 02 00 00 00 00 00 00 00 00 00 00 00 02",
+          "phandle": "\t"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk2-gpio6",
+        "name": "gpclk2-gpio6",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "00 00 00 06",
+          "phandle": "m"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpclk2-gpio43",
+        "name": "gpclk2-gpio43",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "+",
+          "brcm,pull": "00 00 00 00",
+          "phandle": "n"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/audio_pins",
+        "name": "audio_pins",
+        "properties": {
+          "brcm,function": "00 00 00 04",
+          "brcm,pins": "(, )",
+          "brcm,pull": "00 00 00 00",
+          "phandle": "6"
+        }
+      },
+      {
+        "path": "/soc/gpio@7e200000/gpioout",
+        "name": "gpioout",
+        "properties": {
+          "brcm,function": "00 00 00 01",
+          "brcm,pins": "00 00 00 06",
+          "phandle": "00 00 00 ba"
+        }
+      },
+      {
+        "path": "/soc/mmcnr@7e300000",
+        "name": "mmcnr@7e300000",
+        "compatible": "brcm,bcm2835-mmc, brcm,bcm2835-sdhci",
+        "status": "okay",
+        "properties": {
+          "brcm,overclock-50": "00 00 00 00",
+          "bus-width": "00 00 00 04",
+          "clocks": "00 00 00 08 00 00 00 1c",
+          "compatible": "brcm,bcm2835-mmc, brcm,bcm2835-sdhci",
+          "dma-names": "rx-tx",
+          "dmas": "00 00 00 0c 00 00 00 0b",
+          "interrupts": "00 00 00 00 00 00 00 7e 00 00 00 04",
+          "non-removable": "",
+          "phandle": "M",
+          "pinctrl-0": "1",
+          "pinctrl-names": "default",
+          "reg": "7e 30 00 00 00 00 01 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/i2c@7e205a00",
+        "name": "i2c@7e205a00",
+        "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+          "interrupts": "00 00 00 00 00 00 00 75 00 00 00 04",
+          "phandle": "00 00 00 d2",
+          "pinctrl-0": "&",
+          "pinctrl-names": "default",
+          "reg": "7e 20 5a 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/clock@7ef00000",
+        "name": "clock@7ef00000",
+        "compatible": "brcm,brcm2711-dvp",
+        "status": "okay",
+        "properties": {
+          "#clock-cells": "00 00 00 01",
+          "#reset-cells": "00 00 00 01",
+          "clocks": "*",
+          "compatible": "brcm,brcm2711-dvp",
+          "phandle": "+",
+          "reg": "7e f0 00 00 00 00 00 10",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/pixelvalve@7e216000",
+        "name": "pixelvalve@7e216000",
+        "compatible": "brcm,bcm2711-pixelvalve4",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-pixelvalve4",
+          "interrupts": "00 00 00 00 00 00 00 6e 00 00 00 04",
+          "phandle": "00 00 00 d8",
+          "reg": "7e 21 60 00 00 00 01 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/i2c@7ef09500",
+        "name": "i2c@7ef09500",
+        "compatible": "brcm,bcm2711-hdmi-i2c",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "00 01 7c dc",
+          "compatible": "brcm,bcm2711-hdmi-i2c",
+          "phandle": "0",
+          "reg": "7e f0 95 00 00 00 01 00 7e f0 5b 00 00 00 03 00",
+          "reg-names": "bsc, auto-i2c",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/txp@7e004000",
+        "name": "txp@7e004000",
+        "compatible": "brcm,bcm2835-txp",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2835-txp",
+          "interrupts": "00 00 00 00 00 00 00 4b 00 00 00 04",
+          "phandle": "e",
+          "reg": "~, @,  ",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/i2c@7e205800",
+        "name": "i2c@7e205800",
+        "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+          "interrupts": "00 00 00 00 00 00 00 75 00 00 00 04",
+          "phandle": "00 00 00 d1",
+          "pinctrl-0": "%",
+          "pinctrl-names": "default",
+          "reg": "7e 20 58 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/serial@7e201a00",
+        "name": "serial@7e201a00",
+        "compatible": "arm,pl011, arm,primecell",
+        "status": "disabled",
+        "properties": {
+          "arm,primecell-periphid": "00 34 10 11",
+          "clock-names": "uartclk, apb_pclk",
+          "clocks": "00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14",
+          "compatible": "arm,pl011, arm,primecell",
+          "interrupts": "00 00 00 00 00 00 00 79 00 00 00 04",
+          "phandle": "00 00 00 cb",
+          "pinctrl-0": "00 00 00 1b",
+          "pinctrl-names": "default",
+          "reg": "7e 20 1a 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/mmc@7e202000",
+        "name": "mmc@7e202000",
+        "compatible": "brcm,bcm2835-sdhost",
+        "status": "disabled",
+        "properties": {
+          "brcm,overclock-50": "00 00 00 00",
+          "brcm,pio-limit": "00 00 00 01",
+          "bus-width": "00 00 00 04",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-sdhost",
+          "dma-names": "rx-tx",
+          "dmas": "00 00 00 0c 20 00 00 0d",
+          "firmware": "00 00 00 06",
+          "interrupts": "00 00 00 00 00 00 00 78 00 00 00 04",
+          "phandle": "K",
+          "reg": "7e 20 20 00 00 00 01 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/power",
+        "name": "power",
+        "compatible": "raspberrypi,bcm2835-power",
+        "properties": {
+          "#power-domain-cells": "00 00 00 01",
+          "compatible": "raspberrypi,bcm2835-power",
+          "firmware": "00 00 00 06",
+          "phandle": "00 00 00 10"
+        }
+      },
+      {
+        "path": "/soc/serial@7e201800",
+        "name": "serial@7e201800",
+        "compatible": "arm,pl011, arm,primecell",
+        "status": "disabled",
+        "properties": {
+          "arm,primecell-periphid": "00 34 10 11",
+          "clock-names": "uartclk, apb_pclk",
+          "clocks": "00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14",
+          "compatible": "arm,pl011, arm,primecell",
+          "interrupts": "00 00 00 00 00 00 00 79 00 00 00 04",
+          "phandle": "00 00 00 ca",
+          "pinctrl-0": "00 00 00 1a",
+          "pinctrl-names": "default",
+          "reg": "7e 20 18 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/spi@7e204a00",
+        "name": "spi@7e204a00",
+        "compatible": "brcm,bcm2835-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-spi",
+          "interrupts": "00 00 00 00 00 00 00 76 00 00 00 04",
+          "phandle": "00 00 00 ce",
+          "pinctrl-0": " , !",
+          "pinctrl-names": "default",
+          "reg": "7e 20 4a 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/hvs@7e400000",
+        "name": "hvs@7e400000",
+        "compatible": "brcm,bcm2711-hvs",
+        "status": "okay",
+        "properties": {
+          "clocks": "00 00 00 14 00 00 00 04",
+          "compatible": "brcm,bcm2711-hvs",
+          "interrupts": "00 00 00 00 00 00 00 61 00 00 00 04",
+          "phandle": "00 00 00 c4",
+          "reg": "7e 40 00 00 00 00 80 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/interrupt-controller@40000000",
+        "name": "interrupt-controller@40000000",
+        "compatible": "brcm,bcm2836-l1-intc",
+        "properties": {
+          "compatible": "brcm,bcm2836-l1-intc",
+          "phandle": "00 00 00 c6",
+          "reg": "40 00 00 00 00 00 01 00"
+        }
+      },
+      {
+        "path": "/soc/pixelvalve@7ec12000",
+        "name": "pixelvalve@7ec12000",
+        "compatible": "brcm,bcm2711-pixelvalve3",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-pixelvalve3",
+          "interrupts": "00 00 00 00 00 00 00 6a 00 00 00 04",
+          "phandle": "00 00 00 d9",
+          "reg": "7e c1 20 00 00 00 01 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/spi@7e204800",
+        "name": "spi@7e204800",
+        "compatible": "brcm,bcm2835-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-spi",
+          "interrupts": "00 00 00 00 00 00 00 76 00 00 00 04",
+          "phandle": "00 00 00 cd",
+          "pinctrl-0": "00 00 00 1e 00 00 00 1f",
+          "pinctrl-names": "default",
+          "reg": "7e 20 48 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/csi@7e800000",
+        "name": "csi@7e800000",
+        "compatible": "brcm,bcm2835-unicam",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#clock-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-names": "lp, vpu",
+          "clocks": "00 00 00 08 00 00 00 2d 00 00 00 14 00 00 00 04",
+          "compatible": "brcm,bcm2835-unicam",
+          "interrupts": "00 00 00 00 00 00 00 66 00 00 00 04",
+          "phandle": "Q",
+          "power-domains": "00 00 00 10 00 00 00 0c",
+          "reg": "7e 80 00 00 00 00 08 00 7e 80 20 00 00 00 00 04",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/avs-monitor@7d5d2000",
+        "name": "avs-monitor@7d5d2000",
+        "compatible": "brcm,bcm2711-avs-monitor, syscon, simple-mfd",
+        "properties": {
+          "compatible": "brcm,bcm2711-avs-monitor, syscon, simple-mfd",
+          "phandle": "00 00 00 c7",
+          "reg": "7d 5d 20 00 00 00 0f 00"
+        }
+      },
+      {
+        "path": "/soc/avs-monitor@7d5d2000/thermal",
+        "name": "thermal",
+        "compatible": "brcm,bcm2711-thermal",
+        "properties": {
+          "#thermal-sensor-cells": "00 00 00 00",
+          "compatible": "brcm,bcm2711-thermal",
+          "phandle": "00 00 00 02"
+        }
+      },
+      {
+        "path": "/soc/pixelvalve@7e20a000",
+        "name": "pixelvalve@7e20a000",
+        "compatible": "brcm,bcm2711-pixelvalve2",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-pixelvalve2",
+          "interrupts": "00 00 00 00 00 00 00 65 00 00 00 04",
+          "phandle": "00 00 00 d6",
+          "reg": "7e 20 a0 00 00 00 01 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/pwm@7e20c000",
+        "name": "pwm@7e20c000",
+        "compatible": "brcm,bcm2835-pwm",
+        "status": "disabled",
+        "properties": {
+          "#pwm-cells": "00 00 00 03",
+          "assigned-clock-rates": "02 fa f0 80",
+          "assigned-clocks": "00 00 00 08 00 00 00 1e",
+          "clocks": "00 00 00 08 00 00 00 1e",
+          "compatible": "brcm,bcm2835-pwm",
+          "phandle": "00 00 00 c3",
+          "reg": "7e 20 c0 00 00 00 00 28",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/fb",
+        "name": "fb",
+        "compatible": "brcm,bcm2708-fb",
+        "status": "disabled",
+        "properties": {
+          "compatible": "brcm,bcm2708-fb",
+          "firmware": "00 00 00 06",
+          "phandle": "00 00 00 e1",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/spi@7e215080",
+        "name": "spi@7e215080",
+        "compatible": "brcm,bcm2835-aux-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 11 00 00 00 01",
+          "compatible": "brcm,bcm2835-aux-spi",
+          "interrupts": "00 00 00 00 00 00 00 5d 00 00 00 04",
+          "phandle": "00 00 00 c1",
+          "reg": "7e 21 50 80 00 00 00 40",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/serial@7e201400",
+        "name": "serial@7e201400",
+        "compatible": "arm,pl011, arm,primecell",
+        "status": "disabled",
+        "properties": {
+          "arm,primecell-periphid": "00 34 10 11",
+          "clock-names": "uartclk, apb_pclk",
+          "clocks": "00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14",
+          "compatible": "arm,pl011, arm,primecell",
+          "interrupts": "00 00 00 00 00 00 00 79 00 00 00 04",
+          "phandle": "00 00 00 c8",
+          "pinctrl-0": "00 00 00 18",
+          "pinctrl-names": "default",
+          "reg": "7e 20 14 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/serial@7e215040",
+        "name": "serial@7e215040",
+        "compatible": "brcm,bcm2835-aux-uart",
+        "status": "okay",
+        "properties": {
+          "clocks": "00 00 00 11 00 00 00 00",
+          "compatible": "brcm,bcm2835-aux-uart",
+          "interrupts": "00 00 00 00 00 00 00 5d 00 00 00 04",
+          "phandle": "D",
+          "pinctrl-0": "00 00 00 12",
+          "pinctrl-names": "default",
+          "reg": "~!P@, @",
+          "skip-init": "",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/serial@7e215040/bluetooth",
+        "name": "bluetooth",
+        "compatible": "brcm,bcm43438-bt",
+        "status": "disabled",
+        "properties": {
+          "compatible": "brcm,bcm43438-bt",
+          "fallback-bd-address": "",
+          "local-bd-address": "00 00 00 00 00 00",
+          "max-speed": "00 03 84 00",
+          "phandle": "B",
+          "shutdown-gpios": "00 00 00 0b 00 00 00 00 00 00 00 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/i2c@7e205c00",
+        "name": "i2c@7e205c00",
+        "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+          "interrupts": "00 00 00 00 00 00 00 75 00 00 00 04",
+          "phandle": "00 00 00 d3",
+          "pinctrl-0": "'",
+          "pinctrl-names": "default",
+          "reg": "7e 20 5c 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/pixelvalve@7e207000",
+        "name": "pixelvalve@7e207000",
+        "compatible": "brcm,bcm2711-pixelvalve1",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-pixelvalve1",
+          "interrupts": "00 00 00 00 00 00 00 6e 00 00 00 04",
+          "phandle": "00 00 00 d5",
+          "reg": "7e 20 70 00 00 00 01 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/rng@7e104000",
+        "name": "rng@7e104000",
+        "compatible": "brcm,bcm2711-rng200",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-rng200",
+          "phandle": "J",
+          "reg": "7e 10 40 00 00 00 00 28",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/smi@7e600000",
+        "name": "smi@7e600000",
+        "compatible": "brcm,bcm2835-smi",
+        "status": "disabled",
+        "properties": {
+          "assigned-clock-rates": "07 73 59 40",
+          "assigned-clocks": "00 00 00 08 00 00 00 2a",
+          "clocks": "00 00 00 08 00 00 00 2a",
+          "compatible": "brcm,bcm2835-smi",
+          "dma-names": "rx-tx",
+          "dmas": "00 00 00 0c 00 00 00 04",
+          "interrupts": "00 00 00 00 00 00 00 70 00 00 00 04",
+          "phandle": "00 00 00 dc",
+          "reg": "7e 60 00 00 00 00 01 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/cprman@7e101000",
+        "name": "cprman@7e101000",
+        "compatible": "brcm,bcm2711-cprman",
+        "properties": {
+          "#clock-cells": "00 00 00 01",
+          "clocks": "00 00 00 03 00 00 00 04 00 00 00 00 00 00 00 04 00 00 00 01 00 00 00 04 00 00 00 02 00 00 00 05...",
+          "compatible": "brcm,bcm2711-cprman",
+          "firmware": "00 00 00 06",
+          "phandle": "00 00 00 08",
+          "reg": "7e 10 10 00 00 00 20 00"
+        }
+      },
+      {
+        "path": "/soc/i2c0mux",
+        "name": "i2c0mux",
+        "compatible": "i2c-mux-pinctrl",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "i2c-mux-pinctrl",
+          "i2c-parent": "2",
+          "phandle": "G",
+          "pinctrl-0": "3",
+          "pinctrl-1": "4",
+          "pinctrl-names": "i2c0, i2c_csi_dsi",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/i2c0mux/i2c@0",
+        "name": "i2c@0",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "phandle": "00 00 00 dd",
+          "reg": "00 00 00 00"
+        }
+      },
+      {
+        "path": "/soc/i2c0mux/i2c@1",
+        "name": "i2c@1",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "phandle": "00 00 00 de",
+          "reg": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/soc/i2c@7e205000",
+        "name": "i2c@7e205000",
+        "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-frequency": "00 01 86 a0",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+          "interrupts": "00 00 00 00 00 00 00 75 00 00 00 04",
+          "phandle": "2",
+          "reg": "7e 20 50 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/spi@7e2150c0",
+        "name": "spi@7e2150c0",
+        "compatible": "brcm,bcm2835-aux-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 11 00 00 00 02",
+          "compatible": "brcm,bcm2835-aux-spi",
+          "interrupts": "00 00 00 00 00 00 00 5d 00 00 00 04",
+          "phandle": "00 00 00 c2",
+          "reg": "7e 21 50 c0 00 00 00 40",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/usb@7e980000",
+        "name": "usb@7e980000",
+        "compatible": "brcm,bcm2708-usb",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-names": "otg",
+          "clocks": "00 00 00 16",
+          "compatible": "brcm,bcm2708-usb",
+          "interrupt-names": "usb, soft",
+          "interrupts": "00 00 00 00 00 00 00 49 00 00 00 04 00 00 00 00 00 00 00 28 00 00 00 04",
+          "phandle": "00 00 00 c5",
+          "phy-names": "usb2-phy",
+          "phys": "00 00 00 17",
+          "power-domains": "00 00 00 10 00 00 00 06",
+          "reg": "7e 98 00 00 00 01 00 00 7e 00 b2 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/dma-controller@7e007000",
+        "name": "dma-controller@7e007000",
+        "compatible": "brcm,bcm2835-dma",
+        "properties": {
+          "#dma-cells": "00 00 00 01",
+          "brcm,dma-channel-mask": "00 00 07 f5",
+          "compatible": "brcm,bcm2835-dma",
+          "interrupt-names": "dma0, dma1, dma2, dma3, dma4, dma5, dma6, dma7, dma8, dma9, dma10",
+          "interrupts": "00 00 00 00 00 00 00 50 00 00 00 04 00 00 00 00 00 00 00 51 00 00 00 04 00 00 00 00 00 00 00 52...",
+          "phandle": "00 00 00 0c",
+          "reg": "7e 00 70 00 00 00 0b 00"
+        }
+      },
+      {
+        "path": "/soc/nvmem",
+        "name": "nvmem",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "compatible": "simple-bus"
+        }
+      },
+      {
+        "path": "/soc/nvmem/nvmem_otp",
+        "name": "nvmem_otp",
+        "compatible": "raspberrypi,rpi-otp",
+        "status": "okay",
+        "properties": {
+          "compatible": "raspberrypi,rpi-otp",
+          "firmware": "00 00 00 06",
+          "phandle": "00 00 00 e3",
+          "reg": "00 00 00 00 00 00 00 a6",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/nvmem/nvmem_priv",
+        "name": "nvmem_priv",
+        "compatible": "raspberrypi,rpi-otp",
+        "status": "okay",
+        "properties": {
+          "compatible": "raspberrypi,rpi-otp",
+          "firmware": "00 00 00 06",
+          "phandle": "X",
+          "reg": "00 00 00 03 00 00 00 08",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/nvmem/nvmem_cust",
+        "name": "nvmem_cust",
+        "compatible": "raspberrypi,rpi-otp",
+        "status": "okay",
+        "properties": {
+          "compatible": "raspberrypi,rpi-otp",
+          "firmware": "00 00 00 06",
+          "phandle": "W",
+          "reg": "00 00 00 01 00 00 00 08",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/sound",
+        "name": "sound",
+        "status": "disabled",
+        "properties": {
+          "phandle": "00 00 00 e2",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/firmware",
+        "name": "firmware",
+        "compatible": "raspberrypi,bcm2835-firmware, simple-mfd",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "compatible": "raspberrypi,bcm2835-firmware, simple-mfd",
+          "dma-ranges": "",
+          "mboxes": "5",
+          "phandle": "00 00 00 06"
+        }
+      },
+      {
+        "path": "/soc/firmware/gpio",
+        "name": "gpio",
+        "compatible": "raspberrypi,firmware-gpio",
+        "status": "okay",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "compatible": "raspberrypi,firmware-gpio",
+          "gpio-controller": "",
+          "gpio-line-names": "BT_ON, WL_ON, PWR_LED_OFF, GLOBAL_RESET, VDD_SD_IO_SEL, CAM_GPIO, SD_PWR_ON, SD_OC_N",
+          "phandle": "00 00 00 0b",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/firmware/reset",
+        "name": "reset",
+        "compatible": "raspberrypi,firmware-reset",
+        "properties": {
+          "#reset-cells": "00 00 00 01",
+          "compatible": "raspberrypi,firmware-reset",
+          "phandle": "?"
+        }
+      },
+      {
+        "path": "/soc/firmware/clocks",
+        "name": "clocks",
+        "compatible": "raspberrypi,firmware-clocks",
+        "properties": {
+          "#clock-cells": "00 00 00 01",
+          "compatible": "raspberrypi,firmware-clocks",
+          "phandle": "00 00 00 14"
+        }
+      },
+      {
+        "path": "/soc/firmware/vcio",
+        "name": "vcio",
+        "compatible": "raspberrypi,vcio",
+        "properties": {
+          "compatible": "raspberrypi,vcio",
+          "phandle": "00 00 00 df"
+        }
+      },
+      {
+        "path": "/soc/dsi@7e209000",
+        "name": "dsi@7e209000",
+        "compatible": "brcm,bcm2835-dsi0",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#clock-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-names": "phy, escape, pixel",
+          "clock-output-names": "dsi0_byte, dsi0_ddr2, dsi0_ddr",
+          "clocks": "00 00 00 08 00 00 00 22 00 00 00 08 00 00 00 2f 00 00 00 08 00 00 00 31",
+          "compatible": "brcm,bcm2835-dsi0",
+          "interrupts": "00 00 00 00 00 00 00 64 00 00 00 04",
+          "phandle": "00 00 00 04",
+          "power-domains": "00 00 00 10 00 00 00 11",
+          "reg": "7e 20 90 00 00 00 00 78",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/i2s@7e203000",
+        "name": "i2s@7e203000",
+        "compatible": "brcm,bcm2835-i2s",
+        "status": "disabled",
+        "properties": {
+          "#sound-dai-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 1f",
+          "compatible": "brcm,bcm2835-i2s",
+          "dma-names": "tx, rx",
+          "dmas": "00 00 00 0c 00 00 00 02 00 00 00 0c 00 00 00 03",
+          "phandle": "E",
+          "pinctrl-0": "00 00 00 0d",
+          "pinctrl-names": "default",
+          "reg": "~ 0, $",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/spi@7e204c00",
+        "name": "spi@7e204c00",
+        "compatible": "brcm,bcm2835-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-spi",
+          "interrupts": "00 00 00 00 00 00 00 76 00 00 00 04",
+          "phandle": "00 00 00 cf",
+          "pinctrl-0": "\", #",
+          "pinctrl-names": "default",
+          "reg": "7e 20 4c 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/serial@7e201000",
+        "name": "serial@7e201000",
+        "compatible": "arm,pl011, arm,primecell",
+        "status": "okay",
+        "properties": {
+          "arm,primecell-periphid": "00 34 10 11",
+          "clock-names": "uartclk, apb_pclk",
+          "clocks": "00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14",
+          "compatible": "arm,pl011, arm,primecell",
+          "cts-event-workaround": "",
+          "interrupts": "00 00 00 00 00 00 00 79 00 00 00 04",
+          "phandle": "C",
+          "pinctrl-0": "\t, \n",
+          "pinctrl-names": "default",
+          "reg": "7e 20 10 00 00 00 02 00",
+          "skip-init": "",
+          "status": "okay",
+          "uart-has-rtscts": ""
+        }
+      },
+      {
+        "path": "/soc/serial@7e201000/bluetooth",
+        "name": "bluetooth",
+        "compatible": "brcm,bcm43438-bt",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm43438-bt",
+          "fallback-bd-address": "",
+          "local-bd-address": "fa dc fc 32 a6 dc",
+          "max-speed": "00 2d c6 c0",
+          "phandle": "A",
+          "shutdown-gpios": "00 00 00 0b 00 00 00 00 00 00 00 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/hdmi@7ef00700",
+        "name": "hdmi@7ef00700",
+        "compatible": "brcm,bcm2711-hdmi0",
+        "status": "okay",
+        "properties": {
+          "clock-names": "hdmi, bvb, audio, cec",
+          "clocks": "00 00 00 14 00 00 00 0d 00 00 00 14 00 00 00 0e 00 00 00 2b 00 00 00 00 00 00 00 2f",
+          "compatible": "brcm,bcm2711-hdmi0",
+          "ddc": "-",
+          "dma-names": "audio-rx",
+          "dmas": "00 00 00 2e 41 fa 00 0a",
+          "interrupt-names": "cec-tx, cec-rx, cec-low, wakeup, hpd-connected, hpd-removed",
+          "interrupt-parent": ",",
+          "interrupts": "00 00 00 00 00 00 00 01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05",
+          "phandle": "U",
+          "reg": "7e f0 07 00 00 00 03 00 7e f0 03 00 00 00 02 00 7e f0 0f 00 00 00 00 80 7e f0 0f 80 00 00 00 80...",
+          "reg-names": "hdmi, dvp, phy, rm, packet, metadata, csc, cec, hd, intr2",
+          "resets": "+",
+          "status": "okay",
+          "wifi-2.4ghz-coexistence": ""
+        }
+      },
+      {
+        "path": "/soc/mmc@7e300000",
+        "name": "mmc@7e300000",
+        "compatible": "brcm,bcm2835-mmc, brcm,bcm2835-sdhci",
+        "status": "disabled",
+        "properties": {
+          "brcm,overclock-50": "00 00 00 00",
+          "bus-width": "00 00 00 04",
+          "clocks": "00 00 00 08 00 00 00 1c",
+          "compatible": "brcm,bcm2835-mmc, brcm,bcm2835-sdhci",
+          "dma-names": "rx-tx",
+          "dmas": "00 00 00 0c 00 00 00 0b",
+          "interrupts": "00 00 00 00 00 00 00 7e 00 00 00 04",
+          "phandle": "L",
+          "pinctrl-0": "00 00 00 13",
+          "pinctrl-names": "default",
+          "reg": "7e 30 00 00 00 00 01 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/i2c@7e205600",
+        "name": "i2c@7e205600",
+        "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2711-i2c, brcm,bcm2835-i2c",
+          "interrupts": "00 00 00 00 00 00 00 75 00 00 00 04",
+          "phandle": "00 00 00 d0",
+          "pinctrl-0": "$",
+          "pinctrl-names": "default",
+          "reg": "7e 20 56 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/spi@7e204000",
+        "name": "spi@7e204000",
+        "compatible": "brcm,bcm2835-spi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 08 00 00 00 14",
+          "compatible": "brcm,bcm2835-spi",
+          "cs-gpios": "00 00 00 07 00 00 00 08 00 00 00 01 00 00 00 07 00 00 00 07 00 00 00 01",
+          "dma-names": "tx, rx",
+          "dmas": "00 00 00 0c 00 00 00 06 00 00 00 0c 00 00 00 07",
+          "interrupts": "00 00 00 00 00 00 00 76 00 00 00 04",
+          "phandle": "F",
+          "pinctrl-0": "00 00 00 0e 00 00 00 0f",
+          "pinctrl-names": "default",
+          "reg": "7e 20 40 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/spi@7e204000/spidev@0",
+        "name": "spidev@0",
+        "compatible": "spidev",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "spidev",
+          "phandle": "00 00 00 be",
+          "reg": "00 00 00 00",
+          "spi-max-frequency": "07 73 59 40"
+        }
+      },
+      {
+        "path": "/soc/spi@7e204000/spidev@1",
+        "name": "spidev@1",
+        "compatible": "spidev",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "spidev",
+          "phandle": "00 00 00 bf",
+          "reg": "00 00 00 01",
+          "spi-max-frequency": "07 73 59 40"
+        }
+      },
+      {
+        "path": "/soc/dpi@7e208000",
+        "name": "dpi@7e208000",
+        "compatible": "brcm,bcm2835-dpi",
+        "status": "disabled",
+        "properties": {
+          "clock-names": "core, pixel",
+          "clocks": "00 00 00 08 00 00 00 14 00 00 00 08 00 00 00 2c",
+          "compatible": "brcm,bcm2835-dpi",
+          "phandle": "00 00 00 c0",
+          "reg": "7e 20 80 00 00 00 00 8c",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/axiperf",
+        "name": "axiperf",
+        "compatible": "brcm,bcm2711-axiperf",
+        "status": "disabled",
+        "properties": {
+          "compatible": "brcm,bcm2711-axiperf",
+          "firmware": "00 00 00 06",
+          "phandle": "N",
+          "reg": "7e 00 98 00 00 00 01 00 7e e0 80 00 00 00 01 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/i2c@7ef04500",
+        "name": "i2c@7ef04500",
+        "compatible": "brcm,bcm2711-hdmi-i2c",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "00 01 7c dc",
+          "compatible": "brcm,bcm2711-hdmi-i2c",
+          "phandle": "-",
+          "reg": "7e f0 45 00 00 00 01 00 7e f0 0b 00 00 00 03 00",
+          "reg-names": "bsc, auto-i2c",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/interrupt-controller@7ef00100",
+        "name": "interrupt-controller@7ef00100",
+        "compatible": "brcm,bcm2711-l2-intc, brcm,l2-intc",
+        "status": "okay",
+        "properties": {
+          "#interrupt-cells": "00 00 00 01",
+          "compatible": "brcm,bcm2711-l2-intc, brcm,l2-intc",
+          "interrupt-controller": "",
+          "interrupts": "00 00 00 00 00 00 00 60 00 00 00 01",
+          "phandle": ",",
+          "reg": "7e f0 01 00 00 00 00 30",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/mailbox@7e00b880",
+        "name": "mailbox@7e00b880",
+        "compatible": "brcm,bcm2835-mbox",
+        "properties": {
+          "#mbox-cells": "00 00 00 00",
+          "compatible": "brcm,bcm2835-mbox",
+          "interrupts": "00 00 00 00 00 00 00 21 00 00 00 04",
+          "phandle": "5",
+          "reg": "7e 00 b8 80 00 00 00 40"
+        }
+      },
+      {
+        "path": "/soc/pixelvalve@7e206000",
+        "name": "pixelvalve@7e206000",
+        "compatible": "brcm,bcm2711-pixelvalve0",
+        "status": "okay",
+        "properties": {
+          "compatible": "brcm,bcm2711-pixelvalve0",
+          "interrupts": "00 00 00 00 00 00 00 6d 00 00 00 04",
+          "phandle": "00 00 00 d4",
+          "reg": "7e 20 60 00 00 00 01 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc/timer@7e003000",
+        "name": "timer@7e003000",
+        "compatible": "brcm,bcm2835-system-timer",
+        "status": "disabled",
+        "properties": {
+          "clock-frequency": "00 0f 42 40",
+          "compatible": "brcm,bcm2835-system-timer",
+          "interrupts": "00 00 00 00 00 00 00 40 00 00 00 04 00 00 00 00 00 00 00 41 00 00 00 04 00 00 00 00 00 00 00 42...",
+          "phandle": "d",
+          "reg": "7e 00 30 00 00 00 10 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/serial@7e201600",
+        "name": "serial@7e201600",
+        "compatible": "arm,pl011, arm,primecell",
+        "status": "disabled",
+        "properties": {
+          "arm,primecell-periphid": "00 34 10 11",
+          "clock-names": "uartclk, apb_pclk",
+          "clocks": "00 00 00 08 00 00 00 13 00 00 00 08 00 00 00 14",
+          "compatible": "arm,pl011, arm,primecell",
+          "interrupts": "00 00 00 00 00 00 00 79 00 00 00 04",
+          "phandle": "00 00 00 c9",
+          "pinctrl-0": "00 00 00 19",
+          "pinctrl-names": "default",
+          "reg": "7e 20 16 00 00 00 02 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/firmwarekms@7e600000",
+        "name": "firmwarekms@7e600000",
+        "compatible": "raspberrypi,rpi-firmware-kms-2711",
+        "status": "disabled",
+        "properties": {
+          "brcm,firmware": "00 00 00 06",
+          "compatible": "raspberrypi,rpi-firmware-kms-2711",
+          "interrupts": "00 00 00 00 00 00 00 70 00 00 00 04",
+          "phandle": "00 00 00 db",
+          "reg": "7e 60 00 00 00 00 01 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/dsi@7e700000",
+        "name": "dsi@7e700000",
+        "compatible": "brcm,bcm2711-dsi1",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#clock-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-names": "phy, escape, pixel",
+          "clock-output-names": "dsi1_byte, dsi1_ddr2, dsi1_ddr",
+          "clocks": "00 00 00 08 00 00 00 23 00 00 00 08 00 00 00 30 00 00 00 08 00 00 00 32",
+          "compatible": "brcm,bcm2711-dsi1",
+          "interrupts": "00 00 00 00 00 00 00 6c 00 00 00 04",
+          "phandle": "00 00 00 05",
+          "power-domains": "00 00 00 10 00 00 00 12",
+          "reg": "7e 70 00 00 00 00 00 8c",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/soc/mailbox@7e00b840",
+        "name": "mailbox@7e00b840",
+        "compatible": "brcm,bcm2711-vchiq",
+        "properties": {
+          "compatible": "brcm,bcm2711-vchiq",
+          "interrupts": "00 00 00 00 00 00 00 22 00 00 00 04",
+          "phandle": "00 00 00 e0",
+          "pinctrl-0": "6",
+          "pinctrl-names": "default",
+          "reg": "7e 00 b8 40 00 00 00 3c"
+        }
+      },
+      {
+        "path": "/clocks",
+        "name": "clocks",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "simple-bus"
+        }
+      },
+      {
+        "path": "/clocks/clk-osc",
+        "name": "clk-osc",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "03 37 f9 80",
+          "clock-output-names": "osc",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 03"
+        }
+      },
+      {
+        "path": "/clocks/clk-usb",
+        "name": "clk-usb",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "1c 9c 38 00",
+          "clock-output-names": "otg",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 16"
+        }
+      },
+      {
+        "path": "/cam_dummy_reg",
+        "name": "cam_dummy_reg",
+        "compatible": "regulator-fixed",
+        "status": "okay",
+        "properties": {
+          "compatible": "regulator-fixed",
+          "phandle": "R",
+          "regulator-name": "cam-dummy-reg",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/leds",
+        "name": "leds",
+        "compatible": "gpio-leds",
+        "properties": {
+          "compatible": "gpio-leds",
+          "phandle": "00 00 00 ee"
+        }
+      },
+      {
+        "path": "/leds/led-act",
+        "name": "led-act",
+        "properties": {
+          "default-state": "off",
+          "gpios": "00 00 00 07 00 00 00 2a 00 00 00 00",
+          "label": "ACT",
+          "linux,default-trigger": "mmc0",
+          "phandle": "Z"
+        }
+      },
+      {
+        "path": "/leds/led-pwr",
+        "name": "led-pwr",
+        "properties": {
+          "default-state": "off",
+          "gpios": "00 00 00 0b 00 00 00 02 00 00 00 01",
+          "label": "PWR",
+          "linux,default-trigger": "default-on",
+          "phandle": "["
+        }
+      },
+      {
+        "path": "/system",
+        "name": "system",
+        "properties": {
+          "linux,revision": "00 b0 31 11",
+          "linux,serial": "10 00 00 00 bd fd 82 be"
+        }
+      },
+      {
+        "path": "/cam0_regulator",
+        "name": "cam0_regulator",
+        "compatible": "regulator-fixed",
+        "status": "disabled",
+        "properties": {
+          "compatible": "regulator-fixed",
+          "enable-active-high": "",
+          "phandle": "00 00 00 ec",
+          "regulator-name": "cam0-reg",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/timer",
+        "name": "timer",
+        "compatible": "arm,armv8-timer",
+        "properties": {
+          "compatible": "arm,armv8-timer",
+          "interrupts": "00 00 00 01 00 00 00 0d 00 00 0f 08 00 00 00 01 00 00 00 0e 00 00 0f 08 00 00 00 01 00 00 00 0b..."
+        }
+      },
+      {
+        "path": "/cam0_clk",
+        "name": "cam0_clk",
+        "compatible": "fixed-clock",
+        "status": "disabled",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 ed",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/clk-27M",
+        "name": "clk-27M",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "01 9b fc c0",
+          "clock-output-names": "27MHz-clock",
+          "compatible": "fixed-clock",
+          "phandle": "/"
+        }
+      },
+      {
+        "path": "/emmc2bus",
+        "name": "emmc2bus",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 01",
+          "compatible": "simple-bus",
+          "dma-ranges": "00 00 00 00 c0 00 00 00 00 00 00 00 00 00 00 00 40 00 00 00",
+          "phandle": "00 00 00 e5",
+          "ranges": "00 00 00 00 7e 00 00 00 00 00 00 00 fe 00 00 00 01 80 00 00"
+        }
+      },
+      {
+        "path": "/emmc2bus/mmc@7e340000",
+        "name": "mmc@7e340000",
+        "compatible": "brcm,bcm2711-emmc2",
+        "status": "okay",
+        "properties": {
+          "broken-cd": "",
+          "clocks": "00 00 00 08 00 00 00 33",
+          "compatible": "brcm,bcm2711-emmc2",
+          "interrupts": "00 00 00 00 00 00 00 7e 00 00 00 04",
+          "mmc-ddr-3_3v": "",
+          "phandle": "Y",
+          "reg": "00 00 00 00 7e 34 00 00 00 00 01 00",
+          "status": "okay",
+          "vmmc-supply": "8",
+          "vqmmc-supply": "7"
+        }
+      },
+      {
+        "path": "/aliases",
+        "name": "aliases",
+        "properties": {
+          "aux": "/soc/aux@7e215000",
+          "axiperf": "/soc/axiperf",
+          "blconfig": "/reserved-memory/nvram@0",
+          "blpubkey": "/reserved-memory/nvram@1",
+          "bluetooth": "/soc/serial@7e201000/bluetooth",
+          "display0": "/chosen/framebuffer@3e3cf000",
+          "dma": "/soc/dma-controller@7e007000",
+          "emmc2bus": "/emmc2bus",
+          "ethernet0": "/scb/ethernet@7d580000",
+          "fb": "/soc/fb",
+          "gpio": "/soc/gpio@7e200000",
+          "i2c": "/soc/i2c@7e804000",
+          "i2c0": "/soc/i2c0mux/i2c@0",
+          "i2c1": "/soc/i2c@7e804000",
+          "i2c10": "/soc/i2c0mux/i2c@1",
+          "i2c20": "/soc/i2c@7ef04500",
+          "i2c21": "/soc/i2c@7ef09500",
+          "i2c3": "/soc/i2c@7e205600",
+          "i2c4": "/soc/i2c@7e205800",
+          "i2c5": "/soc/i2c@7e205a00",
+          "i2c6": "/soc/i2c@7e205c00",
+          "i2s": "/soc/i2s@7e203000",
+          "leds": "/leds",
+          "mailbox": "/soc/mailbox@7e00b880",
+          "mmc": "/soc/mmc@7e300000",
+          "mmc0": "/emmc2bus/mmc@7e340000",
+          "mmc1": "/soc/mmcnr@7e300000",
+          "mmc2": "/soc/mmc@7e202000",
+          "pcie0": "/scb/pcie@7d500000",
+          "phandle": "O",
+          "random": "/soc/rng@7e104000",
+          "sdhost": "/soc/mmc@7e202000",
+          "serial0": "/soc/serial@7e215040",
+          "serial1": "/soc/serial@7e201000",
+          "serial2": "/soc/serial@7e201400",
+          "serial3": "/soc/serial@7e201600",
+          "serial4": "/soc/serial@7e201800",
+          "serial5": "/soc/serial@7e201a00",
+          "soc": "/soc",
+          "sound": "/soc/sound",
+          "spi0": "/soc/spi@7e204000",
+          "spi1": "/soc/spi@7e215080",
+          "spi2": "/soc/spi@7e2150c0",
+          "spi3": "/soc/spi@7e204600",
+          "spi4": "/soc/spi@7e204800",
+          "spi5": "/soc/spi@7e204a00",
+          "spi6": "/soc/spi@7e204c00",
+          "thermal": "/soc/avs-monitor@7d5d2000/thermal",
+          "uart0": "/soc/serial@7e201000",
+          "uart1": "/soc/serial@7e215040",
+          "uart2": "/soc/serial@7e201400",
+          "uart3": "/soc/serial@7e201600",
+          "uart4": "/soc/serial@7e201800",
+          "uart5": "/soc/serial@7e201a00",
+          "usb": "/soc/usb@7e980000",
+          "watchdog": "/soc/watchdog@7e100000"
+        }
+      },
+      {
+        "path": "/chosen",
+        "name": "chosen",
+        "compatible": "simple_bus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "bootargs": "coherent_pool=1M 8250.nr_uarts=1 snd_bcm2835.enable_headphones=0 cgroup_disable=memory numa_policy=interleave snd_bcm2835.enable_headphones=1 snd_bcm2835.enable_hdmi=1 snd_bcm2835.enable_hdmi=0  smsc95xx.macaddr=DC:A6:32:56:76:50 vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000  console=tty1 root=PARTUUID=861accb0-02 rootfstype=ext4 fsck.repair=yes rootwait quiet splash plymouth.ignore-serial-consoles cfg80211.ieee80211_regdom=IL",
+          "compatible": "simple_bus",
+          "kaslr-seed": "00 00 00 00 00 00 00 00",
+          "linux,initrd-end": "2e ff f5 bc",
+          "linux,initrd-start": "2e 35 80 00",
+          "log": "3f f8 00 00 00 07 ff e0",
+          "os_prefix": "00",
+          "overlay_prefix": "overlays/",
+          "phandle": "T",
+          "ranges": "",
+          "rpi-boardrev-ext": "00 00 00 00",
+          "rpi-serial64": "*:*:*:*",
+          "stdout-path": "serial0:115200n8"
+        }
+      },
+      {
+        "path": "/chosen/bootloader",
+        "name": "bootloader",
+        "properties": {
+          "boot-mode": "00 00 00 01",
+          "build-timestamp": "60 8a da ad",
+          "capabilities": "00 00 00 1f",
+          "partition": "00 00 00 00",
+          "rsts": "00 00 10 00",
+          "tryboot": "00 00 00 00",
+          "update-timestamp": "60 fd 4f 00",
+          "version": "*:*:*:*"
+        }
+      },
+      {
+        "path": "/chosen/framebuffer@3e3cf000",
+        "name": "framebuffer@3e3cf000",
+        "compatible": "simple-framebuffer",
+        "status": "okay",
+        "properties": {
+          "compatible": "simple-framebuffer",
+          "format": "a8r8g8b8",
+          "height": "00 00 04 38",
+          "reg": "3e 3c f0 00 00 7f 80 00",
+          "status": "okay",
+          "stride": "00 00 1e 00",
+          "width": "00 00 07 80"
+        }
+      },
+      {
+        "path": "/phy",
+        "name": "phy",
+        "compatible": "usb-nop-xceiv",
+        "properties": {
+          "#phy-cells": "00 00 00 00",
+          "compatible": "usb-nop-xceiv",
+          "phandle": "00 00 00 17"
+        }
+      },
+      {
+        "path": "/cpus",
+        "name": "cpus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "enable-method": "brcm,bcm2836-smp",
+          "phandle": "00 00 00 e6"
+        }
+      },
+      {
+        "path": "/cpus/cpu@1",
+        "name": "cpu@1",
+        "compatible": "arm,cortex-a72",
+        "properties": {
+          "compatible": "arm,cortex-a72",
+          "cpu-release-addr": "00 00 00 00 00 00 00 e0",
+          "d-cache-line-size": "@",
+          "d-cache-sets": "00 00 01 00",
+          "d-cache-size": "00 00 80 00",
+          "device_type": "cpu",
+          "enable-method": "spin-table",
+          "i-cache-line-size": "@",
+          "i-cache-sets": "00 00 01 00",
+          "i-cache-size": "00 00 c0 00",
+          "next-level-cache": "=",
+          "phandle": ":",
+          "reg": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/cpus/l2-cache0",
+        "name": "l2-cache0",
+        "compatible": "cache",
+        "properties": {
+          "cache-level": "00 00 00 02",
+          "cache-line-size": "@",
+          "cache-sets": "00 00 04 00",
+          "cache-size": "00 10 00 00",
+          "cache-unified": "",
+          "compatible": "cache",
+          "phandle": "="
+        }
+      },
+      {
+        "path": "/cpus/cpu@2",
+        "name": "cpu@2",
+        "compatible": "arm,cortex-a72",
+        "properties": {
+          "compatible": "arm,cortex-a72",
+          "cpu-release-addr": "00 00 00 00 00 00 00 e8",
+          "d-cache-line-size": "@",
+          "d-cache-sets": "00 00 01 00",
+          "d-cache-size": "00 00 80 00",
+          "device_type": "cpu",
+          "enable-method": "spin-table",
+          "i-cache-line-size": "@",
+          "i-cache-sets": "00 00 01 00",
+          "i-cache-size": "00 00 c0 00",
+          "next-level-cache": "=",
+          "phandle": ";",
+          "reg": "00 00 00 02"
+        }
+      },
+      {
+        "path": "/cpus/cpu@0",
+        "name": "cpu@0",
+        "compatible": "arm,cortex-a72",
+        "properties": {
+          "compatible": "arm,cortex-a72",
+          "cpu-release-addr": "00 00 00 00 00 00 00 d8",
+          "d-cache-line-size": "@",
+          "d-cache-sets": "00 00 01 00",
+          "d-cache-size": "00 00 80 00",
+          "device_type": "cpu",
+          "enable-method": "spin-table",
+          "i-cache-line-size": "@",
+          "i-cache-sets": "00 00 01 00",
+          "i-cache-size": "00 00 c0 00",
+          "next-level-cache": "=",
+          "phandle": "9",
+          "reg": "00 00 00 00"
+        }
+      },
+      {
+        "path": "/cpus/cpu@3",
+        "name": "cpu@3",
+        "compatible": "arm,cortex-a72",
+        "properties": {
+          "compatible": "arm,cortex-a72",
+          "cpu-release-addr": "00 00 00 00 00 00 00 f0",
+          "d-cache-line-size": "@",
+          "d-cache-sets": "00 00 01 00",
+          "d-cache-size": "00 00 80 00",
+          "device_type": "cpu",
+          "enable-method": "spin-table",
+          "i-cache-line-size": "@",
+          "i-cache-sets": "00 00 01 00",
+          "i-cache-size": "00 00 c0 00",
+          "next-level-cache": "=",
+          "phandle": "<",
+          "reg": "00 00 00 03"
+        }
+      },
+      {
+        "path": "/__symbols__",
+        "name": "__symbols__",
+        "properties": {
+          "aliases": "/aliases",
+          "alt0": "/soc/gpio@7e200000/alt0",
+          "aon_intr": "/soc/interrupt-controller@7ef00100",
+          "audio_pins": "/soc/gpio@7e200000/audio_pins",
+          "aux": "/soc/aux@7e215000",
+          "avs_monitor": "/soc/avs-monitor@7d5d2000",
+          "axiperf": "/soc/axiperf",
+          "blconfig": "/reserved-memory/nvram@0",
+          "blpubkey": "/reserved-memory/nvram@1",
+          "bt": "/soc/serial@7e201000/bluetooth",
+          "bt_pins": "/soc/gpio@7e200000/bt_pins",
+          "cam0_clk": "/cam0_clk",
+          "cam0_reg": "/cam_dummy_reg",
+          "cam0_regulator": "/cam0_regulator",
+          "cam1_clk": "/cam1_clk",
+          "cam1_reg": "/cam1_regulator",
+          "cam_dummy_reg": "/cam_dummy_reg",
+          "chosen": "/chosen",
+          "clk_108MHz": "/clk-108M",
+          "clk_27MHz": "/clk-27M",
+          "clk_osc": "/clocks/clk-osc",
+          "clk_usb": "/clocks/clk-usb",
+          "clocks": "/soc/cprman@7e101000",
+          "cma": "/reserved-memory/linux,cma",
+          "cooling_maps": "/thermal-zones/cpu-thermal/cooling-maps",
+          "cpu0": "/cpus/cpu@0",
+          "cpu1": "/cpus/cpu@1",
+          "cpu2": "/cpus/cpu@2",
+          "cpu3": "/cpus/cpu@3",
+          "cpu_thermal": "/thermal-zones/cpu-thermal",
+          "cpus": "/cpus",
+          "csi0": "/soc/csi@7e800000",
+          "csi1": "/soc/csi@7e801000",
+          "ddc0": "/soc/i2c@7ef04500",
+          "ddc1": "/soc/i2c@7ef09500",
+          "dma": "/soc/dma-controller@7e007000",
+          "dma40": "/scb/dma@7e007b00",
+          "dpi": "/soc/dpi@7e208000",
+          "dpi_16bit_cpadhi_gpio0": "/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio0",
+          "dpi_16bit_cpadhi_gpio2": "/soc/gpio@7e200000/dpi_16bit_cpadhi_gpio2",
+          "dpi_16bit_gpio0": "/soc/gpio@7e200000/dpi_16bit_gpio0",
+          "dpi_16bit_gpio2": "/soc/gpio@7e200000/dpi_16bit_gpio2",
+          "dpi_18bit_cpadhi_gpio0": "/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio0",
+          "dpi_18bit_cpadhi_gpio2": "/soc/gpio@7e200000/dpi_18bit_cpadhi_gpio2",
+          "dpi_18bit_gpio0": "/soc/gpio@7e200000/dpi_18bit_gpio0",
+          "dpi_18bit_gpio2": "/soc/gpio@7e200000/dpi_18bit_gpio2",
+          "dpi_gpio0": "/soc/gpio@7e200000/dpi-gpio0",
+          "dsi0": "/soc/dsi@7e209000",
+          "dsi1": "/soc/dsi@7e700000",
+          "dvp": "/soc/clock@7ef00000",
+          "emmc2": "/emmc2bus/mmc@7e340000",
+          "emmc2bus": "/emmc2bus",
+          "emmc_gpio22": "/soc/gpio@7e200000/emmc-gpio22",
+          "emmc_gpio34": "/soc/gpio@7e200000/emmc-gpio34",
+          "emmc_gpio48": "/soc/gpio@7e200000/emmc-gpio48",
+          "expgpio": "/soc/firmware/gpio",
+          "fb": "/soc/fb",
+          "firmware": "/soc/firmware",
+          "firmware_clocks": "/soc/firmware/clocks",
+          "firmwarekms": "/soc/firmwarekms@7e600000",
+          "genet": "/scb/ethernet@7d580000",
+          "genet_mdio": "/scb/ethernet@7d580000/mdio@e14",
+          "gicv2": "/soc/interrupt-controller@40041000",
+          "gpclk0_gpio4": "/soc/gpio@7e200000/gpclk0-gpio4",
+          "gpclk0_gpio49": "/soc/gpio@7e200000/gpclk0-gpio49",
+          "gpclk1_gpio42": "/soc/gpio@7e200000/gpclk1-gpio42",
+          "gpclk1_gpio44": "/soc/gpio@7e200000/gpclk1-gpio44",
+          "gpclk1_gpio5": "/soc/gpio@7e200000/gpclk1-gpio5",
+          "gpclk1_gpio50": "/soc/gpio@7e200000/gpclk1-gpio50",
+          "gpclk2_gpio43": "/soc/gpio@7e200000/gpclk2-gpio43",
+          "gpclk2_gpio51": "/soc/gpio@7e200000/gpclk2-gpio51",
+          "gpclk2_gpio6": "/soc/gpio@7e200000/gpclk2-gpio6",
+          "gpio": "/soc/gpio@7e200000",
+          "gpioout": "/soc/gpio@7e200000/gpioout",
+          "hdmi0": "/soc/hdmi@7ef00700",
+          "hdmi1": "/soc/hdmi@7ef05700",
+          "hvs": "/soc/hvs@7e400000",
+          "i2c0": "/soc/i2c0mux/i2c@0",
+          "i2c0_gpio0": "/soc/gpio@7e200000/i2c0if-gpio0",
+          "i2c0_gpio28": "/soc/gpio@7e200000/i2c0if-gpio28",
+          "i2c0_gpio44": "/soc/gpio@7e200000/i2c0if-gpio44",
+          "i2c0_gpio46": "/soc/gpio@7e200000/i2c0if-gpio46",
+          "i2c0_pins": "/soc/gpio@7e200000/i2c0",
+          "i2c0if": "/soc/i2c@7e205000",
+          "i2c0mux": "/soc/i2c0mux",
+          "i2c1": "/soc/i2c@7e804000",
+          "i2c1_gpio2": "/soc/gpio@7e200000/i2c1-gpio2",
+          "i2c1_gpio44": "/soc/gpio@7e200000/i2c1-gpio44",
+          "i2c1_gpio46": "/soc/gpio@7e200000/i2c1-gpio46",
+          "i2c1_pins": "/soc/gpio@7e200000/i2c1",
+          "i2c3": "/soc/i2c@7e205600",
+          "i2c3_gpio2": "/soc/gpio@7e200000/i2c3-gpio2",
+          "i2c3_gpio4": "/soc/gpio@7e200000/i2c3-gpio4",
+          "i2c3_pins": "/soc/gpio@7e200000/i2c3",
+          "i2c4": "/soc/i2c@7e205800",
+          "i2c4_gpio6": "/soc/gpio@7e200000/i2c4-gpio6",
+          "i2c4_gpio8": "/soc/gpio@7e200000/i2c4-gpio8",
+          "i2c4_pins": "/soc/gpio@7e200000/i2c4",
+          "i2c5": "/soc/i2c@7e205a00",
+          "i2c5_gpio10": "/soc/gpio@7e200000/i2c5-gpio10",
+          "i2c5_gpio12": "/soc/gpio@7e200000/i2c5-gpio12",
+          "i2c5_pins": "/soc/gpio@7e200000/i2c5",
+          "i2c6": "/soc/i2c@7e205c00",
+          "i2c6_gpio0": "/soc/gpio@7e200000/i2c6-gpio0",
+          "i2c6_gpio22": "/soc/gpio@7e200000/i2c6-gpio22",
+          "i2c6_pins": "/soc/gpio@7e200000/i2c6",
+          "i2c_arm": "/soc/i2c@7e804000",
+          "i2c_csi_dsi": "/soc/i2c0mux/i2c@1",
+          "i2c_csi_dsi0": "/soc/i2c0mux/i2c@0",
+          "i2c_slave_gpio8": "/soc/gpio@7e200000/i2c-slave-gpio8",
+          "i2c_vc": "/soc/i2c0mux/i2c@0",
+          "i2s": "/soc/i2s@7e203000",
+          "i2s_clk_consumer": "/soc/i2s@7e203000",
+          "i2s_clk_producer": "/soc/i2s@7e203000",
+          "i2s_pins": "/soc/gpio@7e200000/i2s",
+          "jtag_gpio22": "/soc/gpio@7e200000/jtag-gpio22",
+          "jtag_gpio48": "/soc/gpio@7e200000/jtag-gpio48",
+          "l2": "/cpus/l2-cache0",
+          "led_act": "/leds/led-act",
+          "led_pwr": "/leds/led-pwr",
+          "leds": "/leds",
+          "local_intc": "/soc/interrupt-controller@40000000",
+          "mailbox": "/soc/mailbox@7e00b880",
+          "mii_gpio28": "/soc/gpio@7e200000/mii-gpio28",
+          "mii_gpio36": "/soc/gpio@7e200000/mii-gpio36",
+          "minibt": "/soc/serial@7e215040/bluetooth",
+          "mmc": "/soc/mmc@7e300000",
+          "mmcnr": "/soc/mmcnr@7e300000",
+          "nvmem_cust": "/soc/nvmem/nvmem_cust",
+          "nvmem_otp": "/soc/nvmem/nvmem_otp",
+          "nvmem_priv": "/soc/nvmem/nvmem_priv",
+          "pcie0": "/scb/pcie@7d500000",
+          "pcm_gpio18": "/soc/gpio@7e200000/pcm-gpio18",
+          "pcm_gpio28": "/soc/gpio@7e200000/pcm-gpio28",
+          "pcm_gpio50": "/soc/gpio@7e200000/pcm-gpio50",
+          "phy1": "/scb/ethernet@7d580000/mdio@e14/ethernet-phy@1",
+          "pixelvalve0": "/soc/pixelvalve@7e206000",
+          "pixelvalve1": "/soc/pixelvalve@7e207000",
+          "pixelvalve2": "/soc/pixelvalve@7e20a000",
+          "pixelvalve3": "/soc/pixelvalve@7ec12000",
+          "pixelvalve4": "/soc/pixelvalve@7e216000",
+          "pm": "/soc/watchdog@7e100000",
+          "power": "/soc/power",
+          "pwm": "/soc/pwm@7e20c000",
+          "pwm0_0_gpio12": "/soc/gpio@7e200000/pwm0-0-gpio12",
+          "pwm0_0_gpio18": "/soc/gpio@7e200000/pwm0-0-gpio18",
+          "pwm0_0_gpio52": "/soc/gpio@7e200000/pwm0-0-gpio52",
+          "pwm0_1_gpio13": "/soc/gpio@7e200000/pwm0-1-gpio13",
+          "pwm0_1_gpio19": "/soc/gpio@7e200000/pwm0-1-gpio19",
+          "pwm0_1_gpio45": "/soc/gpio@7e200000/pwm0-1-gpio45",
+          "pwm0_1_gpio53": "/soc/gpio@7e200000/pwm0-1-gpio53",
+          "pwm1": "/soc/pwm@7e20c800",
+          "pwm1_0_gpio40": "/soc/gpio@7e200000/pwm1-0-gpio40",
+          "pwm1_1_gpio41": "/soc/gpio@7e200000/pwm1-1-gpio41",
+          "random": "/soc/rng@7e104000",
+          "reset": "/soc/firmware/reset",
+          "rgmii_gpio35": "/soc/gpio@7e200000/rgmii-gpio35",
+          "rgmii_irq_gpio34": "/soc/gpio@7e200000/rgmii-irq-gpio34",
+          "rgmii_irq_gpio39": "/soc/gpio@7e200000/rgmii-irq-gpio39",
+          "rgmii_mdio_gpio28": "/soc/gpio@7e200000/rgmii-mdio-gpio28",
+          "rgmii_mdio_gpio37": "/soc/gpio@7e200000/rgmii-mdio-gpio37",
+          "rmem": "/reserved-memory",
+          "scb": "/scb",
+          "sd_io_1v8_reg": "/regulator-sd-io-1v8",
+          "sd_vcc_reg": "/regulator-sd-vcc",
+          "sdhci": "/soc/mmc@7e300000",
+          "sdhost": "/soc/mmc@7e202000",
+          "sdhost_gpio48": "/soc/gpio@7e200000/sdhost-gpio48",
+          "sdio_pins": "/soc/gpio@7e200000/sdio_pins",
+          "smi": "/soc/smi@7e600000",
+          "soc": "/soc",
+          "sound": "/soc/sound",
+          "spi": "/soc/spi@7e204000",
+          "spi0": "/soc/spi@7e204000",
+          "spi0_cs_pins": "/soc/gpio@7e200000/spi0_cs_pins",
+          "spi0_gpio35": "/soc/gpio@7e200000/spi0-gpio35",
+          "spi0_gpio46": "/soc/gpio@7e200000/spi0-gpio46",
+          "spi0_gpio7": "/soc/gpio@7e200000/spi0-gpio7",
+          "spi0_pins": "/soc/gpio@7e200000/spi0_pins",
+          "spi1": "/soc/spi@7e215080",
+          "spi1_gpio16": "/soc/gpio@7e200000/spi1-gpio16",
+          "spi2": "/soc/spi@7e2150c0",
+          "spi2_gpio40": "/soc/gpio@7e200000/spi2-gpio40",
+          "spi2_gpio46": "/soc/gpio@7e200000/spi2-gpio46",
+          "spi3": "/soc/spi@7e204600",
+          "spi3_cs_pins": "/soc/gpio@7e200000/spi3_cs_pins",
+          "spi3_gpio0": "/soc/gpio@7e200000/spi3-gpio0",
+          "spi3_pins": "/soc/gpio@7e200000/spi3_pins",
+          "spi4": "/soc/spi@7e204800",
+          "spi4_cs_pins": "/soc/gpio@7e200000/spi4_cs_pins",
+          "spi4_gpio4": "/soc/gpio@7e200000/spi4-gpio4",
+          "spi4_pins": "/soc/gpio@7e200000/spi4_pins",
+          "spi5": "/soc/spi@7e204a00",
+          "spi5_cs_pins": "/soc/gpio@7e200000/spi5_cs_pins",
+          "spi5_gpio12": "/soc/gpio@7e200000/spi5-gpio12",
+          "spi5_pins": "/soc/gpio@7e200000/spi5_pins",
+          "spi6": "/soc/spi@7e204c00",
+          "spi6_cs_pins": "/soc/gpio@7e200000/spi6_cs_pins",
+          "spi6_gpio18": "/soc/gpio@7e200000/spi6-gpio18",
+          "spi6_pins": "/soc/gpio@7e200000/spi6_pins",
+          "spidev0": "/soc/spi@7e204000/spidev@0",
+          "spidev1": "/soc/spi@7e204000/spidev@1",
+          "system_timer": "/soc/timer@7e003000",
+          "thermal": "/soc/avs-monitor@7d5d2000/thermal",
+          "thermal_trips": "/thermal-zones/cpu-thermal/trips",
+          "txp": "/soc/txp@7e004000",
+          "uart0": "/soc/serial@7e201000",
+          "uart0_ctsrts_gpio16": "/soc/gpio@7e200000/uart0-ctsrts-gpio16",
+          "uart0_ctsrts_gpio30": "/soc/gpio@7e200000/uart0-ctsrts-gpio30",
+          "uart0_ctsrts_gpio38": "/soc/gpio@7e200000/uart0-ctsrts-gpio38",
+          "uart0_gpio14": "/soc/gpio@7e200000/uart0-gpio14",
+          "uart0_gpio32": "/soc/gpio@7e200000/uart0-gpio32",
+          "uart0_gpio36": "/soc/gpio@7e200000/uart0-gpio36",
+          "uart0_pins": "/soc/gpio@7e200000/uart0_pins",
+          "uart1": "/soc/serial@7e215040",
+          "uart1_bt_pins": "/soc/gpio@7e200000/uart1_bt_pins",
+          "uart1_ctsrts_gpio16": "/soc/gpio@7e200000/uart1-ctsrts-gpio16",
+          "uart1_ctsrts_gpio30": "/soc/gpio@7e200000/uart1-ctsrts-gpio30",
+          "uart1_ctsrts_gpio42": "/soc/gpio@7e200000/uart1-ctsrts-gpio42",
+          "uart1_gpio14": "/soc/gpio@7e200000/uart1-gpio14",
+          "uart1_gpio32": "/soc/gpio@7e200000/uart1-gpio32",
+          "uart1_gpio40": "/soc/gpio@7e200000/uart1-gpio40",
+          "uart1_pins": "/soc/gpio@7e200000/uart1_pins",
+          "uart2": "/soc/serial@7e201400",
+          "uart2_ctsrts_gpio2": "/soc/gpio@7e200000/uart2-ctsrts-gpio2",
+          "uart2_gpio0": "/soc/gpio@7e200000/uart2-gpio0",
+          "uart2_pins": "/soc/gpio@7e200000/uart2_pins",
+          "uart3": "/soc/serial@7e201600",
+          "uart3_ctsrts_gpio6": "/soc/gpio@7e200000/uart3-ctsrts-gpio6",
+          "uart3_gpio4": "/soc/gpio@7e200000/uart3-gpio4",
+          "uart3_pins": "/soc/gpio@7e200000/uart3_pins",
+          "uart4": "/soc/serial@7e201800",
+          "uart4_ctsrts_gpio10": "/soc/gpio@7e200000/uart4-ctsrts-gpio10",
+          "uart4_gpio8": "/soc/gpio@7e200000/uart4-gpio8",
+          "uart4_pins": "/soc/gpio@7e200000/uart4_pins",
+          "uart5": "/soc/serial@7e201a00",
+          "uart5_ctsrts_gpio14": "/soc/gpio@7e200000/uart5-ctsrts-gpio14",
+          "uart5_gpio12": "/soc/gpio@7e200000/uart5-gpio12",
+          "uart5_pins": "/soc/gpio@7e200000/uart5_pins",
+          "usb": "/soc/usb@7e980000",
+          "usbphy": "/phy",
+          "v3d": "/v3dbus/v3d@7ec04000",
+          "v3dbus": "/v3dbus",
+          "vc4": "/gpu",
+          "vchiq": "/soc/mailbox@7e00b840",
+          "vcio": "/soc/firmware/vcio",
+          "vdd_3v3_reg": "/fixedregulator_3v3",
+          "vdd_5v0_reg": "/fixedregulator_5v0",
+          "vec": "/soc/vec@7ec13000",
+          "watchdog": "/soc/watchdog@7e100000",
+          "xhci": "/scb/xhci@7e9c0000"
+        }
+      },
+      {
+        "path": "/reserved-memory",
+        "name": "reserved-memory",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 01",
+          "phandle": "\\",
+          "ranges": ""
+        }
+      },
+      {
+        "path": "/reserved-memory/linux,cma",
+        "name": "linux,cma",
+        "compatible": "shared-dma-pool",
+        "properties": {
+          "alloc-ranges": "0",
+          "compatible": "shared-dma-pool",
+          "linux,cma-default": "",
+          "phandle": "]",
+          "reusable": "",
+          "size": " "
+        }
+      },
+      {
+        "path": "/reserved-memory/nvram@0",
+        "name": "nvram@0",
+        "compatible": "raspberrypi,bootloader-config, nvmem-rmem",
+        "status": "okay",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "compatible": "raspberrypi,bootloader-config, nvmem-rmem",
+          "no-map": "",
+          "phandle": "^",
+          "reg": "00 00 00 00 3e f6 5f c0 00 00 03 f0",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/reserved-memory/nvram@1",
+        "name": "nvram@1",
+        "compatible": "raspberrypi,bootloader-public-key, nvmem-rmem",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "compatible": "raspberrypi,bootloader-public-key, nvmem-rmem",
+          "no-map": "",
+          "phandle": "_",
+          "reg": "00 00 00 00 00 00 00 00 00 00 00 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/regulator-sd-io-1v8",
+        "name": "regulator-sd-io-1v8",
+        "compatible": "regulator-gpio",
+        "status": "okay",
+        "properties": {
+          "compatible": "regulator-gpio",
+          "gpios": "00 00 00 0b 00 00 00 04 00 00 00 00",
+          "phandle": "7",
+          "regulator-always-on": "",
+          "regulator-boot-on": "",
+          "regulator-max-microvolt": "00 32 5a a0",
+          "regulator-min-microvolt": "00 1b 77 40",
+          "regulator-name": "vdd-sd-io",
+          "regulator-settling-time-us": "00 00 13 88",
+          "states": "00 1b 77 40 00 00 00 01 00 32 5a a0 00 00 00 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/cam1_clk",
+        "name": "cam1_clk",
+        "compatible": "fixed-clock",
+        "status": "disabled",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 eb",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/cam1_regulator",
+        "name": "cam1_regulator",
+        "compatible": "regulator-fixed",
+        "status": "okay",
+        "properties": {
+          "compatible": "regulator-fixed",
+          "enable-active-high": "",
+          "gpio": "00 00 00 0b 00 00 00 05 00 00 00 00",
+          "phandle": "S",
+          "regulator-name": "cam1-reg",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/axi",
+        "name": "axi"
+      },
+      {
+        "path": "/axi/vc_mem",
+        "name": "vc_mem",
+        "properties": {
+          "reg": "3e c0 00 00 40 00 00 00 c0 00 00 00"
+        }
+      },
+      {
+        "path": "/zone_dma",
+        "name": "zone_dma",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 01",
+          "dma-ranges": "@"
+        }
+      },
+      {
+        "path": "/__overrides__",
+        "name": "__overrides__",
+        "properties": {
+          "act_led_activelow": "Zgpios:8",
+          "act_led_gpio": "Zgpios:4",
+          "act_led_trigger": "Zlinux,default-trigger",
+          "arm_freq": "",
+          "audio": "Tbootargs{on='snd_bcm2835.enable_headphones=1 snd_bcm2835.enable_hdmi=1',off='snd_bcm2835.enable_headphones=0 snd_bcm2835.enable_hdmi=0'}",
+          "axiperf": "Nstatus",
+          "bdaddr": "Alocal-bd-address[, Afallback-bd-address?=0, Blocal-bd-address[, Bfallback-bd-address?=0",
+          "cache_line_size": "",
+          "cam0-led": "",
+          "cam0-led-ctrl": "",
+          "cam0-pwdn": "",
+          "cam0-pwdn-ctrl": "",
+          "cam0_reg": "Rstatus",
+          "cam0_reg_gpio": "00 00 00 52 67 70 69 6f 3a 34 00 00 00 00 52 67 70 69 6f 3a 30 3d 00 00 00 00 07",
+          "cam0_sync": "00 00 00 51 73 79 6e 63 2d 67 70 69 6f 73 3a 30 3d 00 00 00 00 07 00 00 00 51 73 79 6e 63 2d 67...",
+          "cam0_sync_inverted": "00 00 00 51 73 79 6e 63 2d 67 70 69 6f 73 3a 30 3d 00 00 00 00 07 00 00 00 51 73 79 6e 63 2d 67...",
+          "cam1_reg": "Sstatus",
+          "cam1_reg_gpio": "00 00 00 53 67 70 69 6f 3a 34 00 00 00 00 53 67 70 69 6f 3a 30 3d 00 00 00 00 07",
+          "cam1_sync": "00 00 00 50 73 79 6e 63 2d 67 70 69 6f 73 3a 30 3d 00 00 00 00 07 00 00 00 50 73 79 6e 63 2d 67...",
+          "cam1_sync_inverted": "00 00 00 50 73 79 6e 63 2d 67 70 69 6f 73 3a 30 3d 00 00 00 00 07 00 00 00 50 73 79 6e 63 2d 67...",
+          "drm_fb0_vc4": "Odrm-fb0=, /gpu",
+          "drm_fb1_vc4": "Odrm-fb1=, /gpu",
+          "drm_fb2_vc4": "Odrm-fb2=, /gpu",
+          "eee": "Tbootargs{on='',off='genet.eee=N'}",
+          "eth_led0": "@led-modes:0",
+          "eth_led1": "@led-modes:4",
+          "hdmi": "Ustatus, Vstatus",
+          "i2c": "Hstatus",
+          "i2c0": "2status, Gstatus",
+          "i2c0_baudrate": "2clock-frequency:0",
+          "i2c1": "Hstatus",
+          "i2c1_baudrate": "Hclock-frequency:0",
+          "i2c_arm": "Hstatus",
+          "i2c_arm_baudrate": "Hclock-frequency:0",
+          "i2c_baudrate": "Hclock-frequency:0",
+          "i2c_vc": "2status, Gstatus",
+          "i2c_vc_baudrate": "2clock-frequency:0",
+          "i2s": "Estatus",
+          "i2s_dma4": "Edmas:0=, ., Edmas:8=, .",
+          "krnbt": "Astatus",
+          "krnbt_baudrate": "Amax-speed:0, Bmax-speed:0",
+          "nvmem_cust_rw": "Wrw?",
+          "nvmem_priv_rw": "Xrw?",
+          "pcie": ">status",
+          "pwr_led_activelow": "[gpios:8",
+          "pwr_led_gpio": "[gpios:4",
+          "pwr_led_trigger": "[linux,default-trigger",
+          "random": "Jstatus",
+          "sd": "Ystatus",
+          "sd_debug": "Kbrcm,debug",
+          "sd_force_pio": "Kbrcm,force-pio?",
+          "sd_overclock": "Kbrcm,overclock-50:0",
+          "sd_pio_limit": "Kbrcm,pio-limit:0",
+          "sd_poll_once": "Ynon-removable?",
+          "sdio_overclock": "Lbrcm,overclock-50:0, Mbrcm,overclock-50:0",
+          "spi": "Fstatus",
+          "spi_dma4": "Fdmas:0=, ., Fdmas:8=, .",
+          "strict_gpiod": "Tbootargs=pinctrl_bcm2835.persist_gpio_outputs=n",
+          "uart0": "Cstatus",
+          "uart1": "Dstatus",
+          "watchdog": "Istatus"
+        }
+      },
+      {
+        "path": "/v3dbus",
+        "name": "v3dbus",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 02",
+          "compatible": "simple-bus",
+          "dma-ranges": "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00 00",
+          "phandle": "00 00 00 f1",
+          "ranges": "7c 50 00 00 00 00 00 00 fc 50 00 00 00 00 00 00 03 30 00 00 40 00 00 00 00 00 00 00 ff 80 00 00..."
+        }
+      },
+      {
+        "path": "/v3dbus/v3d@7ec04000",
+        "name": "v3d@7ec04000",
+        "compatible": "brcm,2711-v3d",
+        "status": "okay",
+        "properties": {
+          "clocks": "00 00 00 14 00 00 00 05",
+          "clocks-names": "v3d",
+          "compatible": "brcm,2711-v3d",
+          "interrupts": "00 00 00 00 00 00 00 4a 00 00 00 04",
+          "phandle": "00 00 00 f2",
+          "power-domains": "00 00 00 49 00 00 00 01",
+          "reg": "7e c0 00 00 00 00 00 00 00 00 40 00 7e c0 40 00 00 00 00 00 00 00 40 00",
+          "reg-names": "hub, core0",
+          "resets": "I",
+          "status": "okay"
+        }
+      }
+    ]
+  }
+}
+
+==============================================
+END OF TEST RESULTS
+==============================================

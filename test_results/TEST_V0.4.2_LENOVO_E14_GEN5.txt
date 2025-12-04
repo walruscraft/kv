@@ -1,0 +1,921 @@
+==============================================
+KV TEST RESULTS
+==============================================
+Version:       0.4.2
+Platform:      LENOVO_E14_GEN5
+Date:          2025-12-04 13:29:56 UTC
+Binary size:   529K
+
+Kernel:        6.6.87.2-microsoft-standard-WSL2
+Architecture:  x86_64
+OS:            Debian GNU/Linux 12 (bookworm)
+==============================================
+
+==============================================
+DEBUG OUTPUT (from kv snapshot -vp)
+==============================================
+
+Shows what files kv reads from /sys and /proc.
+FAIL lines indicate missing/inaccessible files (often expected).
+
+[DEBUG] kv 0.4.2 starting
+[DEBUG] subcommand: Some("snapshot")
+[DEBUG] SCAN /sys/bus/pci/devices (4 entries)
+[DEBUG] SCAN /sys/block (30 entries)
+[DEBUG] FAIL /sys/block/loop0/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop0/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop1/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop1/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop2/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop2/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop3/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop3/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop4/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop4/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop5/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop5/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop6/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop6/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop7/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/loop7/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram0/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram0/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram0/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram0 (26 entries)
+[DEBUG] FAIL /sys/block/ram1/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram1/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram1/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram1 (26 entries)
+[DEBUG] FAIL /sys/block/ram10/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram10/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram10/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram10 (26 entries)
+[DEBUG] FAIL /sys/block/ram11/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram11/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram11/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram11 (26 entries)
+[DEBUG] FAIL /sys/block/ram12/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram12/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram12/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram12 (26 entries)
+[DEBUG] FAIL /sys/block/ram13/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram13/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram13/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram13 (26 entries)
+[DEBUG] FAIL /sys/block/ram14/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram14/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram14/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram14 (26 entries)
+[DEBUG] FAIL /sys/block/ram15/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram15/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram15/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram15 (26 entries)
+[DEBUG] FAIL /sys/block/ram2/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram2/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram2/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram2 (26 entries)
+[DEBUG] FAIL /sys/block/ram3/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram3/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram3/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram3 (26 entries)
+[DEBUG] FAIL /sys/block/ram4/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram4/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram4/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram4 (26 entries)
+[DEBUG] FAIL /sys/block/ram5/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram5/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram5/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram5 (26 entries)
+[DEBUG] FAIL /sys/block/ram6/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram6/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram6/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram6 (26 entries)
+[DEBUG] FAIL /sys/block/ram7/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram7/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram7/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram7 (26 entries)
+[DEBUG] FAIL /sys/block/ram8/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram8/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram8/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram8 (26 entries)
+[DEBUG] FAIL /sys/block/ram9/device/model: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram9/device/name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/block/ram9/queue/scheduler: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/ram9 (26 entries)
+[DEBUG] SCAN /sys/block/sda (28 entries)
+[DEBUG] SCAN /sys/block/sdb (28 entries)
+[DEBUG] SCAN /sys/block/sdc (28 entries)
+[DEBUG] SCAN /sys/block/sdd (28 entries)
+[DEBUG] SCAN /sys/block/sde (28 entries)
+[DEBUG] SCAN /sys/block/sdf (28 entries)
+[DEBUG] SCAN /sys/class/net (3 entries)
+[DEBUG] FAIL /sys/class/net/lo/speed: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/lo/duplex: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/devices/system/cpu/cpu0/topology/arch: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/class/thermal (2 entries)
+[DEBUG] SCAN /sys/class/hwmon (2 entries)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp1_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp2_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp3_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp4_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp5_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp6_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp7_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp8_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp9_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp10_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp11_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp12_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp13_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp14_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp15_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon0/temp16_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp1_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp2_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp3_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp4_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp5_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp6_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp7_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp8_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp9_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp10_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp11_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp12_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp13_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp14_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp15_input: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/hwmon/hwmon1/temp16_input: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/class/power_supply (2 entries)
+[DEBUG] FAIL /sys/class/power_supply/AC1/status: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/capacity: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/voltage_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/current_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/power_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/usb_type: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/energy_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/energy_full: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/charge_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/charge_full: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/cycle_count: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/technology: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/manufacturer: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/model_name: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/current_max: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/AC1/voltage_max: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/online: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/current_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/usb_type: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/charge_now: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/charge_full: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/current_max: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply/BAT1/voltage_max: No such file or directory (os error 2)
+
+==============================================
+SNAPSHOT OUTPUT (kv snapshot -vp)
+==============================================
+
+{
+  "kv_version": "0.4.2",
+  "subcommand": "snapshot",
+  "data": {
+    "pci": [
+      {
+        "bdf": "*:*:*:*",
+        "vendor_id": "0x1414",
+        "device_id": "0x008a",
+        "class": "0x030200",
+        "driver": "dxgkrnl",
+        "subsystem_vendor_id": "0x0000",
+        "subsystem_device_id": "0x0000",
+        "revision": "0x00",
+        "numa_node": 0,
+        "enabled": false,
+        "power_state": "unknown",
+        "is_bridge": false
+      },
+      {
+        "bdf": "*:*:*:*",
+        "vendor_id": "0x1414",
+        "device_id": "0x008e",
+        "class": "0x030200",
+        "driver": "dxgkrnl",
+        "subsystem_vendor_id": "0x0000",
+        "subsystem_device_id": "0x0000",
+        "revision": "0x00",
+        "numa_node": 0,
+        "enabled": false,
+        "power_state": "unknown",
+        "is_bridge": false
+      },
+      {
+        "bdf": "*:*:*:*",
+        "vendor_id": "0x1af4",
+        "device_id": "0x1043",
+        "class": "0x010000",
+        "driver": "virtio-pci",
+        "subsystem_vendor_id": "0x1af4",
+        "subsystem_device_id": "0x0040",
+        "revision": "0x01",
+        "numa_node": 0,
+        "enabled": true,
+        "power_state": "D0",
+        "is_bridge": false
+      },
+      {
+        "bdf": "*:*:*:*",
+        "vendor_id": "0x1af4",
+        "device_id": "0x105a",
+        "class": "0x088000",
+        "driver": "virtio-pci",
+        "subsystem_vendor_id": "0x1af4",
+        "subsystem_device_id": "0x0040",
+        "revision": "0x01",
+        "numa_node": 0,
+        "enabled": true,
+        "power_state": "D0",
+        "is_bridge": false
+      }
+    ],
+    "block": [
+      {
+        "name": "ram0",
+        "type": "ram",
+        "major": 1,
+        "minor": 0,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram1",
+        "type": "ram",
+        "major": 1,
+        "minor": 1,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram10",
+        "type": "ram",
+        "major": 1,
+        "minor": 10,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram11",
+        "type": "ram",
+        "major": 1,
+        "minor": 11,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram12",
+        "type": "ram",
+        "major": 1,
+        "minor": 12,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram13",
+        "type": "ram",
+        "major": 1,
+        "minor": 13,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram14",
+        "type": "ram",
+        "major": 1,
+        "minor": 14,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram15",
+        "type": "ram",
+        "major": 1,
+        "minor": 15,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram2",
+        "type": "ram",
+        "major": 1,
+        "minor": 2,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram3",
+        "type": "ram",
+        "major": 1,
+        "minor": 3,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram4",
+        "type": "ram",
+        "major": 1,
+        "minor": 4,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram5",
+        "type": "ram",
+        "major": 1,
+        "minor": 5,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram6",
+        "type": "ram",
+        "major": 1,
+        "minor": 6,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram7",
+        "type": "ram",
+        "major": 1,
+        "minor": 7,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram8",
+        "type": "ram",
+        "major": 1,
+        "minor": 8,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "ram9",
+        "type": "ram",
+        "major": 1,
+        "minor": 9,
+        "size_sectors": 8192,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "rotational": false
+      },
+      {
+        "name": "sda",
+        "type": "disk",
+        "major": 8,
+        "minor": 0,
+        "size_sectors": 795536,
+        "sector_size": 512,
+        "removable": false,
+        "ro": true,
+        "model": "Virtual Disk",
+        "rotational": true,
+        "scheduler": "none"
+      },
+      {
+        "name": "sdb",
+        "type": "disk",
+        "major": 8,
+        "minor": 16,
+        "size_sectors": 381016,
+        "sector_size": 512,
+        "removable": false,
+        "ro": true,
+        "model": "Virtual Disk",
+        "rotational": true,
+        "scheduler": "none"
+      },
+      {
+        "name": "sdc",
+        "type": "disk",
+        "major": 8,
+        "minor": 32,
+        "size_sectors": 8388616,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "model": "Virtual Disk",
+        "rotational": true,
+        "scheduler": "none"
+      },
+      {
+        "name": "sdd",
+        "type": "disk",
+        "major": 8,
+        "minor": 48,
+        "size_sectors": 2147483648,
+        "mountpoint": "/var/lib/docker",
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "model": "Virtual Disk",
+        "rotational": true,
+        "scheduler": "none"
+      },
+      {
+        "name": "sde",
+        "type": "disk",
+        "major": 8,
+        "minor": 64,
+        "size_sectors": 2147483648,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "model": "Virtual Disk",
+        "rotational": true,
+        "scheduler": "none"
+      },
+      {
+        "name": "sdf",
+        "type": "disk",
+        "major": 8,
+        "minor": 80,
+        "size_sectors": 2147483648,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "model": "Virtual Disk",
+        "rotational": true,
+        "scheduler": "none"
+      }
+    ],
+    "net": [
+      {
+        "name": "docker0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1500,
+        "operstate": "down",
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*"
+        ],
+        "duplex": "unknown",
+        "if_type": 1,
+        "tx_queue_len": 0,
+        "carrier": false,
+        "rx_bytes": 0,
+        "tx_bytes": 0,
+        "rx_packets": 0,
+        "tx_packets": 0,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      },
+      {
+        "name": "eth0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1488,
+        "operstate": "up",
+        "speed_mbps": 10000,
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*",
+          "*.*.*.*"
+        ],
+        "ipv6_addresses": [
+          "*:*:*:*"
+        ],
+        "duplex": "full",
+        "if_type": 1,
+        "tx_queue_len": 1000,
+        "carrier": true,
+        "rx_bytes": 164143792,
+        "tx_bytes": 134693049,
+        "rx_packets": 220842,
+        "tx_packets": 97230,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      },
+      {
+        "name": "lo",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 65536,
+        "operstate": "unknown",
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*"
+        ],
+        "ipv6_addresses": [
+          "*:*:*:*"
+        ],
+        "if_type": 772,
+        "tx_queue_len": 1000,
+        "carrier": true,
+        "rx_bytes": 37535494,
+        "tx_bytes": 37535494,
+        "rx_packets": 80855,
+        "tx_packets": 80855,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      }
+    ],
+    "cpu": {
+      "logical_cpus": 2,
+      "model_name": "Intel(R) Core(TM) Ultra 7 155H",
+      "vendor_id": "GenuineIntel",
+      "sockets": 1,
+      "cores_per_socket": 1,
+      "cpu_family": 6,
+      "model": 170,
+      "stepping": 4,
+      "cpu_mhz": "2995.20",
+      "cache_size": "24576 KB",
+      "architecture": "x86_64"
+    },
+    "mem": {
+      "mem_total_kb": 4011772,
+      "mem_free_kb": 877308,
+      "mem_available_kb": 951484,
+      "swap_total_kb": 4194304,
+      "swap_free_kb": 3330016,
+      "buffers_kb": 4820,
+      "cached_kb": 179340,
+      "swap_cached_kb": 65164,
+      "shmem_kb": 2820,
+      "sreclaimable_kb": 34140,
+      "sunreclaim_kb": 40388,
+      "dirty_kb": 148,
+      "writeback_kb": 0
+    },
+    "mounts": [
+      {
+        "source": "none",
+        "target": "/usr/lib/modules/6.6.87.2-microsoft-standard-WSL2",
+        "fstype": "overlay",
+        "options": "rw,nosuid,nodev,noatime,lowerdir=/modules,upperdir=/lib/modules/6.6.87.2-microsoft-standard-WSL2/rw/upper,workdir=/lib/modules/6.6.87.2-microsoft-standard-WSL2/rw/work,uuid=on",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/mnt/wsl",
+        "fstype": "tmpfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "drivers",
+        "target": "/usr/lib/wsl/drivers",
+        "fstype": "9p",
+        "options": "ro,nosuid,nodev,noatime,aname=drivers;fmask=222;dmask=222,cache=5,access=client,msize=65536,trans=fd,rfd=8,wfd=8",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "/dev/sdd",
+        "target": "/",
+        "fstype": "ext4",
+        "options": "rw,relatime,discard,errors=remount-ro,data=ordered",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/mnt/wslg",
+        "fstype": "tmpfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "/dev/sdd",
+        "target": "/mnt/wslg/distro",
+        "fstype": "ext4",
+        "options": "ro,relatime,discard,errors=remount-ro,data=ordered",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/usr/lib/wsl/lib",
+        "fstype": "overlay",
+        "options": "rw,nosuid,nodev,noatime,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "rootfs",
+        "target": "/init",
+        "fstype": "rootfs",
+        "options": "ro,size=2000868k,nr_inodes=500217",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/dev",
+        "fstype": "devtmpfs",
+        "options": "rw,nosuid,relatime,size=2000868k,nr_inodes=500217,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "sysfs",
+        "target": "/sys",
+        "fstype": "sysfs",
+        "options": "rw,nosuid,nodev,noexec,noatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "proc",
+        "target": "/proc",
+        "fstype": "proc",
+        "options": "rw,nosuid,nodev,noexec,noatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "devpts",
+        "target": "/dev/pts",
+        "fstype": "devpts",
+        "options": "rw,nosuid,noexec,noatime,gid=5,mode=620,ptmxmode=000",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/run",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/run/lock",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,noexec,noatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/run/shm",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,noatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/dev/shm",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,noatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/run/user",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,noexec,noatime,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "binfmt_misc",
+        "target": "/proc/sys/fs/binfmt_misc",
+        "fstype": "binfmt_misc",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "cgroup2",
+        "target": "/sys/fs/cgroup",
+        "fstype": "cgroup2",
+        "options": "rw,nosuid,nodev,noexec,relatime,nsdelegate",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/mnt/wslg/versions.txt",
+        "fstype": "overlay",
+        "options": "rw,relatime,lowerdir=/systemvhd,upperdir=/system/rw/upper,workdir=/system/rw/work,uuid=on",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/mnt/wslg/doc",
+        "fstype": "overlay",
+        "options": "rw,relatime,lowerdir=/systemvhd,upperdir=/system/rw/upper,workdir=/system/rw/work,uuid=on",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/tmp/.X11-unix",
+        "fstype": "tmpfs",
+        "options": "ro,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "C:\\",
+        "target": "/mnt/c",
+        "fstype": "9p",
+        "options": "rw,noatime,aname=drvfs;path=C:\\;uid=1000;gid=1000;symlinkroot=/mnt/,cache=5,access=client,msize=65536,trans=fd,rfd=6,wfd=6",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/run/user",
+        "fstype": "tmpfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "hugetlbfs",
+        "target": "/dev/hugepages",
+        "fstype": "hugetlbfs",
+        "options": "rw,relatime,pagesize=2M",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "debugfs",
+        "target": "/sys/kernel/debug",
+        "fstype": "debugfs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "mqueue",
+        "target": "/dev/mqueue",
+        "fstype": "mqueue",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tracefs",
+        "target": "/sys/kernel/tracing",
+        "fstype": "tracefs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "fusectl",
+        "target": "/sys/fs/fuse/connections",
+        "fstype": "fusectl",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "configfs",
+        "target": "/sys/kernel/config",
+        "fstype": "configfs",
+        "options": "rw,nosuid,nodev,noexec,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-sysctl.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-sysusers.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-tmpfiles-setup-dev.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "ramfs",
+        "target": "/run/credentials/systemd-tmpfiles-setup.service",
+        "fstype": "ramfs",
+        "options": "ro,nosuid,nodev,noexec,relatime,mode=700",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "/dev/sdd",
+        "target": "/var/lib/docker",
+        "fstype": "ext4",
+        "options": "rw,relatime,discard,errors=remount-ro,data=ordered",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/run/user/1000",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,relatime,size=401176k,nr_inodes=100294,mode=700,uid=1000,gid=1000",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/mnt/wslg/run/user/1000",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,relatime,size=401176k,nr_inodes=100294,mode=700,uid=1000,gid=1000",
+        "dump_freq": 0,
+        "pass_num": 0
+      }
+    ],
+    "power": [
+      {
+        "name": "AC1",
+        "type": "Mains",
+        "online": true
+      },
+      {
+        "name": "BAT1",
+        "type": "Battery",
+        "status": "Not charging",
+        "capacity_percent": 98,
+        "voltage_uv": 5000000,
+        "power_uw": 0,
+        "energy_now_uwh": 4930000,
+        "energy_full_uwh": 5000000,
+        "model_name": "Microsoft Hyper-V Virtual Battery"
+      }
+    ]
+  }
+}
+
+==============================================
+END OF TEST RESULTS
+==============================================

@@ -1,0 +1,1832 @@
+==============================================
+KV TEST RESULTS (REMOTE)
+==============================================
+Version:       0.4.2
+Platform:      MILKV_DUOS
+Date:          2025-12-04 13:30:13 UTC
+Target:        riscv64gc-unknown-linux-musl
+Binary size:   549K
+
+Kernel:        5.10.4-tag-
+Architecture:  riscv64
+OS:            Buildroot 2021.05
+DT Model:      Milk-V DuoS
+==============================================
+
+==============================================
+DEBUG OUTPUT (from kv snapshot -vp)
+==============================================
+
+Shows what files kv reads from /sys and /proc.
+FAIL lines indicate missing/inaccessible files (often expected).
+
+[DEBUG] kv 0.4.2 starting
+[DEBUG] subcommand: Some("snapshot")
+[DEBUG] SCAN /sys/bus/usb/devices (2 entries)
+[DEBUG] SCAN /sys/block (1 entries)
+[DEBUG] FAIL /sys/block/mmcblk0/device/model: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/block/mmcblk0 (27 entries)
+[DEBUG] FAIL /proc/net/wireless: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/class/net (4 entries)
+[DEBUG] FAIL /sys/class/net/lo/speed: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/lo/duplex: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/sit0/speed: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/sit0/carrier: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/sit0/duplex: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/usb0/speed: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/class/net/usb0/duplex: Invalid argument (os error 22)
+[DEBUG] FAIL /sys/devices/system/cpu/cpu0/topology/arch: No such file or directory (os error 2)
+[DEBUG] SCAN /sys/class/thermal (2 entries)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_3_temp: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_3_type: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_4_temp: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/thermal/thermal_zone0/trip_point_4_type: No such file or directory (os error 2)
+[DEBUG] FAIL /sys/class/power_supply: No such file or directory (os error 2)
+
+==============================================
+SNAPSHOT OUTPUT (kv snapshot -vp)
+==============================================
+
+{
+  "kv_version": "0.4.2",
+  "subcommand": "snapshot",
+  "data": {
+    "block": [
+      {
+        "name": "mmcblk0",
+        "type": "disk",
+        "major": 179,
+        "minor": 0,
+        "size_sectors": 124735488,
+        "sector_size": 512,
+        "removable": false,
+        "ro": false,
+        "model": "SN64G",
+        "rotational": false,
+        "scheduler": "none"
+      },
+      {
+        "name": "mmcblk0p1",
+        "type": "part",
+        "major": 179,
+        "minor": 1,
+        "size_sectors": 262144,
+        "parent": "mmcblk0",
+        "mountpoint": "/boot",
+        "sector_size": 512,
+        "removable": false,
+        "ro": false
+      },
+      {
+        "name": "mmcblk0p2",
+        "type": "part",
+        "major": 179,
+        "minor": 2,
+        "size_sectors": 4096,
+        "parent": "mmcblk0",
+        "sector_size": 512,
+        "removable": false,
+        "ro": false
+      },
+      {
+        "name": "mmcblk0p3",
+        "type": "part",
+        "major": 179,
+        "minor": 3,
+        "size_sectors": 1572864,
+        "parent": "mmcblk0",
+        "sector_size": 512,
+        "removable": false,
+        "ro": false
+      }
+    ],
+    "net": [
+      {
+        "name": "eth0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1500,
+        "operstate": "down",
+        "duplex": "unknown",
+        "if_type": 1,
+        "tx_queue_len": 1000,
+        "carrier": false,
+        "rx_bytes": 0,
+        "tx_bytes": 6978,
+        "rx_packets": 0,
+        "tx_packets": 53,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      },
+      {
+        "name": "lo",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 65536,
+        "operstate": "unknown",
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*"
+        ],
+        "ipv6_addresses": [
+          "*:*:*:*"
+        ],
+        "if_type": 772,
+        "tx_queue_len": 1000,
+        "carrier": true,
+        "rx_bytes": 504972,
+        "tx_bytes": 504972,
+        "rx_packets": 8331,
+        "tx_packets": 8331,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      },
+      {
+        "name": "sit0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1480,
+        "operstate": "down",
+        "if_type": 776,
+        "tx_queue_len": 1000,
+        "rx_bytes": 0,
+        "tx_bytes": 0,
+        "rx_packets": 0,
+        "tx_packets": 0,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 0,
+        "tx_dropped": 0
+      },
+      {
+        "name": "usb0",
+        "mac_address": "**:**:**:**:**:**",
+        "mtu": 1500,
+        "operstate": "up",
+        "ip": "*.*.*.*",
+        "ipv4_addresses": [
+          "*.*.*.*"
+        ],
+        "ipv6_addresses": [
+          "*:*:*:*"
+        ],
+        "if_type": 1,
+        "tx_queue_len": 1000,
+        "carrier": true,
+        "rx_bytes": 5728698,
+        "tx_bytes": 802128,
+        "rx_packets": 15922,
+        "tx_packets": 3130,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_dropped": 22,
+        "tx_dropped": 0
+      }
+    ],
+    "cpu": {
+      "logical_cpus": 1,
+      "isa": "rv64imafdvcsu",
+      "mmu": "sv39",
+      "architecture": "riscv64"
+    },
+    "mem": {
+      "mem_total_kb": 324432,
+      "mem_free_kb": 256964,
+      "mem_available_kb": 299344,
+      "swap_total_kb": 0,
+      "swap_free_kb": 0,
+      "buffers_kb": 16140,
+      "cached_kb": 9008,
+      "swap_cached_kb": 0,
+      "shmem_kb": 704,
+      "sreclaimable_kb": 27036,
+      "sunreclaim_kb": 5592,
+      "dirty_kb": 16,
+      "writeback_kb": 0
+    },
+    "mounts": [
+      {
+        "source": "/dev/root",
+        "target": "/",
+        "fstype": "ext4",
+        "options": "rw,relatime,errors=remount-ro",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "devtmpfs",
+        "target": "/dev",
+        "fstype": "devtmpfs",
+        "options": "rw,relatime,size=162136k,nr_inodes=40534,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "proc",
+        "target": "/proc",
+        "fstype": "proc",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "devpts",
+        "target": "/dev/pts",
+        "fstype": "devpts",
+        "options": "rw,relatime,gid=5,mode=620,ptmxmode=666",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/dev/shm",
+        "fstype": "tmpfs",
+        "options": "rw,relatime,mode=777",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/tmp",
+        "fstype": "tmpfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "tmpfs",
+        "target": "/run",
+        "fstype": "tmpfs",
+        "options": "rw,nosuid,nodev,relatime,mode=755",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "sysfs",
+        "target": "/sys",
+        "fstype": "sysfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "debug",
+        "target": "/sys/kernel/debug",
+        "fstype": "debugfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "/dev/mmcblk0p1",
+        "target": "/boot",
+        "fstype": "vfat",
+        "options": "rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro",
+        "dump_freq": 0,
+        "pass_num": 0
+      },
+      {
+        "source": "none",
+        "target": "/tmp/usb",
+        "fstype": "configfs",
+        "options": "rw,relatime",
+        "dump_freq": 0,
+        "pass_num": 0
+      }
+    ],
+    "thermal": [
+      {
+        "sensor": "soc_thermal_0",
+        "temp_millicelsius": 40949,
+        "name": "thermal_zone0",
+        "temp_crit_millicelsius": 130000,
+        "policy": "step_wise"
+      }
+    ],
+    "dt": [
+      {
+        "path": "/",
+        "name": "/",
+        "compatible": "cvitek,cv181x",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 02",
+          "compatible": "cvitek,cv181x",
+          "model": "Milk-V DuoS"
+        }
+      },
+      {
+        "path": "/tpu",
+        "name": "tpu",
+        "compatible": "cvitek,tpu",
+        "properties": {
+          "clock-names": "clk_tpu_axi, clk_tpu_fab",
+          "clocks": "00 00 00 02 00 00 00 0f 00 00 00 02 00 00 00 10",
+          "compatible": "cvitek,tpu",
+          "interrupt-names": "tiu_irq, tdma_irq",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 4b 00 00 00 04 00 00 00 4c 00 00 00 04",
+          "reg": "00 00 00 00 0c 10 00 00 00 00 00 00 00 00 10 00 00 00 00 00 0c 10 10 00 00 00 00 00 00 00 10 00",
+          "reg-names": "tdma, tiu",
+          "reset-names": "res_tdma, res_tpu, res_tpusys",
+          "resets": "00 00 00 03 00 00 00 07 00 00 00 03 00 00 00 08 00 00 00 03 00 00 00 09"
+        }
+      },
+      {
+        "path": "/audio_clock",
+        "name": "audio_clock",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "01 77 00 00",
+          "compatible": "fixed-clock"
+        }
+      },
+      {
+        "path": "/eth_csrclk",
+        "name": "eth_csrclk",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "0e e6 b2 80",
+          "clock-output-names": "eth_csrclk",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 08"
+        }
+      },
+      {
+        "path": "/cv-wd@0x3010000",
+        "name": "cv-wd@0x3010000",
+        "compatible": "snps,dw-wdt",
+        "properties": {
+          "clocks": "00 00 00 06",
+          "compatible": "snps,dw-wdt",
+          "interrupts": "00 00 00 3a 00 00 00 04",
+          "reg": "00 00 00 00 03 01 00 00 00 00 00 00 00 00 10 00",
+          "resets": "00 00 00 03 00 00 00 30"
+        }
+      },
+      {
+        "path": "/cvifb",
+        "name": "cvifb",
+        "compatible": "cvitek,fb",
+        "properties": {
+          "compatible": "cvitek,fb",
+          "memory-region": "00 00 00 10",
+          "reg": "00 00 00 00 0a 08 80 00 00 00 00 00 00 00 10 00",
+          "reg-names": "disp"
+        }
+      },
+      {
+        "path": "/oscillator",
+        "name": "oscillator",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "01 7d 78 40",
+          "clock-output-names": "osc",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/saradc",
+        "name": "saradc",
+        "compatible": "cvitek,saradc",
+        "properties": {
+          "clock-names": "clk_saradc",
+          "clocks": "00 00 00 02 00 00 00 15",
+          "compatible": "cvitek,saradc",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 64 00 00 00 01",
+          "reg": "00 00 00 00 03 0f 00 00 00 00 00 00 00 00 10 00 00 00 00 00 05 02 c0 00 00 00 00 00 00 00 10 00",
+          "reg-names": "top_domain_saradc, rtc_domain_saradc",
+          "reset-names": "res_saradc",
+          "resets": "00 00 00 03 00 00 00 34"
+        }
+      },
+      {
+        "path": "/sound_adc",
+        "name": "sound_adc",
+        "compatible": "cvitek,cv182xa-adc",
+        "properties": {
+          "compatible": "cvitek,cv182xa-adc",
+          "cvi,card_name": "cv182xa_adc",
+          "cvi,model": "CV182XA"
+        }
+      },
+      {
+        "path": "/i2s@04100000",
+        "name": "i2s@04100000",
+        "compatible": "cvitek,cv1835-i2s",
+        "properties": {
+          "#sound-dai-cells": "00 00 00 00",
+          "capability": "rx",
+          "clock-names": "i2sclk",
+          "clocks": "00 00 00 0d 00 00 00 00",
+          "compatible": "cvitek,cv1835-i2s",
+          "dev-id": "00 00 00 00",
+          "dma-names": "rx",
+          "dmas": "00 00 00 0e 00 00 00 00 00 00 00 01 00 00 00 01",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 28 00 00 00 04",
+          "mclk_out": "false",
+          "reg": "00 00 00 00 04 10 00 00 00 00 00 00 00 00 20 00"
+        }
+      },
+      {
+        "path": "/gpio@05021000",
+        "name": "gpio@05021000",
+        "compatible": "snps,dw-apb-gpio",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "snps,dw-apb-gpio",
+          "reg": "00 00 00 00 05 02 10 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/gpio@05021000/gpio-controller@4",
+        "name": "gpio-controller@4",
+        "compatible": "snps,dw-apb-gpio-port",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "bank-name": "porte",
+          "compatible": "snps,dw-apb-gpio-port",
+          "gpio-controller": "",
+          "interrupt-controller": "",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 46 00 00 00 04",
+          "phandle": "00 00 00 0f",
+          "reg": "00 00 00 00",
+          "snps,nr-gpios": " "
+        }
+      },
+      {
+        "path": "/tx-queues-config",
+        "name": "tx-queues-config",
+        "properties": {
+          "phandle": "00 00 00 0c",
+          "snps,tx-queues-to-use": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/tx-queues-config/queue0",
+        "name": "queue0"
+      },
+      {
+        "path": "/i2c@04010000",
+        "name": "i2c@04010000",
+        "compatible": "snps,designware-i2c",
+        "status": "okay",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-frequency": "00 06 1a 80",
+          "clocks": "00 00 00 02 00 00 00 72",
+          "compatible": "snps,designware-i2c",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 32 00 00 00 04",
+          "reg": "00 00 00 00 04 01 00 00 00 00 00 00 00 00 10 00",
+          "reset-names": "i2c1",
+          "resets": "00 00 00 03 00 00 00 1c",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/eth_ptpclk",
+        "name": "eth_ptpclk",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "02 fa f0 80",
+          "clock-output-names": "eth_ptpclk",
+          "compatible": "fixed-clock",
+          "phandle": "\t"
+        }
+      },
+      {
+        "path": "/pclk",
+        "name": "pclk",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 06"
+        }
+      },
+      {
+        "path": "/sys",
+        "name": "sys",
+        "compatible": "cvitek,sys",
+        "properties": {
+          "compatible": "cvitek,sys"
+        }
+      },
+      {
+        "path": "/cvi_vc_drv",
+        "name": "cvi_vc_drv",
+        "compatible": "cvitek,cvi_vc_drv",
+        "properties": {
+          "compatible": "cvitek,cvi_vc_drv",
+          "reg": "00 00 00 00 0b 03 00 00 00 00 00 00 00 00 01 00 00 00 00 00 0b 05 80 00 00 00 00 00 00 00 01 00...",
+          "reg-names": "vc_ctrl, vc_sbm, vc_addr_remap"
+        }
+      },
+      {
+        "path": "/spi1@04190000",
+        "name": "spi1@04190000",
+        "compatible": "snps,dw-apb-ssi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 02 00 00 00 71",
+          "compatible": "snps,dw-apb-ssi",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 37 00 00 00 04",
+          "num-cs": "00 00 00 01",
+          "reg": "00 00 00 00 04 19 00 00 00 00 00 00 00 01 00 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/spi1@04190000/spidev@0",
+        "name": "spidev@0",
+        "compatible": "rohm,dh2228fv",
+        "properties": {
+          "compatible": "rohm,dh2228fv",
+          "reg": "00 00 00 00",
+          "spi-max-frequency": "00 0f 42 40"
+        }
+      },
+      {
+        "path": "/vpss",
+        "name": "vpss",
+        "compatible": "cvitek,vpss",
+        "properties": {
+          "clock-freq-vip-sys1": "11 e1 a3 00",
+          "clock-names": "clk_sys_0, clk_sys_1, clk_sys_2, clk_img_d, clk_img_v, clk_sc_top, clk_sc_d, clk_sc_v1, clk_sc_v2, clk_sc_v3",
+          "clocks": "00 00 00 02 00 00 00 50 00 00 00 02 00 00 00 51 00 00 00 02 00 00 00 88 00 00 00 02 00 00 00 60...",
+          "compatible": "cvitek,vpss",
+          "interrupt-names": "sc",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 19 00 00 00 04",
+          "reg": "00 00 00 00 0a 08 00 00 00 00 00 00 00 01 00 00 00 00 00 00 0a 0d 10 00 00 00 00 00 00 00 01 00",
+          "reg-names": "sc"
+        }
+      },
+      {
+        "path": "/pwm@3063000",
+        "name": "pwm@3063000",
+        "compatible": "cvitek,cvi-pwm",
+        "properties": {
+          "#pwm-cells": "00 00 00 04",
+          "clocks": "00 00 00 02 00 00 00 33",
+          "compatible": "cvitek,cvi-pwm",
+          "reg": "00 00 00 00 03 06 30 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/cvi-spif@10000000",
+        "name": "cvi-spif@10000000",
+        "compatible": "cvitek,cvi-spif",
+        "properties": {
+          "bus-num": "00 00 00 00",
+          "compatible": "cvitek,cvi-spif",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 5f 00 00 00 04",
+          "reg": "00 00 00 00 10 00 00 00 00 00 00 00 10 00 00 00",
+          "reg-names": "spif",
+          "sck-div": "00 00 00 03",
+          "sck_mhz": "00 00 01 2c",
+          "spi-max-frequency": "04 78 68 c0"
+        }
+      },
+      {
+        "path": "/cvi-spif@10000000/spiflash",
+        "name": "spiflash",
+        "compatible": "jedec,spi-nor",
+        "properties": {
+          "compatible": "jedec,spi-nor",
+          "spi-rx-bus-width": "00 00 00 04",
+          "spi-tx-bus-width": "00 00 00 04"
+        }
+      },
+      {
+        "path": "/gpio@03022000",
+        "name": "gpio@03022000",
+        "compatible": "snps,dw-apb-gpio",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "snps,dw-apb-gpio",
+          "reg": "00 00 00 00 03 02 20 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/gpio@03022000/gpio-controller@2",
+        "name": "gpio-controller@2",
+        "compatible": "snps,dw-apb-gpio-port",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "bank-name": "portc",
+          "compatible": "snps,dw-apb-gpio-port",
+          "gpio-controller": "",
+          "interrupt-controller": "",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 3e 00 00 00 04",
+          "reg": "00 00 00 00",
+          "snps,nr-gpios": " "
+        }
+      },
+      {
+        "path": "/restart-controller",
+        "name": "restart-controller",
+        "compatible": "cvitek,restart",
+        "properties": {
+          "compatible": "cvitek,restart",
+          "reg": "00 00 00 00 05 02 50 00 00 00 00 00 00 00 20 00"
+        }
+      },
+      {
+        "path": "/pwm@3060000",
+        "name": "pwm@3060000",
+        "compatible": "cvitek,cvi-pwm",
+        "properties": {
+          "#pwm-cells": "00 00 00 01",
+          "clocks": "00 00 00 02 00 00 00 33",
+          "compatible": "cvitek,cvi-pwm",
+          "reg": "00 00 00 00 03 06 00 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/stmmac-axi-config",
+        "name": "stmmac-axi-config",
+        "properties": {
+          "phandle": "\n",
+          "snps,blen": "00 00 00 04 00 00 00 08 00 00 00 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00",
+          "snps,rd_osr_lmt": "00 00 00 02",
+          "snps,wr_osr_lmt": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/sound_dac",
+        "name": "sound_dac",
+        "compatible": "cvitek,cv182xa-dac",
+        "properties": {
+          "compatible": "cvitek,cv182xa-dac",
+          "cvi,card_name": "cv182xa_dac",
+          "cvi,model": "CV182XA"
+        }
+      },
+      {
+        "path": "/jpu",
+        "name": "jpu",
+        "compatible": "cvitek,asic-jpeg",
+        "properties": {
+          "clock-names": "clk_axi_video_codec, clk_jpeg, clk_apb_jpeg, clk_vc_src0, clk_vc_src1, clk_vc_src2, clk_cfg_reg_vc",
+          "clocks": "00 00 00 02 00 00 00 53 00 00 00 02 00 00 00 57 00 00 00 02 00 00 00 58 00 00 00 02 00 00 00 54...",
+          "compatible": "cvitek,asic-jpeg",
+          "interrupt-names": "jpeg",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 14 00 00 00 04",
+          "reg": "00 00 00 00 0b 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 0b 03 00 00 00 00 00 00 00 00 01 00...",
+          "reg-names": "jpeg, vc_ctrl, vc_sbm",
+          "reset-names": "jpeg",
+          "resets": "00 00 00 03 00 00 00 04"
+        }
+      },
+      {
+        "path": "/serial@04170000",
+        "name": "serial@04170000",
+        "compatible": "snps,dw-apb-uart",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "snps,dw-apb-uart",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 2f 00 00 00 04",
+          "reg": "00 00 00 00 04 17 00 00 00 00 00 00 00 00 10 00",
+          "reg-io-width": "00 00 00 04",
+          "reg-shift": "00 00 00 02",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/cv181x_cooling",
+        "name": "cv181x_cooling",
+        "compatible": "cvitek,cv181x-cooling",
+        "properties": {
+          "#cooling-cells": "00 00 00 02",
+          "clock-names": "clk_cpu, clk_tpu_axi",
+          "clocks": "00 00 00 02 00 00 00 98 00 00 00 02 00 00 00 0f",
+          "compatible": "cvitek,cv181x-cooling",
+          "dev-freqs": "32 a9 f8 80 1d cd 65 00 19 54 fc 40 16 5a 0b c0 19 54 fc 40 11 e1 a3 00"
+        }
+      },
+      {
+        "path": "/wifi-sd@4320000",
+        "name": "wifi-sd@4320000",
+        "compatible": "cvitek,cv181x-sdio",
+        "status": "okay",
+        "properties": {
+          "64_addressing": "",
+          "bus-width": "00 00 00 04",
+          "cap-sd-highspeed": "",
+          "compatible": "cvitek,cv181x-sdio",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 26 00 00 00 04",
+          "max-frequency": "0b 2d 05 e0",
+          "min-frequency": "00 06 1a 80",
+          "no-mmc": "",
+          "no-sd": "",
+          "non-removable": "",
+          "pll_index": "00 00 00 07",
+          "pll_reg": "03 00 20 7c",
+          "reg": "00 00 00 00 04 32 00 00 00 00 00 00 00 00 10 00",
+          "reg_names": "core_mem",
+          "reset_tx_rx_phy": "",
+          "sd-uhs-ddr50": "",
+          "sd-uhs-sdr104": "",
+          "sd-uhs-sdr25": "",
+          "src-frequency": "16 5a 0b c0",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/base",
+        "name": "base",
+        "compatible": "cvitek,base",
+        "properties": {
+          "compatible": "cvitek,base",
+          "reg": "00 00 00 00 0a 0c 80 00 00 00 00 00 00 00 00 20",
+          "reg-names": "vip_sys"
+        }
+      },
+      {
+        "path": "/cv-sd@4310000",
+        "name": "cv-sd@4310000",
+        "compatible": "cvitek,cv181x-sd",
+        "properties": {
+          "64_addressing": "",
+          "bus-width": "00 00 00 04",
+          "cap-mmc-highspeed": "",
+          "cap-sd-highspeed": "",
+          "compatible": "cvitek,cv181x-sd",
+          "cvi-cd-gpios": "00 00 00 07 00 00 00 0d 00 00 00 01",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 24 00 00 00 04",
+          "max-frequency": "0b eb c2 00",
+          "min-frequency": "00 06 1a 80",
+          "no-mmc": "",
+          "no-sdio": "",
+          "pll_index": "00 00 00 06",
+          "pll_reg": "03 00 20 70",
+          "reg": "00 00 00 00 04 31 00 00 00 00 00 00 00 00 10 00",
+          "reg-names": "core_mem",
+          "reset-names": "sdhci",
+          "reset_tx_rx_phy": "",
+          "sd-uhs-sdr104": "",
+          "sd-uhs-sdr12": "",
+          "sd-uhs-sdr25": "",
+          "sd-uhs-sdr50": "",
+          "src-frequency": "16 5a 0b c0"
+        }
+      },
+      {
+        "path": "/clock-controller",
+        "name": "clock-controller",
+        "compatible": "cvitek,cv181x-clk",
+        "properties": {
+          "#clock-cells": "00 00 00 01",
+          "clocks": "00 00 00 01",
+          "compatible": "cvitek,cv181x-clk",
+          "phandle": "00 00 00 02",
+          "reg": "00 00 00 00 03 00 20 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/adc@0300A100",
+        "name": "adc@0300A100",
+        "compatible": "cvitek,cv182xaadc",
+        "properties": {
+          "clk_source": "04 13 00 00",
+          "clock-names": "i2sclk",
+          "clocks": "00 00 00 0d 00 00 00 00",
+          "compatible": "cvitek,cv182xaadc",
+          "reg": "00 00 00 00 03 00 a1 00 00 00 00 00 00 00 01 00"
+        }
+      },
+      {
+        "path": "/thermal-zones",
+        "name": "thermal-zones"
+      },
+      {
+        "path": "/thermal-zones/soc_thermal_0",
+        "name": "soc_thermal_0",
+        "properties": {
+          "polling-delay": "00 00 03 e8",
+          "polling-delay-passive": "00 00 03 e8",
+          "thermal-sensors": "00 00 00 12 00 00 00 00"
+        }
+      },
+      {
+        "path": "/thermal-zones/soc_thermal_0/trips",
+        "name": "trips"
+      },
+      {
+        "path": "/thermal-zones/soc_thermal_0/trips/soc_thermal_trip_1",
+        "name": "soc_thermal_trip_1",
+        "properties": {
+          "hysteresis": "00 00 13 88",
+          "temperature": "00 01 ad b0",
+          "type": "passive"
+        }
+      },
+      {
+        "path": "/thermal-zones/soc_thermal_0/trips/soc_thermal_trip_0",
+        "name": "soc_thermal_trip_0",
+        "properties": {
+          "hysteresis": "00 00 13 88",
+          "temperature": "00 01 86 a0",
+          "type": "passive"
+        }
+      },
+      {
+        "path": "/thermal-zones/soc_thermal_0/trips/soc_thermal_crtical_0",
+        "name": "soc_thermal_crtical_0",
+        "properties": {
+          "hysteresis": "00 00 00 00",
+          "temperature": "00 01 fb d0",
+          "type": "critical"
+        }
+      },
+      {
+        "path": "/mipi_tx",
+        "name": "mipi_tx",
+        "compatible": "cvitek,mipi_tx",
+        "status": "okay",
+        "properties": {
+          "clock-names": "clk_disp, clk_dsi",
+          "clocks": "00 00 00 02 00 00 00 69 00 00 00 02 00 00 00 6a",
+          "compatible": "cvitek,mipi_tx",
+          "power-ct-gpio": "00 00 00 0f 00 00 00 01 00 00 00 00",
+          "pwm-gpio": "00 00 00 0f 00 00 00 00 00 00 00 00",
+          "reset-gpio": "00 00 00 0f 00 00 00 02 00 00 00 01",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/soc",
+        "name": "soc",
+        "compatible": "simple-bus",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 02",
+          "compatible": "simple-bus",
+          "ranges": ""
+        }
+      },
+      {
+        "path": "/soc/clint@74000000",
+        "name": "clint@74000000",
+        "compatible": "riscv,clint0",
+        "properties": {
+          "clint,has-no-64bit-mmio": "",
+          "compatible": "riscv,clint0",
+          "interrupts-extended": "00 00 00 13 00 00 00 03 00 00 00 13 00 00 00 07",
+          "reg": "00 00 00 00 74 00 00 00 00 00 00 00 00 01 00 00"
+        }
+      },
+      {
+        "path": "/soc/interrupt-controller@70000000",
+        "name": "interrupt-controller@70000000",
+        "compatible": "riscv,plic0",
+        "properties": {
+          "#address-cells": "00 00 00 00",
+          "#interrupt-cells": "00 00 00 02",
+          "compatible": "riscv,plic0",
+          "interrupt-controller": "",
+          "interrupts-extended": "00 00 00 13 ff ff ff ff 00 00 00 13 00 00 00 09",
+          "phandle": "00 00 00 04",
+          "reg": "00 00 00 00 70 00 00 00 00 00 00 00 04 00 00 00",
+          "reg-names": "control",
+          "riscv,max-priority": "00 00 00 07",
+          "riscv,ndev": "e"
+        }
+      },
+      {
+        "path": "/mon",
+        "name": "mon",
+        "compatible": "cvitek,mon",
+        "properties": {
+          "compatible": "cvitek,mon",
+          "interrupt-names": "mon_irq",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 5d 00 00 00 04",
+          "reg": "00 00 00 00 01 04 00 00 00 00 00 00 00 00 10 00 00 00 00 00 08 00 40 00 00 00 00 00 00 00 10 00...",
+          "reg-names": "pcmon, ddr_ctrl, ddr_phyd, ddr_aximon, ddr_top"
+        }
+      },
+      {
+        "path": "/serial@041C0000",
+        "name": "serial@041C0000",
+        "compatible": "snps,dw-apb-uart",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "snps,dw-apb-uart",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 30 00 00 00 04",
+          "reg": "00 00 00 00 04 1c 00 00 00 00 00 00 00 00 10 00",
+          "reg-io-width": "00 00 00 04",
+          "reg-shift": "00 00 00 02",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/i2c@04020000",
+        "name": "i2c@04020000",
+        "compatible": "snps,designware-i2c",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "00 01 86 a0",
+          "clocks": "00 00 00 02 00 00 00 72",
+          "compatible": "snps,designware-i2c",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 33 00 00 00 04",
+          "reg": "00 00 00 00 04 02 00 00 00 00 00 00 00 00 10 00",
+          "reset-names": "i2c2",
+          "resets": "00 00 00 03 00 00 00 1d",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/vo",
+        "name": "vo",
+        "compatible": "cvitek,vo",
+        "status": "okay",
+        "properties": {
+          "clock-names": "clk_disp, clk_dsi, clk_bt",
+          "clocks": "00 00 00 02 00 00 00 69 00 00 00 02 00 00 00 6a 00 00 00 02 00 00 00 68",
+          "compatible": "cvitek,vo",
+          "power-ct-gpio": "00 00 00 0f 00 00 00 01 00 00 00 00",
+          "power-gpio": "00 00 00 0f 00 00 00 01 00 00 00 00",
+          "pwm-gpio": "00 00 00 0f 00 00 00 00 00 00 00 00",
+          "reg": "00 00 00 00 0a 08 00 00 00 00 00 00 00 01 00 00 00 00 00 00 0a 0c 80 00 00 00 00 00 00 00 00 a0...",
+          "reg-names": "sc, vip_sys, dphy",
+          "reset-gpio": "00 00 00 0f 00 00 00 02 00 00 00 01",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/cvitek-ion",
+        "name": "cvitek-ion",
+        "compatible": "cvitek,cvitek-ion",
+        "properties": {
+          "compatible": "cvitek,cvitek-ion"
+        }
+      },
+      {
+        "path": "/cvitek-ion/heap_carveout@0",
+        "name": "heap_carveout@0",
+        "compatible": "cvitek,carveout",
+        "properties": {
+          "compatible": "cvitek,carveout",
+          "memory-region": "00 00 00 05"
+        }
+      },
+      {
+        "path": "/wiegand1",
+        "name": "wiegand1",
+        "compatible": "cvitek,wiegand",
+        "properties": {
+          "clock-names": "clk_wgn, clk_wgn1",
+          "clocks": "00 00 00 02 00 00 00 81 00 00 00 02 00 00 00 83",
+          "compatible": "cvitek,wiegand",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 41 00 00 00 04",
+          "reg": "00 00 00 00 03 03 10 00 00 00 00 00 00 00 10 00",
+          "reg-names": "wiegand",
+          "reset-names": "res_wgn",
+          "resets": "00 00 00 03 00 00 00 57"
+        }
+      },
+      {
+        "path": "/dwa",
+        "name": "dwa",
+        "compatible": "cvitek,dwa",
+        "properties": {
+          "clock-freq-vip-sys1": "11 e1 a3 00",
+          "clock-names": "clk_sys_0, clk_sys_1, clk_sys_2, clk_sys_3, clk_sys_4, clk_dwa",
+          "clocks": "00 00 00 02 00 00 00 50 00 00 00 02 00 00 00 51 00 00 00 02 00 00 00 88 00 00 00 02 00 00 00 9a...",
+          "compatible": "cvitek,dwa",
+          "interrupt-names": "dwa",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 1c 00 00 00 04",
+          "reg": "00 00 00 00 0a 0c 00 00 00 00 00 00 00 00 10 00",
+          "reg-names": "dwa"
+        }
+      },
+      {
+        "path": "/pdm@0x041D0C00",
+        "name": "pdm@0x041D0C00",
+        "compatible": "cvitek,cv1835pdm",
+        "properties": {
+          "clock-names": "i2sclk",
+          "clocks": "00 00 00 0d 00 00 00 00",
+          "compatible": "cvitek,cv1835pdm",
+          "reg": "00 00 00 00 04 1d 0c 00 00 00 00 00 00 00 01 00"
+        }
+      },
+      {
+        "path": "/sysdma_remap",
+        "name": "sysdma_remap",
+        "compatible": "cvitek,sysdma_remap",
+        "properties": {
+          "ch-remap": "00 00 00 00 00 00 00 05 00 00 00 02 00 00 00 03 00 00 00 26 00 00 00 26 00 00 00 04 00 00 00 07",
+          "compatible": "cvitek,sysdma_remap",
+          "int_mux": "00 07 fc 00",
+          "int_mux_base": "03 00 02 98",
+          "reg": "00 00 00 00 03 00 01 54 00 00 00 00 00 00 00 10"
+        }
+      },
+      {
+        "path": "/i2s_mclk",
+        "name": "i2s_mclk",
+        "compatible": "fixed-clock",
+        "properties": {
+          "#clock-cells": "00 00 00 00",
+          "clock-frequency": "01 77 00 00",
+          "clock-output-names": "i2s_mclk",
+          "compatible": "fixed-clock",
+          "phandle": "00 00 00 0d"
+        }
+      },
+      {
+        "path": "/cviaudio_core",
+        "name": "cviaudio_core",
+        "compatible": "cvitek,audio",
+        "properties": {
+          "compatible": "cvitek,audio"
+        }
+      },
+      {
+        "path": "/memory@80000000",
+        "name": "memory@80000000",
+        "properties": {
+          "device_type": "memory",
+          "reg": "00 00 00 00 80 00 00 00 00 00 00 00 1f e0 00 00"
+        }
+      },
+      {
+        "path": "/i2s_subsys",
+        "name": "i2s_subsys",
+        "compatible": "cvitek,i2s_tdm_subsys",
+        "properties": {
+          "clock-names": "i2sclk, clk_a0pll, clk_sdma_aud0, clk_sdma_aud1, clk_sdma_aud2, clk_sdma_aud3",
+          "clocks": "00 00 00 0d 00 00 00 02 00 00 00 04 00 00 00 02 00 00 00 2d 00 00 00 02 00 00 00 2e 00 00 00 02...",
+          "compatible": "cvitek,i2s_tdm_subsys",
+          "master_base": "04 11 00 00",
+          "reg": "00 00 00 00 04 10 80 00 00 00 00 00 00 00 01 00"
+        }
+      },
+      {
+        "path": "/vcodec",
+        "name": "vcodec",
+        "compatible": "cvitek,asic-vcodec",
+        "properties": {
+          "clock-names": "clk_axi_video_codec, clk_h264c, clk_apb_h264c, clk_h265c, clk_apb_h265c, clk_vc_src0, clk_vc_src1, clk_vc_src2, clk_cfg_reg_vc",
+          "clocks": "00 00 00 02 00 00 00 53 00 00 00 02 00 00 00 55 00 00 00 02 00 00 00 59 00 00 00 02 00 00 00 56...",
+          "compatible": "cvitek,asic-vcodec",
+          "interrupt-names": "h265, h264, sbm",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 16 00 00 00 04 00 00 00 15 00 00 00 04 00 00 00 17 00 00 00 04",
+          "reg": "00 00 00 00 0b 02 00 00 00 00 00 00 00 01 00 00 00 00 00 00 0b 01 00 00 00 00 00 00 00 01 00 00...",
+          "reg-names": "h265, h264, vc_ctrl, vc_sbm, vc_addr_remap"
+        }
+      },
+      {
+        "path": "/serial@04140000",
+        "name": "serial@04140000",
+        "compatible": "snps,dw-apb-uart",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "snps,dw-apb-uart",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 2c 00 00 00 04",
+          "reg": "00 00 00 00 04 14 00 00 00 00 00 00 00 00 10 00",
+          "reg-io-width": "00 00 00 04",
+          "reg-shift": "00 00 00 02",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/rx-queues-config",
+        "name": "rx-queues-config",
+        "properties": {
+          "phandle": "00 00 00 0b",
+          "snps,rx-queues-to-use": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/rx-queues-config/queue0",
+        "name": "queue0"
+      },
+      {
+        "path": "/spi2@041A0000",
+        "name": "spi2@041A0000",
+        "compatible": "snps,dw-apb-ssi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 02 00 00 00 71",
+          "compatible": "snps,dw-apb-ssi",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 38 00 00 00 04",
+          "num-cs": "00 00 00 01",
+          "reg": "00 00 00 00 04 1a 00 00 00 00 00 00 00 01 00 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/spi2@041A0000/spidev@0",
+        "name": "spidev@0",
+        "compatible": "rohm,dh2228fv",
+        "properties": {
+          "compatible": "rohm,dh2228fv",
+          "reg": "00 00 00 00",
+          "spi-max-frequency": "00 0f 42 40"
+        }
+      },
+      {
+        "path": "/pwm@3062000",
+        "name": "pwm@3062000",
+        "compatible": "cvitek,cvi-pwm",
+        "properties": {
+          "#pwm-cells": "00 00 00 03",
+          "clocks": "00 00 00 02 00 00 00 33",
+          "compatible": "cvitek,cvi-pwm",
+          "reg": "00 00 00 00 03 06 20 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/top_misc_ctrl@3000000",
+        "name": "top_misc_ctrl@3000000",
+        "compatible": "syscon",
+        "properties": {
+          "compatible": "syscon",
+          "reg": "00 00 00 00 03 00 00 00 00 00 00 00 00 00 80 00"
+        }
+      },
+      {
+        "path": "/gpio@03021000",
+        "name": "gpio@03021000",
+        "compatible": "snps,dw-apb-gpio",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "snps,dw-apb-gpio",
+          "reg": "00 00 00 00 03 02 10 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/gpio@03021000/gpio-controller@1",
+        "name": "gpio-controller@1",
+        "compatible": "snps,dw-apb-gpio-port",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "bank-name": "portb",
+          "compatible": "snps,dw-apb-gpio-port",
+          "gpio-controller": "",
+          "interrupt-controller": "",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 3d 00 00 00 04",
+          "phandle": "00 00 00 11",
+          "reg": "00 00 00 00",
+          "snps,nr-gpios": " "
+        }
+      },
+      {
+        "path": "/bt_pin",
+        "name": "bt_pin",
+        "compatible": "cvitek,bt-pin",
+        "properties": {
+          "compatible": "cvitek,bt-pin",
+          "poweron-gpio": "00 00 00 0f 00 00 00 09 00 00 00 00"
+        }
+      },
+      {
+        "path": "/wifi_pin",
+        "name": "wifi_pin",
+        "compatible": "cvitek,wifi-pin",
+        "properties": {
+          "compatible": "cvitek,wifi-pin",
+          "poweron-gpio": "00 00 00 07 00 00 00 0f 00 00 00 00",
+          "wakeup-gpio": "00 00 00 0f 00 00 00 07 00 00 00 00"
+        }
+      },
+      {
+        "path": "/thermal@030E0000",
+        "name": "thermal@030E0000",
+        "compatible": "cvitek,cv181x-thermal",
+        "properties": {
+          "#thermal-sensor-cells": "00 00 00 01",
+          "clock-names": "clk_tempsen",
+          "clocks": "00 00 00 02 00 00 00 14",
+          "compatible": "cvitek,cv181x-thermal",
+          "interrupt-names": "tempsen",
+          "interrupts": "00 00 00 10 00 00 00 04",
+          "phandle": "00 00 00 12",
+          "reg": "00 00 00 00 03 0e 00 00 00 00 00 00 00 01 00 00",
+          "reset-names": "tempsen"
+        }
+      },
+      {
+        "path": "/i2c@04030000",
+        "name": "i2c@04030000",
+        "compatible": "snps,designware-i2c",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "00 06 1a 80",
+          "clocks": "00 00 00 02 00 00 00 72",
+          "compatible": "snps,designware-i2c",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 34 00 00 00 04",
+          "reg": "00 00 00 00 04 03 00 00 00 00 00 00 00 00 10 00",
+          "reset-names": "i2c3",
+          "resets": "00 00 00 03 00 00 00 1e",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/fast_image",
+        "name": "fast_image",
+        "compatible": "cvitek,rtos_image",
+        "properties": {
+          "compatible": "cvitek,rtos_image",
+          "ion-size": "01 60 00 00",
+          "reg": "00 00 00 00 9f e0 00 00 00 00 00 00 00 20 00 00",
+          "reg-names": "rtos_region"
+        }
+      },
+      {
+        "path": "/dma@0x4330000",
+        "name": "dma@0x4330000",
+        "compatible": "snps,dmac-bm",
+        "properties": {
+          "#dma-cells": "00 00 00 03",
+          "axi_tr_width": "00 00 00 04",
+          "block-ts": "00 00 00 0f",
+          "block_size": "00 00 04 00",
+          "chan_allocation_order": "00",
+          "chan_priority": "01",
+          "clock-names": "clk_sdma_axi",
+          "clocks": "00 00 00 02 00 00 00 2c",
+          "compatible": "snps,dmac-bm",
+          "data-width": "00 00 00 04 00 00 00 04",
+          "dma-channels": "08",
+          "dma-masters": "02",
+          "dma-requests": "10",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 1d 00 00 00 04",
+          "phandle": "00 00 00 0e",
+          "reg": "00 00 00 00 04 33 00 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/dac@0300A000",
+        "name": "dac@0300A000",
+        "compatible": "cvitek,cv182xadac",
+        "properties": {
+          "clock-names": "i2sclk",
+          "clocks": "00 00 00 0d 00 00 00 00",
+          "compatible": "cvitek,cv182xadac",
+          "reg": "00 00 00 00 03 00 a0 00 00 00 00 00 00 00 01 00"
+        }
+      },
+      {
+        "path": "/aliases",
+        "name": "aliases",
+        "properties": {
+          "ethernet0": "/ethernet@4070000",
+          "i2c0": "/i2c@04000000",
+          "i2c1": "/i2c@04010000",
+          "i2c2": "/i2c@04020000",
+          "i2c3": "/i2c@04030000",
+          "i2c4": "/i2c@04040000",
+          "serial0": "/serial@04140000",
+          "serial1": "/serial@04150000",
+          "serial2": "/serial@04160000",
+          "serial3": "/serial@04170000",
+          "serial4": "/serial@041C0000"
+        }
+      },
+      {
+        "path": "/vi",
+        "name": "vi",
+        "compatible": "cvitek,vi",
+        "properties": {
+          "clock-freq-vip-sys1": "11 e1 a3 00",
+          "clock-names": "clk_sys_0, clk_sys_1, clk_sys_2, clk_sys_3, clk_axi, clk_csi_be, clk_raw, clk_isp_top, clk_csi_mac0, clk_csi_mac1, clk_csi_mac2",
+          "clocks": "00 00 00 02 00 00 00 50 00 00 00 02 00 00 00 51 00 00 00 02 00 00 00 88 00 00 00 02 00 00 00 9a...",
+          "compatible": "cvitek,vi",
+          "interrupt-names": "isp",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 18 00 00 00 04",
+          "reg": "00 00 00 00 0a 00 00 00 00 00 00 00 00 08 00 00"
+        }
+      },
+      {
+        "path": "/spi0@04180000",
+        "name": "spi0@04180000",
+        "compatible": "snps,dw-apb-ssi",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 02 00 00 00 71",
+          "compatible": "snps,dw-apb-ssi",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 36 00 00 00 04",
+          "num-cs": "00 00 00 01",
+          "reg": "00 00 00 00 04 18 00 00 00 00 00 00 00 01 00 00",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/spi0@04180000/spidev@0",
+        "name": "spidev@0",
+        "compatible": "rohm,dh2228fv",
+        "properties": {
+          "compatible": "rohm,dh2228fv",
+          "reg": "00 00 00 00",
+          "spi-max-frequency": "00 0f 42 40"
+        }
+      },
+      {
+        "path": "/serial@04150000",
+        "name": "serial@04150000",
+        "compatible": "snps,dw-apb-uart",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "snps,dw-apb-uart",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 2d 00 00 00 04",
+          "reg": "00 00 00 00 04 15 00 00 00 00 00 00 00 00 10 00",
+          "reg-io-width": "00 00 00 04",
+          "reg-shift": "00 00 00 02",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/ive",
+        "name": "ive",
+        "compatible": "cvitek,ive",
+        "properties": {
+          "compatible": "cvitek,ive",
+          "interrupt-names": "ive_irq",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 61 00 00 00 04",
+          "reg": "\n\n, 1",
+          "reg-names": "ive_base"
+        }
+      },
+      {
+        "path": "/reset-controller",
+        "name": "reset-controller",
+        "compatible": "cvitek,reset",
+        "properties": {
+          "#reset-cells": "00 00 00 01",
+          "compatible": "cvitek,reset",
+          "phandle": "00 00 00 03",
+          "reg": "00 00 00 00 03 00 30 00 00 00 00 00 00 00 00 10"
+        }
+      },
+      {
+        "path": "/usb@04340000",
+        "name": "usb@04340000",
+        "compatible": "cvitek,cv182x-usb",
+        "status": "okay",
+        "properties": {
+          "clock-names": "clk_axi, clk_apb, clk_125m, clk_33k, clk_12m",
+          "clocks": "00 00 00 02 00 00 00 47 00 00 00 02 00 00 00 48 00 00 00 02 00 00 00 49 00 00 00 02 00 00 00 4a...",
+          "compatible": "cvitek,cv182x-usb",
+          "dr_mode": "otg",
+          "g-np-tx-fifo-size": " ",
+          "g-rx-fifo-size": "00 00 02 18",
+          "g-tx-fifo-size": "00 00 03 00 00 00 02 00 00 00 02 00 00 00 01 80 00 00 00 80 00 00 00 80",
+          "g-use-dma": "",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 1e 00 00 00 04",
+          "reg": "00 00 00 00 04 34 00 00 00 00 00 00 00 01 00 00 00 00 00 00 03 00 60 00 00 00 00 00 00 00 00 58",
+          "status": "okay",
+          "vbus-gpio": "00 00 00 11 00 00 00 06 00 00 00 00"
+        }
+      },
+      {
+        "path": "/rtos_cmdqu",
+        "name": "rtos_cmdqu",
+        "compatible": "cvitek,rtos_cmdqu",
+        "properties": {
+          "compatible": "cvitek,rtos_cmdqu",
+          "interrupt-names": "mailbox",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 65 00 00 00 04",
+          "reg": "00 00 00 00 01 90 00 00 00 00 00 00 00 00 10 00",
+          "reg-names": "mailbox"
+        }
+      },
+      {
+        "path": "/chosen",
+        "name": "chosen",
+        "properties": {
+          "boot-hartid": "00 00 00 00",
+          "bootargs": "root=/dev/mmcblk0p3 rootwait rw console=ttyS0,115200 earlycon=sbi riscv.fwsz=0x80000 loglevel=9",
+          "stdout-path": "serial0"
+        }
+      },
+      {
+        "path": "/ethernet@4070000",
+        "name": "ethernet@4070000",
+        "compatible": "cvitek,ethernet",
+        "properties": {
+          "clock-names": "stmmaceth, ptp_ref",
+          "clocks": "00 00 00 08 00 00 00 09",
+          "compatible": "cvitek,ethernet",
+          "interrupt-names": "macirq",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 1f 00 00 00 04",
+          "phy-mode": "rmii",
+          "reg": "00 00 00 00 04 07 00 00 00 00 00 00 00 01 00 00",
+          "rx-fifo-depth": " ",
+          "snps,aal": "",
+          "snps,axi-config": "\n",
+          "snps,mtl-rx-config": "00 00 00 0b",
+          "snps,mtl-tx-config": "00 00 00 0c",
+          "snps,multicast-filter-bins": "00 00 00 00",
+          "snps,perfect-filter-entries": "00 00 00 01",
+          "snps,rxpbl": "00 00 00 08",
+          "snps,txpbl": "00 00 00 08",
+          "tx-fifo-depth": " "
+        }
+      },
+      {
+        "path": "/rgn",
+        "name": "rgn",
+        "compatible": "cvitek,rgn",
+        "properties": {
+          "compatible": "cvitek,rgn"
+        }
+      },
+      {
+        "path": "/i2s@04130000",
+        "name": "i2s@04130000",
+        "compatible": "cvitek,cv1835-i2s",
+        "properties": {
+          "#sound-dai-cells": "00 00 00 00",
+          "capability": "tx",
+          "clock-names": "i2sclk",
+          "clocks": "00 00 00 0d 00 00 00 00",
+          "compatible": "cvitek,cv1835-i2s",
+          "dev-id": "00 00 00 03",
+          "dma-names": "tx",
+          "dmas": "00 00 00 0e 00 00 00 07 00 00 00 01 00 00 00 01",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 2b 00 00 00 04",
+          "mclk_out": "true",
+          "reg": "00 00 00 00 04 13 00 00 00 00 00 00 00 00 20 00"
+        }
+      },
+      {
+        "path": "/i2c@04000000",
+        "name": "i2c@04000000",
+        "compatible": "snps,designware-i2c",
+        "status": "disabled",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clock-frequency": "00 06 1a 80",
+          "clocks": "00 00 00 02 00 00 00 72",
+          "compatible": "snps,designware-i2c",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 31 00 00 00 04",
+          "reg": "00 00 00 00 04 00 00 00 00 00 00 00 00 00 10 00",
+          "reset-names": "i2c0",
+          "resets": "00 00 00 03 00 00 00 1b",
+          "status": "disabled"
+        }
+      },
+      {
+        "path": "/gpio@03023000",
+        "name": "gpio@03023000",
+        "compatible": "snps,dw-apb-gpio",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "snps,dw-apb-gpio",
+          "reg": "00 00 00 00 03 02 30 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/gpio@03023000/gpio-controller@3",
+        "name": "gpio-controller@3",
+        "compatible": "snps,dw-apb-gpio-port",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "bank-name": "portd",
+          "compatible": "snps,dw-apb-gpio-port",
+          "gpio-controller": "",
+          "interrupt-controller": "",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 3f 00 00 00 04",
+          "reg": "00 00 00 00",
+          "snps,nr-gpios": " "
+        }
+      },
+      {
+        "path": "/wiegand2",
+        "name": "wiegand2",
+        "compatible": "cvitek,wiegand",
+        "properties": {
+          "clock-names": "clk_wgn, clk_wgn1",
+          "clocks": "00 00 00 02 00 00 00 81 00 00 00 02 00 00 00 84",
+          "compatible": "cvitek,wiegand",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 42 00 00 00 04",
+          "reg": "00 00 00 00 03 03 20 00 00 00 00 00 00 00 10 00",
+          "reg-names": "wiegand",
+          "reset-names": "res_wgn",
+          "resets": "00 00 00 03 00 00 00 58"
+        }
+      },
+      {
+        "path": "/cpus",
+        "name": "cpus",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "timebase-frequency": "01 7d 78 40"
+        }
+      },
+      {
+        "path": "/cpus/cpu-map",
+        "name": "cpu-map"
+      },
+      {
+        "path": "/cpus/cpu-map/cluster0",
+        "name": "cluster0"
+      },
+      {
+        "path": "/cpus/cpu-map/cluster0/core0",
+        "name": "core0",
+        "properties": {
+          "cpu": "00 00 00 01"
+        }
+      },
+      {
+        "path": "/cpus/cpu@0",
+        "name": "cpu@0",
+        "compatible": "riscv",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "riscv",
+          "device_type": "cpu",
+          "mmu-type": "riscv,sv39",
+          "reg": "00 00 00 00",
+          "riscv,isa": "rv64imafdvcsu",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/cpus/cpu@0/interrupt-controller",
+        "name": "interrupt-controller",
+        "compatible": "riscv,cpu-intc",
+        "properties": {
+          "#interrupt-cells": "00 00 00 01",
+          "compatible": "riscv,cpu-intc",
+          "interrupt-controller": "",
+          "phandle": "00 00 00 13"
+        }
+      },
+      {
+        "path": "/pwm@3061000",
+        "name": "pwm@3061000",
+        "compatible": "cvitek,cvi-pwm",
+        "properties": {
+          "#pwm-cells": "00 00 00 02",
+          "clocks": "00 00 00 02 00 00 00 33",
+          "compatible": "cvitek,cvi-pwm",
+          "reg": "00 00 00 00 03 06 10 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/gpio@03020000",
+        "name": "gpio@03020000",
+        "compatible": "snps,dw-apb-gpio",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "compatible": "snps,dw-apb-gpio",
+          "reg": "00 00 00 00 03 02 00 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/gpio@03020000/gpio-controller@0",
+        "name": "gpio-controller@0",
+        "compatible": "snps,dw-apb-gpio-port",
+        "properties": {
+          "#gpio-cells": "00 00 00 02",
+          "bank-name": "porta",
+          "compatible": "snps,dw-apb-gpio-port",
+          "gpio-controller": "",
+          "interrupt-controller": "",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 3c 00 00 00 04",
+          "phandle": "00 00 00 07",
+          "reg": "00 00 00 00",
+          "snps,nr-gpios": " "
+        }
+      },
+      {
+        "path": "/i2c@04040000",
+        "name": "i2c@04040000",
+        "compatible": "snps,designware-i2c",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "00 06 1a 80",
+          "clocks": "00 00 00 02 00 00 00 72",
+          "compatible": "snps,designware-i2c",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 35 00 00 00 04",
+          "reg": "00 00 00 00 04 04 00 00 00 00 00 00 00 00 10 00",
+          "reset-names": "i2c4",
+          "resets": "00 00 00 03 00 00 00 1f",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/i2c@04040000/gt9xx@14",
+        "name": "gt9xx@14",
+        "compatible": "goodix,gt9xx",
+        "status": "okay",
+        "properties": {
+          "compatible": "goodix,gt9xx",
+          "goodix,irq-gpio": "00 00 00 07 00 00 00 12 00 00 00 00",
+          "goodix,rst-gpio": "00 00 00 07 00 00 00 13 00 00 00 00",
+          "reg": "00 00 00 14",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/reserved-memory",
+        "name": "reserved-memory",
+        "properties": {
+          "#address-cells": "00 00 00 02",
+          "#size-cells": "00 00 00 02",
+          "ranges": ""
+        }
+      },
+      {
+        "path": "/reserved-memory/cvifb",
+        "name": "cvifb",
+        "properties": {
+          "alloc-ranges": "00 00 00 00 94 c3 00 00 00 00 00 00 00 7d 00 00",
+          "phandle": "00 00 00 10",
+          "size": "}"
+        }
+      },
+      {
+        "path": "/reserved-memory/mmode_resv0@80000000",
+        "name": "mmode_resv0@80000000",
+        "properties": {
+          "phandle": "00 00 00 14",
+          "reg": "00 00 00 00 80 00 00 00 00 00 00 00 00 04 00 00"
+        }
+      },
+      {
+        "path": "/reserved-memory/ion",
+        "name": "ion",
+        "compatible": "ion-region",
+        "properties": {
+          "compatible": "ion-region",
+          "phandle": "00 00 00 05",
+          "size": "00 00 00 00 0a a0 00 00"
+        }
+      },
+      {
+        "path": "/clk-reset-controller",
+        "name": "clk-reset-controller",
+        "compatible": "cvitek,clk-reset",
+        "properties": {
+          "#reset-cells": "00 00 00 01",
+          "compatible": "cvitek,clk-reset",
+          "reg": "00 00 00 00 03 00 20 00 00 00 00 00 00 00 00 08"
+        }
+      },
+      {
+        "path": "/cif",
+        "name": "cif",
+        "compatible": "cvitek,cif",
+        "properties": {
+          "clock-names": "clk_cam0, clk_cam1, clk_sys_2, clk_mipimpll, clk_disppll, clk_fpll",
+          "clocks": "00 00 00 02 00 00 00 5b 00 00 00 02 00 00 00 5c 00 00 00 02 00 00 00 88 00 00 00 02 00 00 00 03...",
+          "compatible": "cvitek,cif",
+          "interrupt-names": "csi0, csi1",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 1a 00 00 00 04 00 00 00 1b 00 00 00 04",
+          "reg": "00 00 00 00 0a 0c 20 00 00 00 00 00 00 00 20 00 00 00 00 00 0a 0d 00 00 00 00 00 00 00 00 10 00...",
+          "reg-names": "csi_mac0, csi_wrap0, csi_mac1, csi_mac2, pad_ctrl",
+          "reset-names": "phy0, phy1, phy-apb0, phy-apb1",
+          "resets": "00 00 00 03 00 00 00 46 00 00 00 03 00 00 00 48 00 00 00 03 00 00 00 47 00 00 00 03 00 00 00 49",
+          "snsr-reset": "00 00 00 07 00 00 00 02 00 00 00 01 00 00 00 07 00 00 00 02 00 00 00 01 00 00 00 07 00 00 00 02..."
+        }
+      },
+      {
+        "path": "/rtc",
+        "name": "rtc",
+        "compatible": "cvitek,rtc",
+        "properties": {
+          "clock-names": "clk_rtc",
+          "clocks": "00 00 00 02 00 00 00 13",
+          "compatible": "cvitek,rtc",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 11 00 00 00 04",
+          "reg": "00 00 00 00 05 02 60 00 00 00 00 00 00 00 10 00 00 00 00 00 05 02 50 00 00 00 00 00 00 00 10 00"
+        }
+      },
+      {
+        "path": "/wiegand0",
+        "name": "wiegand0",
+        "compatible": "cvitek,wiegand",
+        "properties": {
+          "clock-names": "clk_wgn, clk_wgn1",
+          "clocks": "00 00 00 02 00 00 00 81 00 00 00 02 00 00 00 82",
+          "compatible": "cvitek,wiegand",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 40 00 00 00 04",
+          "reg": "00 00 00 00 03 03 00 00 00 00 00 00 00 00 10 00",
+          "reg-names": "wiegand",
+          "reset-names": "res_wgn",
+          "resets": "00 00 00 03 00 00 00 56"
+        }
+      },
+      {
+        "path": "/spi3@041B0000",
+        "name": "spi3@041B0000",
+        "compatible": "snps,dw-apb-ssi",
+        "status": "okay",
+        "properties": {
+          "#address-cells": "00 00 00 01",
+          "#size-cells": "00 00 00 00",
+          "clocks": "00 00 00 02 00 00 00 71",
+          "compatible": "snps,dw-apb-ssi",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 39 00 00 00 04",
+          "num-cs": "00 00 00 01",
+          "reg": "00 00 00 00 04 1b 00 00 00 00 00 00 00 01 00 00",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/spi3@041B0000/spidev@0",
+        "name": "spidev@0",
+        "compatible": "rohm,dh2228fv",
+        "status": "okay",
+        "properties": {
+          "compatible": "rohm,dh2228fv",
+          "reg": "00 00 00 00",
+          "spi-max-frequency": "00 0f 42 40",
+          "status": "okay"
+        }
+      },
+      {
+        "path": "/serial@04160000",
+        "name": "serial@04160000",
+        "compatible": "snps,dw-apb-uart",
+        "status": "okay",
+        "properties": {
+          "clock-frequency": "01 7d 78 40",
+          "compatible": "snps,dw-apb-uart",
+          "interrupt-parent": "00 00 00 04",
+          "interrupts": "00 00 00 2e 00 00 00 04",
+          "reg": "00 00 00 00 04 16 00 00 00 00 00 00 00 00 10 00",
+          "reg-io-width": "00 00 00 04",
+          "reg-shift": "00 00 00 02",
+          "status": "okay"
+        }
+      }
+    ]
+  }
+}
+
+==============================================
+END OF TEST RESULTS
+==============================================

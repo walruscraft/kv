@@ -15,6 +15,7 @@
 //! for the human-readable value. We keep it in millidegrees for precision.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{thermal as f, to_text_key};
 use crate::filter::{opt_str, Filterable};
 use crate::io::{read_dir_names_sorted, read_file_string};
 use crate::json::{begin_kv_output, JsonWriter};
@@ -324,20 +325,20 @@ fn print_text(zones: &[ThermalZone], cooling: &[CoolingDevice], verbose: bool, h
 
         // Use type as the primary identifier, fallback to zone name
         let type_str = zone.zone_type.as_deref().unwrap_or(&zone.name);
-        parts.push(format!("SENSOR={}", type_str));
+        parts.push(format!("{}={}", to_text_key(f::SENSOR), type_str));
 
         // For hwmon with labels, show the label (e.g., "Core 0")
         if let Some(ref label) = zone.label {
-            parts.push(format!("LABEL=\"{}\"", label));
+            parts.push(format!("{}=\"{}\"", to_text_key(f::LABEL), label));
         }
 
         if let Some(temp) = zone.temp_celsius() {
-            parts.push(format!("TEMP={}", format_temp(temp, human)));
+            parts.push(format!("{}={}", to_text_key(f::TEMP), format_temp(temp, human)));
         }
 
         if verbose {
             if let Some(crit) = zone.temp_crit_celsius() {
-                parts.push(format!("CRIT={}", format_temp(crit, human)));
+                parts.push(format!("{}={}", to_text_key(f::CRIT), format_temp(crit, human)));
             }
             // Show trip points in verbose mode
             if !zone.trip_points.is_empty() {
@@ -346,17 +347,17 @@ fn print_text(zones: &[ThermalZone], cooling: &[CoolingDevice], verbose: bool, h
                     .iter()
                     .map(|tp| format!("{}:{}", tp.trip_type, format_temp(tp.temp_celsius(), human)))
                     .collect();
-                parts.push(format!("TRIPS={}", trips.join(",")));
+                parts.push(format!("{}={}", to_text_key(f::TRIPS), trips.join(",")));
             }
             if let Some(ref policy) = zone.policy {
-                parts.push(format!("POLICY={}", policy));
+                parts.push(format!("{}={}", to_text_key(f::POLICY), policy));
             }
             // Show source in verbose mode
             let source = match zone.source {
                 ThermalSource::ThermalZone => "thermal",
                 ThermalSource::Hwmon => "hwmon",
             };
-            parts.push(format!("SOURCE={}", source));
+            parts.push(format!("{}={}", to_text_key(f::SOURCE), source));
         }
 
         println!("{}", parts.join(" "));
@@ -366,11 +367,11 @@ fn print_text(zones: &[ThermalZone], cooling: &[CoolingDevice], verbose: bool, h
     if verbose && !cooling.is_empty() {
         for dev in cooling {
             let state_info = if dev.max_state > 0 {
-                format!("STATE={}/{}", dev.cur_state, dev.max_state)
+                format!("{}={}/{}", to_text_key(f::STATE), dev.cur_state, dev.max_state)
             } else {
-                format!("STATE={}", dev.cur_state)
+                format!("{}={}", to_text_key(f::STATE), dev.cur_state)
             };
-            println!("COOLING={} {}", dev.device_type, state_info);
+            println!("{}={} {}", to_text_key(f::COOLING), dev.device_type, state_info);
         }
     }
 }
@@ -385,44 +386,44 @@ fn print_json(zones: &[ThermalZone], cooling: &[CoolingDevice], pretty: bool, ve
         w.array_object_begin();
 
         if let Some(ref t) = zone.zone_type {
-            w.field_str("sensor", t);
+            w.field_str(f::SENSOR, t);
         } else {
-            w.field_str("sensor", &zone.name);
+            w.field_str(f::SENSOR, &zone.name);
         }
 
         if let Some(ref label) = zone.label {
-            w.field_str("label", label);
+            w.field_str(f::LABEL, label);
         }
 
         if let Some(temp) = zone.temp_millicelsius {
-            w.field_i64("temp_millicelsius", temp);
+            w.field_i64(f::TEMP_MILLICELSIUS, temp);
         }
 
         if verbose {
-            w.field_str("name", &zone.name);
+            w.field_str(f::NAME, &zone.name);
             if let Some(crit) = zone.temp_crit {
-                w.field_i64("temp_crit_millicelsius", crit);
+                w.field_i64(f::TEMP_CRIT_MILLICELSIUS, crit);
             }
             // Include trip points in verbose JSON
             if !zone.trip_points.is_empty() {
-                w.field_array("trip_points");
+                w.field_array(f::TRIP_POINTS);
                 for tp in &zone.trip_points {
                     w.array_object_begin();
-                    w.field_u64("index", tp.index as u64);
-                    w.field_str("type", &tp.trip_type);
-                    w.field_i64("temp_millicelsius", tp.temp_millicelsius);
+                    w.field_u64(f::INDEX, tp.index as u64);
+                    w.field_str(f::TYPE, &tp.trip_type);
+                    w.field_i64(f::TEMP_MILLICELSIUS, tp.temp_millicelsius);
                     w.array_object_end();
                 }
                 w.end_field_array();
             }
             if let Some(ref policy) = zone.policy {
-                w.field_str("policy", policy);
+                w.field_str(f::POLICY, policy);
             }
             let source = match zone.source {
                 ThermalSource::ThermalZone => "thermal",
                 ThermalSource::Hwmon => "hwmon",
             };
-            w.field_str("source", source);
+            w.field_str(f::SOURCE, source);
         }
 
         w.array_object_end();
@@ -432,13 +433,13 @@ fn print_json(zones: &[ThermalZone], cooling: &[CoolingDevice], pretty: bool, ve
 
     // Include cooling devices in verbose mode
     if verbose && !cooling.is_empty() {
-        w.field_array("cooling");
+        w.field_array(f::COOLING);
         for dev in cooling {
             w.array_object_begin();
-            w.field_str("type", &dev.device_type);
-            w.field_u64("cur_state", dev.cur_state as u64);
-            w.field_u64("max_state", dev.max_state as u64);
-            w.field_str("name", &dev.name);
+            w.field_str(f::TYPE, &dev.device_type);
+            w.field_u64(f::CUR_STATE, dev.cur_state as u64);
+            w.field_u64(f::MAX_STATE, dev.max_state as u64);
+            w.field_str(f::NAME, &dev.name);
             w.array_object_end();
         }
         w.end_field_array();
@@ -520,26 +521,26 @@ pub fn write_json(w: &mut JsonWriter, zones: &[ThermalZone], verbose: bool) {
         w.array_object_begin();
 
         if let Some(ref t) = zone.zone_type {
-            w.field_str("sensor", t);
+            w.field_str(f::SENSOR, t);
         } else {
-            w.field_str("sensor", &zone.name);
+            w.field_str(f::SENSOR, &zone.name);
         }
 
         if let Some(ref label) = zone.label {
-            w.field_str("label", label);
+            w.field_str(f::LABEL, label);
         }
 
         if let Some(temp) = zone.temp_millicelsius {
-            w.field_i64("temp_millicelsius", temp);
+            w.field_i64(f::TEMP_MILLICELSIUS, temp);
         }
 
         if verbose {
-            w.field_str("name", &zone.name);
+            w.field_str(f::NAME, &zone.name);
             if let Some(crit) = zone.temp_crit {
-                w.field_i64("temp_crit_millicelsius", crit);
+                w.field_i64(f::TEMP_CRIT_MILLICELSIUS, crit);
             }
             if let Some(ref policy) = zone.policy {
-                w.field_str("policy", policy);
+                w.field_str(f::POLICY, policy);
             }
         }
 

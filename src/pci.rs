@@ -9,6 +9,7 @@
 //! actually more useful for scripting anyway.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{pci as f, to_text_key};
 use crate::filter::{opt_str, Filterable};
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
@@ -126,36 +127,36 @@ impl PciDevice {
     pub fn print_text(&self, verbose: bool) {
         let mut parts = Vec::new();
 
-        parts.push(format!("BDF={}", self.bdf));
-        parts.push(format!("VENDOR_ID={}", io::format_hex_u16(self.vendor_id)));
-        parts.push(format!("DEVICE_ID={}", io::format_hex_u16(self.device_id)));
-        parts.push(format!("CLASS={}", self.class_hex()));
+        parts.push(format!("{}={}", to_text_key(f::BDF), self.bdf));
+        parts.push(format!("{}={}", to_text_key(f::VENDOR_ID), io::format_hex_u16(self.vendor_id)));
+        parts.push(format!("{}={}", to_text_key(f::DEVICE_ID), io::format_hex_u16(self.device_id)));
+        parts.push(format!("{}={}", to_text_key(f::CLASS), self.class_hex()));
 
         if let Some(ref driver) = self.driver {
-            parts.push(format!("DRIVER={}", driver));
+            parts.push(format!("{}={}", to_text_key(f::DRIVER), driver));
         }
 
         if verbose {
             if let Some(v) = self.subsystem_vendor_id {
-                parts.push(format!("SUBSYS_VENDOR={}", io::format_hex_u16(v)));
+                parts.push(format!("{}={}", to_text_key(f::SUBSYS_VENDOR), io::format_hex_u16(v)));
             }
             if let Some(v) = self.subsystem_device_id {
-                parts.push(format!("SUBSYS_DEVICE={}", io::format_hex_u16(v)));
+                parts.push(format!("{}={}", to_text_key(f::SUBSYS_DEVICE), io::format_hex_u16(v)));
             }
             if let Some(v) = self.revision {
-                parts.push(format!("REVISION={}", io::format_hex_u8(v)));
+                parts.push(format!("{}={}", to_text_key(f::REVISION), io::format_hex_u8(v)));
             }
             if let Some(v) = self.numa_node {
-                parts.push(format!("NUMA_NODE={}", v));
+                parts.push(format!("{}={}", to_text_key(f::NUMA_NODE), v));
             }
             if let Some(v) = self.iommu_group {
-                parts.push(format!("IOMMU_GROUP={}", v));
+                parts.push(format!("{}={}", to_text_key(f::IOMMU_GROUP), v));
             }
             if let Some(v) = self.enabled {
-                parts.push(format!("ENABLED={}", if v { 1 } else { 0 }));
+                parts.push(format!("{}={}", to_text_key(f::ENABLED), if v { 1 } else { 0 }));
             }
             if let Some(ref state) = self.d_state {
-                parts.push(format!("POWER_STATE={}", state));
+                parts.push(format!("{}={}", to_text_key(f::POWER_STATE), state));
             }
         }
 
@@ -240,29 +241,29 @@ fn print_json(devices: &[PciDevice], pretty: bool, verbose: bool) {
 fn write_device_json(w: &mut JsonWriter, dev: &PciDevice, verbose: bool) {
     w.array_object_begin();
 
-    w.field_str("bdf", &dev.bdf);
-    w.field_str("vendor_id", &io::format_hex_u16(dev.vendor_id));
-    w.field_str("device_id", &io::format_hex_u16(dev.device_id));
-    w.field_str("class", &dev.class_hex());
-    w.field_str_opt("driver", dev.driver.as_deref());
+    w.field_str(f::BDF, &dev.bdf);
+    w.field_str(f::VENDOR_ID, &io::format_hex_u16(dev.vendor_id));
+    w.field_str(f::DEVICE_ID, &io::format_hex_u16(dev.device_id));
+    w.field_str(f::CLASS, &dev.class_hex());
+    w.field_str_opt(f::DRIVER, dev.driver.as_deref());
 
     if verbose {
         if let Some(v) = dev.subsystem_vendor_id {
-            w.field_str("subsystem_vendor_id", &io::format_hex_u16(v));
+            w.field_str(f::SUBSYS_VENDOR, &io::format_hex_u16(v));
         }
         if let Some(v) = dev.subsystem_device_id {
-            w.field_str("subsystem_device_id", &io::format_hex_u16(v));
+            w.field_str(f::SUBSYS_DEVICE, &io::format_hex_u16(v));
         }
         if let Some(v) = dev.revision {
-            w.field_str("revision", &io::format_hex_u8(v));
+            w.field_str(f::REVISION, &io::format_hex_u8(v));
         }
-        w.field_u64_opt("numa_node", dev.numa_node.map(|v| v as u64));
-        w.field_u64_opt("iommu_group", dev.iommu_group.map(|v| v as u64));
+        w.field_u64_opt(f::NUMA_NODE, dev.numa_node.map(|v| v as u64));
+        w.field_u64_opt(f::IOMMU_GROUP, dev.iommu_group.map(|v| v as u64));
         if let Some(v) = dev.enabled {
-            w.field_bool("enabled", v);
+            w.field_bool(f::ENABLED, v);
         }
-        w.field_str_opt("power_state", dev.d_state.as_deref());
-        w.field_bool("is_bridge", dev.is_bridge);
+        w.field_str_opt(f::POWER_STATE, dev.d_state.as_deref());
+        w.field_bool(f::IS_BRIDGE, dev.is_bridge);
     }
 
     w.array_object_end();

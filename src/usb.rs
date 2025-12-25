@@ -11,6 +11,7 @@
 //! permissions to read on some systems. We gracefully handle missing strings.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{usb as f, to_text_key};
 use crate::filter::{opt_str, Filterable};
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
@@ -154,35 +155,35 @@ impl UsbDevice {
     pub fn print_text(&self, verbose: bool) {
         let mut parts = Vec::new();
 
-        parts.push(format!("NAME={}", self.name));
-        parts.push(format!("VENDOR_ID={}", io::format_hex_u16(self.vendor_id)));
-        parts.push(format!("PRODUCT_ID={}", io::format_hex_u16(self.product_id)));
+        parts.push(format!("{}={}", to_text_key(f::NAME), self.name));
+        parts.push(format!("{}={}", to_text_key(f::VENDOR_ID), io::format_hex_u16(self.vendor_id)));
+        parts.push(format!("{}={}", to_text_key(f::PRODUCT_ID), io::format_hex_u16(self.product_id)));
 
         if let Some(ref mfr) = self.manufacturer {
-            parts.push(format!("MANUFACTURER=\"{}\"", mfr));
+            parts.push(format!("{}=\"{}\"", to_text_key(f::MANUFACTURER), mfr));
         }
         if let Some(ref prod) = self.product {
-            parts.push(format!("PRODUCT=\"{}\"", prod));
+            parts.push(format!("{}=\"{}\"", to_text_key(f::PRODUCT), prod));
         }
         if let Some(speed) = self.speed_mbps {
-            parts.push(format!("SPEED_MBPS={}", speed));
+            parts.push(format!("{}={}", to_text_key(f::SPEED_MBPS), speed));
         }
 
         if verbose {
-            parts.push(format!("CLASS={}", io::format_hex_u8(self.device_class)));
-            parts.push(format!("BUS={}", self.busnum));
-            parts.push(format!("DEV={}", self.devnum));
+            parts.push(format!("{}={}", to_text_key(f::CLASS), io::format_hex_u8(self.device_class)));
+            parts.push(format!("{}={}", to_text_key(f::BUS), self.busnum));
+            parts.push(format!("{}={}", to_text_key(f::DEV), self.devnum));
             if let Some(ref serial) = self.serial {
-                parts.push(format!("SERIAL=\"{}\"", serial));
+                parts.push(format!("{}=\"{}\"", to_text_key(f::SERIAL), serial));
             }
             if let Some(ref version) = self.usb_version {
-                parts.push(format!("USB_VERSION={}", version));
+                parts.push(format!("{}={}", to_text_key(f::USB_VERSION), version));
             }
             if let Some(power) = self.max_power_ma {
-                parts.push(format!("MAX_POWER_MA={}", power));
+                parts.push(format!("{}={}", to_text_key(f::MAX_POWER_MA), power));
             }
             if let Some(ref driver) = self.driver {
-                parts.push(format!("DRIVER={}", driver));
+                parts.push(format!("{}={}", to_text_key(f::DRIVER), driver));
             }
         }
 
@@ -267,23 +268,23 @@ fn print_json(devices: &[UsbDevice], pretty: bool, verbose: bool) {
 fn write_device_json(w: &mut JsonWriter, dev: &UsbDevice, verbose: bool) {
     w.array_object_begin();
 
-    w.field_str("name", &dev.name);
-    w.field_str("vendor_id", &io::format_hex_u16(dev.vendor_id));
-    w.field_str("product_id", &io::format_hex_u16(dev.product_id));
-    w.field_str_opt("manufacturer", dev.manufacturer.as_deref());
-    w.field_str_opt("product", dev.product.as_deref());
-    w.field_u64_opt("speed_mbps", dev.speed_mbps.map(|v| v as u64));
+    w.field_str(f::NAME, &dev.name);
+    w.field_str(f::VENDOR_ID, &io::format_hex_u16(dev.vendor_id));
+    w.field_str(f::PRODUCT_ID, &io::format_hex_u16(dev.product_id));
+    w.field_str_opt(f::MANUFACTURER, dev.manufacturer.as_deref());
+    w.field_str_opt(f::PRODUCT, dev.product.as_deref());
+    w.field_u64_opt(f::SPEED_MBPS, dev.speed_mbps.map(|v| v as u64));
 
     if verbose {
-        w.field_str("device_class", &io::format_hex_u8(dev.device_class));
-        w.field_u64("busnum", dev.busnum as u64);
-        w.field_u64("devnum", dev.devnum as u64);
-        w.field_str_opt("serial", dev.serial.as_deref());
-        w.field_str_opt("usb_version", dev.usb_version.as_deref());
-        w.field_u64_opt("num_configurations", dev.num_configurations.map(|v| v as u64));
-        w.field_u64_opt("configuration", dev.configuration.map(|v| v as u64));
-        w.field_u64_opt("max_power_ma", dev.max_power_ma.map(|v| v as u64));
-        w.field_str_opt("driver", dev.driver.as_deref());
+        w.field_str(f::DEVICE_CLASS, &io::format_hex_u8(dev.device_class));
+        w.field_u64(f::BUSNUM, dev.busnum as u64);
+        w.field_u64(f::DEVNUM, dev.devnum as u64);
+        w.field_str_opt(f::SERIAL, dev.serial.as_deref());
+        w.field_str_opt(f::USB_VERSION, dev.usb_version.as_deref());
+        w.field_u64_opt(f::NUM_CONFIGURATIONS, dev.num_configurations.map(|v| v as u64));
+        w.field_u64_opt(f::CONFIGURATION, dev.configuration.map(|v| v as u64));
+        w.field_u64_opt(f::MAX_POWER_MA, dev.max_power_ma.map(|v| v as u64));
+        w.field_str_opt(f::DRIVER, dev.driver.as_deref());
     }
 
     w.array_object_end();

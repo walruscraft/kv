@@ -5,6 +5,7 @@
 //! why your rootfs is mysteriously read-only.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{mounts as f, to_text_key};
 use crate::filter::Filterable;
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
@@ -55,8 +56,11 @@ impl MountEntry {
     pub fn print_text(&self) {
         // Quote source and target since they might have spaces
         println!(
-            "SOURCE=\"{}\" TARGET=\"{}\" FSTYPE={} OPTIONS=\"{}\"",
-            self.source, self.target, self.fstype, self.options
+            "{}=\"{}\" {}=\"{}\" {}={} {}=\"{}\"",
+            to_text_key(f::SOURCE), self.source,
+            to_text_key(f::TARGET), self.target,
+            to_text_key(f::FSTYPE), self.fstype,
+            to_text_key(f::OPTIONS), self.options
         );
     }
 
@@ -170,13 +174,13 @@ fn print_json(mounts: &[MountEntry], pretty: bool, verbose: bool) {
     w.field_array("data");
     for mount in mounts {
         w.array_object_begin();
-        w.field_str("source", &mount.source);
-        w.field_str("target", &mount.target);
-        w.field_str("fstype", &mount.fstype);
-        w.field_str("options", &mount.options);
+        w.field_str(f::SOURCE, &mount.source);
+        w.field_str(f::TARGET, &mount.target);
+        w.field_str(f::FSTYPE, &mount.fstype);
+        w.field_str(f::OPTIONS, &mount.options);
         if verbose {
-            w.field_u64("dump_freq", mount.dump_freq as u64);
-            w.field_u64("pass_num", mount.pass_num as u64);
+            w.field_u64(f::DUMP_FREQ, mount.dump_freq as u64);
+            w.field_u64(f::PASS_NUM, mount.pass_num as u64);
         }
         w.array_object_end();
     }
@@ -198,13 +202,13 @@ pub fn write_json(w: &mut JsonWriter, mounts: &[MountEntry], verbose: bool) {
     w.field_array("mounts");
     for mount in mounts {
         w.array_object_begin();
-        w.field_str("source", &mount.source);
-        w.field_str("target", &mount.target);
-        w.field_str("fstype", &mount.fstype);
-        w.field_str("options", &mount.options);
+        w.field_str(f::SOURCE, &mount.source);
+        w.field_str(f::TARGET, &mount.target);
+        w.field_str(f::FSTYPE, &mount.fstype);
+        w.field_str(f::OPTIONS, &mount.options);
         if verbose {
-            w.field_u64("dump_freq", mount.dump_freq as u64);
-            w.field_u64("pass_num", mount.pass_num as u64);
+            w.field_u64(f::DUMP_FREQ, mount.dump_freq as u64);
+            w.field_u64(f::PASS_NUM, mount.pass_num as u64);
         }
         w.array_object_end();
     }

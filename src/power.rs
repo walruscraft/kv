@@ -11,6 +11,7 @@
 //! - UPS: Uninterruptible power supplies
 
 use crate::cli::GlobalOptions;
+use crate::fields::{power as f, to_text_key};
 use crate::filter::{opt_str, Filterable};
 use crate::io::{read_dir_names_sorted, read_file_string};
 use crate::json::{begin_kv_output, JsonWriter};
@@ -284,30 +285,30 @@ fn print_text(supplies: &[PowerSupply], verbose: bool, human: bool) {
     for supply in supplies {
         let mut parts = Vec::new();
 
-        parts.push(format!("NAME={}", supply.name));
+        parts.push(format!("{}={}", to_text_key(f::NAME), supply.name));
 
         if let Some(ref t) = supply.supply_type {
-            parts.push(format!("TYPE={}", t));
+            parts.push(format!("{}={}", to_text_key(f::TYPE), t));
         }
 
         // For batteries, show status and capacity
         if supply.supply_type.as_deref() == Some("Battery") {
             if let Some(ref status) = supply.status {
-                parts.push(format!("STATUS={}", status));
+                parts.push(format!("{}={}", to_text_key(f::STATUS), status));
             }
             if let Some(cap) = supply.capacity {
-                parts.push(format!("CAPACITY={}%", cap));
+                parts.push(format!("{}={}%", to_text_key(f::CAPACITY), cap));
             }
         } else {
             // For Mains/USB, show online status
             if let Some(online) = supply.online {
-                parts.push(format!("ONLINE={}", if online == 1 { "yes" } else { "no" }));
+                parts.push(format!("{}={}", to_text_key(f::ONLINE), if online == 1 { "yes" } else { "no" }));
             }
         }
 
         // USB type for USB supplies
         if let Some(ref usb_type) = supply.usb_type {
-            parts.push(format!("USB_TYPE={}", usb_type));
+            parts.push(format!("{}={}", to_text_key(f::USB_TYPE), usb_type));
         }
 
         // Verbose mode: show electrical details
@@ -315,74 +316,74 @@ fn print_text(supplies: &[PowerSupply], verbose: bool, human: bool) {
             // Energy (batteries)
             if let (Some(now), Some(full)) = (supply.energy_now_wh(), supply.energy_full_wh()) {
                 if human {
-                    parts.push(format!("ENERGY={}/{}", format_energy(now, true), format_energy(full, true)));
+                    parts.push(format!("{}={}/{}", to_text_key(f::ENERGY), format_energy(now, true), format_energy(full, true)));
                 } else {
-                    parts.push(format!("ENERGY_WH={:.1}/{:.1}", now, full));
+                    parts.push(format!("{}={:.1}/{:.1}", to_text_key(f::ENERGY_WH), now, full));
                 }
             } else if let (Some(now), Some(full)) = (supply.charge_now_mah(), supply.charge_full_mah()) {
                 // Some batteries report charge instead of energy
                 if human {
-                    parts.push(format!("CHARGE={}/{}", format_charge(now, true), format_charge(full, true)));
+                    parts.push(format!("{}={}/{}", to_text_key(f::CHARGE), format_charge(now, true), format_charge(full, true)));
                 } else {
-                    parts.push(format!("CHARGE_MAH={:.0}/{:.0}", now, full));
+                    parts.push(format!("{}={:.0}/{:.0}", to_text_key(f::CHARGE_MAH), now, full));
                 }
             }
 
             // Voltage
             if let Some(v) = supply.voltage_v() {
                 if human {
-                    parts.push(format!("VOLTAGE={}", format_voltage(v, true)));
+                    parts.push(format!("{}={}", to_text_key(f::VOLTAGE), format_voltage(v, true)));
                 } else {
-                    parts.push(format!("VOLTAGE_V={:.2}", v));
+                    parts.push(format!("{}={:.2}", to_text_key(f::VOLTAGE_V), v));
                 }
             }
 
             // Current
             if let Some(c) = supply.current_a() {
                 if human {
-                    parts.push(format!("CURRENT={}", format_current(c, true)));
+                    parts.push(format!("{}={}", to_text_key(f::CURRENT), format_current(c, true)));
                 } else {
-                    parts.push(format!("CURRENT_A={:.3}", c));
+                    parts.push(format!("{}={:.3}", to_text_key(f::CURRENT_A), c));
                 }
             }
 
             // Power
             if let Some(p) = supply.power_w() {
                 if human {
-                    parts.push(format!("POWER={}", format_power(p, true)));
+                    parts.push(format!("{}={}", to_text_key(f::POWER), format_power(p, true)));
                 } else {
-                    parts.push(format!("POWER_W={:.2}", p));
+                    parts.push(format!("{}={:.2}", to_text_key(f::POWER_W), p));
                 }
             }
 
             // USB PD negotiated limits
             if let Some(v) = supply.voltage_max_v() {
                 if human {
-                    parts.push(format!("VOLTAGE_MAX={}", format_voltage(v, true)));
+                    parts.push(format!("{}={}", to_text_key(f::VOLTAGE_MAX), format_voltage(v, true)));
                 } else {
-                    parts.push(format!("VOLTAGE_MAX_V={:.2}", v));
+                    parts.push(format!("{}={:.2}", to_text_key(f::VOLTAGE_MAX_V), v));
                 }
             }
             if let Some(c) = supply.current_max_a() {
                 if human {
-                    parts.push(format!("CURRENT_MAX={}", format_current(c, true)));
+                    parts.push(format!("{}={}", to_text_key(f::CURRENT_MAX), format_current(c, true)));
                 } else {
-                    parts.push(format!("CURRENT_MAX_A={:.2}", c));
+                    parts.push(format!("{}={:.2}", to_text_key(f::CURRENT_MAX_A), c));
                 }
             }
 
             // Battery metadata
             if let Some(cycles) = supply.cycle_count {
-                parts.push(format!("CYCLES={}", cycles));
+                parts.push(format!("{}={}", to_text_key(f::CYCLES), cycles));
             }
             if let Some(ref tech) = supply.technology {
-                parts.push(format!("TECHNOLOGY={}", tech));
+                parts.push(format!("{}={}", to_text_key(f::TECHNOLOGY), tech));
             }
             if let Some(ref model) = supply.model_name {
-                parts.push(format!("MODEL=\"{}\"", model));
+                parts.push(format!("{}=\"{}\"", to_text_key(f::MODEL), model));
             }
             if let Some(ref mfr) = supply.manufacturer {
-                parts.push(format!("MANUFACTURER=\"{}\"", mfr));
+                parts.push(format!("{}=\"{}\"", to_text_key(f::MANUFACTURER), mfr));
             }
         }
 
@@ -399,74 +400,74 @@ fn print_json(supplies: &[PowerSupply], pretty: bool, verbose: bool) {
     for supply in supplies {
         w.array_object_begin();
 
-        w.field_str("name", &supply.name);
+        w.field_str(f::NAME, &supply.name);
 
         if let Some(ref t) = supply.supply_type {
-            w.field_str("type", t);
+            w.field_str(f::TYPE, t);
         }
 
         if let Some(ref status) = supply.status {
-            w.field_str("status", status);
+            w.field_str(f::STATUS, status);
         }
 
         if let Some(online) = supply.online {
-            w.field_bool("online", online == 1);
+            w.field_bool(f::ONLINE, online == 1);
         }
 
         if let Some(cap) = supply.capacity {
-            w.field_u64("capacity_percent", cap as u64);
+            w.field_u64(f::CAPACITY_PERCENT, cap as u64);
         }
 
         if let Some(ref usb_type) = supply.usb_type {
-            w.field_str("usb_type", usb_type);
+            w.field_str(f::USB_TYPE, usb_type);
         }
 
         if verbose {
             // Electrical measurements
             if let Some(v) = supply.voltage_uv {
-                w.field_i64("voltage_uv", v);
+                w.field_i64(f::VOLTAGE_UV, v);
             }
             if let Some(c) = supply.current_ua {
-                w.field_i64("current_ua", c);
+                w.field_i64(f::CURRENT_UA, c);
             }
             if let Some(p) = supply.power_uw {
-                w.field_i64("power_uw", p);
+                w.field_i64(f::POWER_UW, p);
             }
 
             // Energy/charge
             if let Some(e) = supply.energy_now_uwh {
-                w.field_i64("energy_now_uwh", e);
+                w.field_i64(f::ENERGY_NOW_UWH, e);
             }
             if let Some(e) = supply.energy_full_uwh {
-                w.field_i64("energy_full_uwh", e);
+                w.field_i64(f::ENERGY_FULL_UWH, e);
             }
             if let Some(c) = supply.charge_now_uah {
-                w.field_i64("charge_now_uah", c);
+                w.field_i64(f::CHARGE_NOW_UAH, c);
             }
             if let Some(c) = supply.charge_full_uah {
-                w.field_i64("charge_full_uah", c);
+                w.field_i64(f::CHARGE_FULL_UAH, c);
             }
 
             // USB PD limits
             if let Some(v) = supply.voltage_max_uv {
-                w.field_i64("voltage_max_uv", v);
+                w.field_i64(f::VOLTAGE_MAX_UV, v);
             }
             if let Some(c) = supply.current_max_ua {
-                w.field_i64("current_max_ua", c);
+                w.field_i64(f::CURRENT_MAX_UA, c);
             }
 
             // Battery metadata
             if let Some(cycles) = supply.cycle_count {
-                w.field_i64("cycle_count", cycles as i64);
+                w.field_i64(f::CYCLE_COUNT, cycles as i64);
             }
             if let Some(ref tech) = supply.technology {
-                w.field_str("technology", tech);
+                w.field_str(f::TECHNOLOGY, tech);
             }
             if let Some(ref model) = supply.model_name {
-                w.field_str("model_name", model);
+                w.field_str(f::MODEL_NAME, model);
             }
             if let Some(ref mfr) = supply.manufacturer {
-                w.field_str("manufacturer", mfr);
+                w.field_str(f::MANUFACTURER, mfr);
             }
         }
 
@@ -535,52 +536,52 @@ pub fn write_json(w: &mut JsonWriter, supplies: &[PowerSupply], verbose: bool) {
     for supply in supplies {
         w.array_object_begin();
 
-        w.field_str("name", &supply.name);
+        w.field_str(f::NAME, &supply.name);
 
         if let Some(ref t) = supply.supply_type {
-            w.field_str("type", t);
+            w.field_str(f::TYPE, t);
         }
 
         if let Some(ref status) = supply.status {
-            w.field_str("status", status);
+            w.field_str(f::STATUS, status);
         }
 
         if let Some(online) = supply.online {
-            w.field_bool("online", online == 1);
+            w.field_bool(f::ONLINE, online == 1);
         }
 
         if let Some(cap) = supply.capacity {
-            w.field_u64("capacity_percent", cap as u64);
+            w.field_u64(f::CAPACITY_PERCENT, cap as u64);
         }
 
         if let Some(ref usb_type) = supply.usb_type {
-            w.field_str("usb_type", usb_type);
+            w.field_str(f::USB_TYPE, usb_type);
         }
 
         if verbose {
             if let Some(v) = supply.voltage_uv {
-                w.field_i64("voltage_uv", v);
+                w.field_i64(f::VOLTAGE_UV, v);
             }
             if let Some(c) = supply.current_ua {
-                w.field_i64("current_ua", c);
+                w.field_i64(f::CURRENT_UA, c);
             }
             if let Some(p) = supply.power_uw {
-                w.field_i64("power_uw", p);
+                w.field_i64(f::POWER_UW, p);
             }
             if let Some(e) = supply.energy_now_uwh {
-                w.field_i64("energy_now_uwh", e);
+                w.field_i64(f::ENERGY_NOW_UWH, e);
             }
             if let Some(e) = supply.energy_full_uwh {
-                w.field_i64("energy_full_uwh", e);
+                w.field_i64(f::ENERGY_FULL_UWH, e);
             }
             if let Some(cycles) = supply.cycle_count {
-                w.field_i64("cycle_count", cycles as i64);
+                w.field_i64(f::CYCLE_COUNT, cycles as i64);
             }
             if let Some(ref tech) = supply.technology {
-                w.field_str("technology", tech);
+                w.field_str(f::TECHNOLOGY, tech);
             }
             if let Some(ref model) = supply.model_name {
-                w.field_str("model_name", model);
+                w.field_str(f::MODEL_NAME, model);
             }
         }
 

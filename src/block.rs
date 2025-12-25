@@ -8,6 +8,7 @@
 //! either as subdirectories of /sys/block/<disk>/ or as separate entries.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{block as f, to_text_key};
 use crate::filter::{opt_str, Filterable};
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
@@ -181,40 +182,40 @@ impl BlockDevice {
     pub fn print_text(&self, verbose: bool, human: bool) {
         let mut parts = Vec::new();
 
-        parts.push(format!("NAME={}", self.name));
-        parts.push(format!("TYPE={}", self.dev_type.as_str()));
-        parts.push(format!("MAJMIN={}:{}", self.major, self.minor));
+        parts.push(format!("{}={}", to_text_key(f::NAME), self.name));
+        parts.push(format!("{}={}", to_text_key(f::TYPE), self.dev_type.as_str()));
+        parts.push(format!("{}={}:{}", to_text_key(f::MAJMIN), self.major, self.minor));
 
         if human {
             let size = io::format_sectors_human(self.size_sectors, self.sector_size);
-            parts.push(format!("SIZE={}", size));
+            parts.push(format!("{}={}", to_text_key(f::SIZE), size));
         } else {
-            parts.push(format!("SIZE_SECTORS={}", self.size_sectors));
+            parts.push(format!("{}={}", to_text_key(f::SIZE_SECTORS), self.size_sectors));
         }
 
         if let Some(ref parent) = self.parent {
-            parts.push(format!("PARENT={}", parent));
+            parts.push(format!("{}={}", to_text_key(f::PARENT), parent));
         }
 
         if let Some(ref mp) = self.mountpoint {
-            parts.push(format!("MOUNTPOINT=\"{}\"", mp));
+            parts.push(format!("{}=\"{}\"", to_text_key(f::MOUNTPOINT), mp));
         }
 
         if verbose {
             if !human {
-                parts.push(format!("SECTOR_SIZE={}", self.sector_size));
+                parts.push(format!("{}={}", to_text_key(f::SECTOR_SIZE), self.sector_size));
             }
-            parts.push(format!("REMOVABLE={}", if self.removable { 1 } else { 0 }));
-            parts.push(format!("RO={}", if self.ro { 1 } else { 0 }));
+            parts.push(format!("{}={}", to_text_key(f::REMOVABLE), if self.removable { 1 } else { 0 }));
+            parts.push(format!("{}={}", to_text_key(f::RO), if self.ro { 1 } else { 0 }));
 
             if let Some(ref model) = self.model {
-                parts.push(format!("MODEL=\"{}\"", model.trim()));
+                parts.push(format!("{}=\"{}\"", to_text_key(f::MODEL), model.trim()));
             }
             if let Some(rot) = self.rotational {
-                parts.push(format!("ROTATIONAL={}", if rot { 1 } else { 0 }));
+                parts.push(format!("{}={}", to_text_key(f::ROTATIONAL), if rot { 1 } else { 0 }));
             }
             if let Some(ref sched) = self.scheduler {
-                parts.push(format!("SCHEDULER={}", sched));
+                parts.push(format!("{}={}", to_text_key(f::SCHEDULER), sched));
             }
         }
 
@@ -352,32 +353,32 @@ fn print_json(devices: &[BlockDevice], pretty: bool, verbose: bool, human: bool)
 fn write_device_json(w: &mut JsonWriter, dev: &BlockDevice, verbose: bool, human: bool) {
     w.array_object_begin();
 
-    w.field_str("name", &dev.name);
-    w.field_str("type", dev.dev_type.as_str());
-    w.field_u64("major", dev.major as u64);
-    w.field_u64("minor", dev.minor as u64);
+    w.field_str(f::NAME, &dev.name);
+    w.field_str(f::TYPE, dev.dev_type.as_str());
+    w.field_u64(f::MAJOR, dev.major as u64);
+    w.field_u64(f::MINOR, dev.minor as u64);
 
     if human {
         let size = io::format_sectors_human(dev.size_sectors, dev.sector_size);
-        w.field_str("size", &size);
+        w.field_str(f::SIZE, &size);
     } else {
-        w.field_u64("size_sectors", dev.size_sectors);
+        w.field_u64(f::SIZE_SECTORS, dev.size_sectors);
     }
 
-    w.field_str_opt("parent", dev.parent.as_deref());
-    w.field_str_opt("mountpoint", dev.mountpoint.as_deref());
+    w.field_str_opt(f::PARENT, dev.parent.as_deref());
+    w.field_str_opt(f::MOUNTPOINT, dev.mountpoint.as_deref());
 
     if verbose {
         if !human {
-            w.field_u64("sector_size", dev.sector_size as u64);
+            w.field_u64(f::SECTOR_SIZE, dev.sector_size as u64);
         }
-        w.field_bool("removable", dev.removable);
-        w.field_bool("ro", dev.ro);
-        w.field_str_opt("model", dev.model.as_deref());
+        w.field_bool(f::REMOVABLE, dev.removable);
+        w.field_bool(f::RO, dev.ro);
+        w.field_str_opt(f::MODEL, dev.model.as_deref());
         if let Some(rot) = dev.rotational {
-            w.field_bool("rotational", rot);
+            w.field_bool(f::ROTATIONAL, rot);
         }
-        w.field_str_opt("scheduler", dev.scheduler.as_deref());
+        w.field_str_opt(f::SCHEDULER, dev.scheduler.as_deref());
     }
 
     w.array_object_end();

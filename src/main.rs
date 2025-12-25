@@ -6,6 +6,7 @@
 mod cli;
 #[macro_use]
 mod debug;
+mod fields;
 mod filter;
 mod io;
 mod json;

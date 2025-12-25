@@ -7,6 +7,7 @@
 //! Wireless signal quality comes from /proc/net/wireless.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{net as f, to_text_key};
 use crate::filter::{opt_str, Filterable};
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
@@ -413,53 +414,53 @@ impl NetInterface {
     pub fn print_text(&self, verbose: bool, human: bool) {
         let mut parts = Vec::new();
 
-        parts.push(format!("NAME={}", self.name));
+        parts.push(format!("{}={}", to_text_key(f::NAME), self.name));
 
         if let Some(ref mac) = self.mac_address {
-            parts.push(format!("MAC={}", mac));
+            parts.push(format!("{}={}", to_text_key(f::MAC), mac));
         }
         if let Some(mtu) = self.mtu {
-            parts.push(format!("MTU={}", mtu));
+            parts.push(format!("{}={}", to_text_key(f::MTU), mtu));
         }
         if let Some(ref state) = self.operstate {
-            parts.push(format!("STATE={}", state));
+            parts.push(format!("{}={}", to_text_key(f::STATE), state));
         }
         if let Some(speed) = self.speed_mbps {
-            parts.push(format!("SPEED_MBPS={}", speed));
+            parts.push(format!("{}={}", to_text_key(f::SPEED), speed));
         }
 
         // Show first IPv4 address in basic mode
         if let Some(ip) = self.ipv4_addresses.first() {
-            parts.push(format!("IP={}", ip));
+            parts.push(format!("{}={}", to_text_key(f::IP), ip));
         }
 
         // Show wireless signal if available
         if let Some(ref wifi) = self.wireless {
-            parts.push(format!("SIGNAL={}dBm", wifi.signal_dbm));
+            parts.push(format!("{}={}dBm", to_text_key(f::SIGNAL), wifi.signal_dbm));
         }
 
         if verbose {
             // Show all IP addresses
             if self.ipv4_addresses.len() > 1 {
-                parts.push(format!("IPV4={}", self.ipv4_addresses.join(",")));
+                parts.push(format!("{}={}", to_text_key(f::IPV4), self.ipv4_addresses.join(",")));
             }
             if !self.ipv6_addresses.is_empty() {
-                parts.push(format!("IPV6={}", self.ipv6_addresses.join(",")));
+                parts.push(format!("{}={}", to_text_key(f::IPV6), self.ipv6_addresses.join(",")));
             }
 
             // Wireless details
             if let Some(ref wifi) = self.wireless {
-                parts.push(format!("LINK_QUALITY={}", wifi.link_quality));
+                parts.push(format!("{}={}", to_text_key(f::LINK), wifi.link_quality));
                 if wifi.noise_dbm != -256 {
-                    parts.push(format!("NOISE={}dBm", wifi.noise_dbm));
+                    parts.push(format!("{}={}dBm", to_text_key(f::NOISE), wifi.noise_dbm));
                 }
             }
 
             if let Some(ref duplex) = self.duplex {
-                parts.push(format!("DUPLEX={}", duplex));
+                parts.push(format!("{}={}", to_text_key(f::DUPLEX), duplex));
             }
             if let Some(carrier) = self.carrier {
-                parts.push(format!("CARRIER={}", if carrier { 1 } else { 0 }));
+                parts.push(format!("{}={}", to_text_key(f::CARRIER), if carrier { 1 } else { 0 }));
             }
             if human {
                 // Human-readable byte counts
@@ -471,23 +472,23 @@ impl NetInterface {
                 }
             } else {
                 if let Some(rx) = self.rx_bytes {
-                    parts.push(format!("RX_BYTES={}", rx));
+                    parts.push(format!("{}={}", to_text_key(f::RX_BYTES), rx));
                 }
                 if let Some(tx) = self.tx_bytes {
-                    parts.push(format!("TX_BYTES={}", tx));
+                    parts.push(format!("{}={}", to_text_key(f::TX_BYTES), tx));
                 }
             }
             if let Some(rx) = self.rx_packets {
-                parts.push(format!("RX_PACKETS={}", rx));
+                parts.push(format!("{}={}", to_text_key(f::RX_PACKETS), rx));
             }
             if let Some(tx) = self.tx_packets {
-                parts.push(format!("TX_PACKETS={}", tx));
+                parts.push(format!("{}={}", to_text_key(f::TX_PACKETS), tx));
             }
             if let Some(v) = self.rx_errors {
-                parts.push(format!("RX_ERRORS={}", v));
+                parts.push(format!("{}={}", to_text_key(f::RX_ERRORS), v));
             }
             if let Some(v) = self.tx_errors {
-                parts.push(format!("TX_ERRORS={}", v));
+                parts.push(format!("{}={}", to_text_key(f::TX_ERRORS), v));
             }
         }
 
@@ -567,26 +568,26 @@ fn print_json(interfaces: &[NetInterface], pretty: bool, verbose: bool, human: b
 fn write_interface_json(w: &mut JsonWriter, iface: &NetInterface, verbose: bool, human: bool) {
     w.array_object_begin();
 
-    w.field_str("name", &iface.name);
-    w.field_str_opt("mac_address", iface.mac_address.as_deref());
-    w.field_u64_opt("mtu", iface.mtu.map(|v| v as u64));
-    w.field_str_opt("operstate", iface.operstate.as_deref());
-    w.field_u64_opt("speed_mbps", iface.speed_mbps.map(|v| v as u64));
+    w.field_str(f::NAME, &iface.name);
+    w.field_str_opt(f::MAC, iface.mac_address.as_deref());
+    w.field_u64_opt(f::MTU, iface.mtu.map(|v| v as u64));
+    w.field_str_opt(f::STATE, iface.operstate.as_deref());
+    w.field_u64_opt(f::SPEED, iface.speed_mbps.map(|v| v as u64));
 
     // First IPv4 address in basic mode
     if let Some(ip) = iface.ipv4_addresses.first() {
-        w.field_str("ip", ip);
+        w.field_str(f::IP, ip);
     }
 
     // Wireless signal in basic mode
     if let Some(ref wifi) = iface.wireless {
-        w.field_i64("signal_dbm", wifi.signal_dbm as i64);
+        w.field_i64(f::SIGNAL, wifi.signal_dbm as i64);
     }
 
     if verbose {
         // All IPv4 addresses
         if !iface.ipv4_addresses.is_empty() {
-            w.field_array("ipv4_addresses");
+            w.field_array(f::IPV4);
             for addr in &iface.ipv4_addresses {
                 w.array_string(addr);
             }
@@ -594,7 +595,7 @@ fn write_interface_json(w: &mut JsonWriter, iface: &NetInterface, verbose: bool,
         }
         // All IPv6 addresses
         if !iface.ipv6_addresses.is_empty() {
-            w.field_array("ipv6_addresses");
+            w.field_array(f::IPV6);
             for addr in &iface.ipv6_addresses {
                 w.array_string(addr);
             }
@@ -603,17 +604,17 @@ fn write_interface_json(w: &mut JsonWriter, iface: &NetInterface, verbose: bool,
 
         // Full wireless info
         if let Some(ref wifi) = iface.wireless {
-            w.field_i64("link_quality", wifi.link_quality as i64);
+            w.field_i64(f::LINK, wifi.link_quality as i64);
             if wifi.noise_dbm != -256 {
-                w.field_i64("noise_dbm", wifi.noise_dbm as i64);
+                w.field_i64(f::NOISE, wifi.noise_dbm as i64);
             }
         }
 
-        w.field_str_opt("duplex", iface.duplex.as_deref());
+        w.field_str_opt(f::DUPLEX, iface.duplex.as_deref());
         w.field_u64_opt("if_type", iface.if_type.map(|v| v as u64));
         w.field_u64_opt("tx_queue_len", iface.tx_queue_len.map(|v| v as u64));
         if let Some(carrier) = iface.carrier {
-            w.field_bool("carrier", carrier);
+            w.field_bool(f::CARRIER, carrier);
         }
         if human {
             if let Some(rx) = iface.rx_bytes {
@@ -623,15 +624,15 @@ fn write_interface_json(w: &mut JsonWriter, iface: &NetInterface, verbose: bool,
                 w.field_str("tx", &io::format_size_human(tx));
             }
         } else {
-            w.field_u64_opt("rx_bytes", iface.rx_bytes);
-            w.field_u64_opt("tx_bytes", iface.tx_bytes);
+            w.field_u64_opt(f::RX_BYTES, iface.rx_bytes);
+            w.field_u64_opt(f::TX_BYTES, iface.tx_bytes);
         }
-        w.field_u64_opt("rx_packets", iface.rx_packets);
-        w.field_u64_opt("tx_packets", iface.tx_packets);
-        w.field_u64_opt("rx_errors", iface.rx_errors);
-        w.field_u64_opt("tx_errors", iface.tx_errors);
-        w.field_u64_opt("rx_dropped", iface.rx_dropped);
-        w.field_u64_opt("tx_dropped", iface.tx_dropped);
+        w.field_u64_opt(f::RX_PACKETS, iface.rx_packets);
+        w.field_u64_opt(f::TX_PACKETS, iface.tx_packets);
+        w.field_u64_opt(f::RX_ERRORS, iface.rx_errors);
+        w.field_u64_opt(f::TX_ERRORS, iface.tx_errors);
+        w.field_u64_opt(f::RX_DROPPED, iface.rx_dropped);
+        w.field_u64_opt(f::TX_DROPPED, iface.tx_dropped);
     }
 
     w.array_object_end();

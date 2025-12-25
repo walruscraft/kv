@@ -9,6 +9,7 @@
 //! is a beautiful and rare thing in this world of change.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{mem as f, to_text_key};
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
 use std::collections::HashMap;
@@ -86,89 +87,89 @@ impl MemInfo {
         if human {
             // Human-readable sizes like "16G", "512M"
             if let Some(v) = self.mem_total_kb {
-                parts.push(format!("MEM_TOTAL={}", io::format_kb_human(v)));
+                parts.push(format!("{}={}", to_text_key(f::MEM_TOTAL), io::format_kb_human(v)));
             }
             if let Some(v) = self.mem_free_kb {
-                parts.push(format!("MEM_FREE={}", io::format_kb_human(v)));
+                parts.push(format!("{}={}", to_text_key(f::MEM_FREE), io::format_kb_human(v)));
             }
             if let Some(v) = self.mem_available_kb {
-                parts.push(format!("MEM_AVAILABLE={}", io::format_kb_human(v)));
+                parts.push(format!("{}={}", to_text_key(f::MEM_AVAILABLE), io::format_kb_human(v)));
             }
             if let Some(v) = self.swap_total_kb {
-                parts.push(format!("SWAP_TOTAL={}", io::format_kb_human(v)));
+                parts.push(format!("{}={}", to_text_key(f::SWAP_TOTAL), io::format_kb_human(v)));
             }
             if let Some(v) = self.swap_free_kb {
-                parts.push(format!("SWAP_FREE={}", io::format_kb_human(v)));
+                parts.push(format!("{}={}", to_text_key(f::SWAP_FREE), io::format_kb_human(v)));
             }
 
             if verbose {
                 if let Some(v) = self.buffers_kb {
-                    parts.push(format!("BUFFERS={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::BUFFERS), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.cached_kb {
-                    parts.push(format!("CACHED={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::CACHED), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.swap_cached_kb {
-                    parts.push(format!("SWAP_CACHED={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::SWAP_CACHED), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.shmem_kb {
-                    parts.push(format!("SHMEM={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::SHMEM), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.sreclaimable_kb {
-                    parts.push(format!("SRECLAIMABLE={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::SRECLAIMABLE), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.sunreclaim_kb {
-                    parts.push(format!("SUNRECLAIM={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::SUNRECLAIM), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.dirty_kb {
-                    parts.push(format!("DIRTY={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::DIRTY), io::format_kb_human(v)));
                 }
                 if let Some(v) = self.writeback_kb {
-                    parts.push(format!("WRITEBACK={}", io::format_kb_human(v)));
+                    parts.push(format!("{}={}", to_text_key(f::WRITEBACK), io::format_kb_human(v)));
                 }
             }
         } else {
             // Raw KB values
             if let Some(v) = self.mem_total_kb {
-                parts.push(format!("MEM_TOTAL_KB={}", v));
+                parts.push(format!("{}={}", to_text_key(f::MEM_TOTAL_KB), v));
             }
             if let Some(v) = self.mem_free_kb {
-                parts.push(format!("MEM_FREE_KB={}", v));
+                parts.push(format!("{}={}", to_text_key(f::MEM_FREE_KB), v));
             }
             if let Some(v) = self.mem_available_kb {
-                parts.push(format!("MEM_AVAILABLE_KB={}", v));
+                parts.push(format!("{}={}", to_text_key(f::MEM_AVAILABLE_KB), v));
             }
             if let Some(v) = self.swap_total_kb {
-                parts.push(format!("SWAP_TOTAL_KB={}", v));
+                parts.push(format!("{}={}", to_text_key(f::SWAP_TOTAL_KB), v));
             }
             if let Some(v) = self.swap_free_kb {
-                parts.push(format!("SWAP_FREE_KB={}", v));
+                parts.push(format!("{}={}", to_text_key(f::SWAP_FREE_KB), v));
             }
 
             if verbose {
                 if let Some(v) = self.buffers_kb {
-                    parts.push(format!("BUFFERS_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::BUFFERS_KB), v));
                 }
                 if let Some(v) = self.cached_kb {
-                    parts.push(format!("CACHED_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::CACHED_KB), v));
                 }
                 if let Some(v) = self.swap_cached_kb {
-                    parts.push(format!("SWAP_CACHED_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::SWAP_CACHED_KB), v));
                 }
                 if let Some(v) = self.shmem_kb {
-                    parts.push(format!("SHMEM_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::SHMEM_KB), v));
                 }
                 if let Some(v) = self.sreclaimable_kb {
-                    parts.push(format!("SRECLAIMABLE_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::SRECLAIMABLE_KB), v));
                 }
                 if let Some(v) = self.sunreclaim_kb {
-                    parts.push(format!("SUNRECLAIM_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::SUNRECLAIM_KB), v));
                 }
                 if let Some(v) = self.dirty_kb {
-                    parts.push(format!("DIRTY_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::DIRTY_KB), v));
                 }
                 if let Some(v) = self.writeback_kb {
-                    parts.push(format!("WRITEBACK_KB={}", v));
+                    parts.push(format!("{}={}", to_text_key(f::WRITEBACK_KB), v));
                 }
             }
         }
@@ -185,64 +186,64 @@ impl MemInfo {
         if human {
             // Human-readable string values
             if let Some(v) = self.mem_total_kb {
-                w.field_str("mem_total", &io::format_kb_human(v));
+                w.field_str(f::MEM_TOTAL, &io::format_kb_human(v));
             }
             if let Some(v) = self.mem_free_kb {
-                w.field_str("mem_free", &io::format_kb_human(v));
+                w.field_str(f::MEM_FREE, &io::format_kb_human(v));
             }
             if let Some(v) = self.mem_available_kb {
-                w.field_str("mem_available", &io::format_kb_human(v));
+                w.field_str(f::MEM_AVAILABLE, &io::format_kb_human(v));
             }
             if let Some(v) = self.swap_total_kb {
-                w.field_str("swap_total", &io::format_kb_human(v));
+                w.field_str(f::SWAP_TOTAL, &io::format_kb_human(v));
             }
             if let Some(v) = self.swap_free_kb {
-                w.field_str("swap_free", &io::format_kb_human(v));
+                w.field_str(f::SWAP_FREE, &io::format_kb_human(v));
             }
 
             if verbose {
                 if let Some(v) = self.buffers_kb {
-                    w.field_str("buffers", &io::format_kb_human(v));
+                    w.field_str(f::BUFFERS, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.cached_kb {
-                    w.field_str("cached", &io::format_kb_human(v));
+                    w.field_str(f::CACHED, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.swap_cached_kb {
-                    w.field_str("swap_cached", &io::format_kb_human(v));
+                    w.field_str(f::SWAP_CACHED, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.shmem_kb {
-                    w.field_str("shmem", &io::format_kb_human(v));
+                    w.field_str(f::SHMEM, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.sreclaimable_kb {
-                    w.field_str("sreclaimable", &io::format_kb_human(v));
+                    w.field_str(f::SRECLAIMABLE, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.sunreclaim_kb {
-                    w.field_str("sunreclaim", &io::format_kb_human(v));
+                    w.field_str(f::SUNRECLAIM, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.dirty_kb {
-                    w.field_str("dirty", &io::format_kb_human(v));
+                    w.field_str(f::DIRTY, &io::format_kb_human(v));
                 }
                 if let Some(v) = self.writeback_kb {
-                    w.field_str("writeback", &io::format_kb_human(v));
+                    w.field_str(f::WRITEBACK, &io::format_kb_human(v));
                 }
             }
         } else {
             // Raw KB numeric values
-            w.field_u64_opt("mem_total_kb", self.mem_total_kb);
-            w.field_u64_opt("mem_free_kb", self.mem_free_kb);
-            w.field_u64_opt("mem_available_kb", self.mem_available_kb);
-            w.field_u64_opt("swap_total_kb", self.swap_total_kb);
-            w.field_u64_opt("swap_free_kb", self.swap_free_kb);
+            w.field_u64_opt(f::MEM_TOTAL_KB, self.mem_total_kb);
+            w.field_u64_opt(f::MEM_FREE_KB, self.mem_free_kb);
+            w.field_u64_opt(f::MEM_AVAILABLE_KB, self.mem_available_kb);
+            w.field_u64_opt(f::SWAP_TOTAL_KB, self.swap_total_kb);
+            w.field_u64_opt(f::SWAP_FREE_KB, self.swap_free_kb);
 
             if verbose {
-                w.field_u64_opt("buffers_kb", self.buffers_kb);
-                w.field_u64_opt("cached_kb", self.cached_kb);
-                w.field_u64_opt("swap_cached_kb", self.swap_cached_kb);
-                w.field_u64_opt("shmem_kb", self.shmem_kb);
-                w.field_u64_opt("sreclaimable_kb", self.sreclaimable_kb);
-                w.field_u64_opt("sunreclaim_kb", self.sunreclaim_kb);
-                w.field_u64_opt("dirty_kb", self.dirty_kb);
-                w.field_u64_opt("writeback_kb", self.writeback_kb);
+                w.field_u64_opt(f::BUFFERS_KB, self.buffers_kb);
+                w.field_u64_opt(f::CACHED_KB, self.cached_kb);
+                w.field_u64_opt(f::SWAP_CACHED_KB, self.swap_cached_kb);
+                w.field_u64_opt(f::SHMEM_KB, self.shmem_kb);
+                w.field_u64_opt(f::SRECLAIMABLE_KB, self.sreclaimable_kb);
+                w.field_u64_opt(f::SUNRECLAIM_KB, self.sunreclaim_kb);
+                w.field_u64_opt(f::DIRTY_KB, self.dirty_kb);
+                w.field_u64_opt(f::WRITEBACK_KB, self.writeback_kb);
             }
         }
 
@@ -311,21 +312,21 @@ pub fn collect(_verbose: bool) -> Option<MemInfo> {
 pub fn write_json(w: &mut JsonWriter, info: &MemInfo, verbose: bool) {
     w.field_object("mem");
 
-    w.field_u64_opt("mem_total_kb", info.mem_total_kb);
-    w.field_u64_opt("mem_free_kb", info.mem_free_kb);
-    w.field_u64_opt("mem_available_kb", info.mem_available_kb);
-    w.field_u64_opt("swap_total_kb", info.swap_total_kb);
-    w.field_u64_opt("swap_free_kb", info.swap_free_kb);
+    w.field_u64_opt(f::MEM_TOTAL_KB, info.mem_total_kb);
+    w.field_u64_opt(f::MEM_FREE_KB, info.mem_free_kb);
+    w.field_u64_opt(f::MEM_AVAILABLE_KB, info.mem_available_kb);
+    w.field_u64_opt(f::SWAP_TOTAL_KB, info.swap_total_kb);
+    w.field_u64_opt(f::SWAP_FREE_KB, info.swap_free_kb);
 
     if verbose {
-        w.field_u64_opt("buffers_kb", info.buffers_kb);
-        w.field_u64_opt("cached_kb", info.cached_kb);
-        w.field_u64_opt("swap_cached_kb", info.swap_cached_kb);
-        w.field_u64_opt("shmem_kb", info.shmem_kb);
-        w.field_u64_opt("sreclaimable_kb", info.sreclaimable_kb);
-        w.field_u64_opt("sunreclaim_kb", info.sunreclaim_kb);
-        w.field_u64_opt("dirty_kb", info.dirty_kb);
-        w.field_u64_opt("writeback_kb", info.writeback_kb);
+        w.field_u64_opt(f::BUFFERS_KB, info.buffers_kb);
+        w.field_u64_opt(f::CACHED_KB, info.cached_kb);
+        w.field_u64_opt(f::SWAP_CACHED_KB, info.swap_cached_kb);
+        w.field_u64_opt(f::SHMEM_KB, info.shmem_kb);
+        w.field_u64_opt(f::SRECLAIMABLE_KB, info.sreclaimable_kb);
+        w.field_u64_opt(f::SUNRECLAIM_KB, info.sunreclaim_kb);
+        w.field_u64_opt(f::DIRTY_KB, info.dirty_kb);
+        w.field_u64_opt(f::WRITEBACK_KB, info.writeback_kb);
     }
 
     w.end_field_object();

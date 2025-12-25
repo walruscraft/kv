@@ -10,6 +10,7 @@
 //! but some fields may be missing on some platforms. That's life in embedded.
 
 use crate::cli::GlobalOptions;
+use crate::fields::{cpu as f, to_text_key};
 use crate::io;
 use crate::json::{begin_kv_output, JsonWriter};
 use std::collections::HashSet;
@@ -168,51 +169,51 @@ impl CpuInfo {
     pub fn print_text(&self, verbose: bool) {
         let mut parts = Vec::new();
 
-        parts.push(format!("LOGICAL_CPUS={}", self.logical_cpus));
+        parts.push(format!("{}={}", to_text_key(f::LOGICAL_CPUS), self.logical_cpus));
 
         if let Some(ref name) = self.model_name {
             // Quote model name since it often has spaces
-            parts.push(format!("MODEL_NAME=\"{}\"", name));
+            parts.push(format!("{}=\"{}\"", to_text_key(f::MODEL_NAME), name));
         }
 
         if let Some(ref vendor) = self.vendor_id {
-            parts.push(format!("VENDOR_ID={}", vendor));
+            parts.push(format!("{}={}", to_text_key(f::VENDOR_ID), vendor));
         }
 
         if let Some(sockets) = self.sockets {
-            parts.push(format!("SOCKETS={}", sockets));
+            parts.push(format!("{}={}", to_text_key(f::SOCKETS), sockets));
         }
 
         if let Some(cores) = self.cores_per_socket {
-            parts.push(format!("CORES_PER_SOCKET={}", cores));
+            parts.push(format!("{}={}", to_text_key(f::CORES_PER_SOCKET), cores));
         }
 
         // RISC-V specific fields (always show if present, very informative)
         if let Some(ref isa) = self.isa {
-            parts.push(format!("ISA={}", isa));
+            parts.push(format!("{}={}", to_text_key(f::ISA), isa));
         }
         if let Some(ref mmu) = self.mmu {
-            parts.push(format!("MMU={}", mmu));
+            parts.push(format!("{}={}", to_text_key(f::MMU), mmu));
         }
 
         if verbose {
             if let Some(family) = self.cpu_family {
-                parts.push(format!("CPU_FAMILY={}", family));
+                parts.push(format!("{}={}", to_text_key(f::CPU_FAMILY), family));
             }
             if let Some(model) = self.model {
-                parts.push(format!("MODEL={}", model));
+                parts.push(format!("{}={}", to_text_key(f::MODEL), model));
             }
             if let Some(stepping) = self.stepping {
-                parts.push(format!("STEPPING={}", stepping));
+                parts.push(format!("{}={}", to_text_key(f::STEPPING), stepping));
             }
             if let Some(mhz) = self.cpu_mhz {
-                parts.push(format!("CPU_MHZ={:.2}", mhz));
+                parts.push(format!("{}={:.2}", to_text_key(f::CPU_MHZ), mhz));
             }
             if let Some(ref cache) = self.cache_size {
-                parts.push(format!("CACHE_SIZE=\"{}\"", cache));
+                parts.push(format!("{}=\"{}\"", to_text_key(f::CACHE_SIZE), cache));
             }
             if let Some(ref arch) = self.architecture {
-                parts.push(format!("ARCHITECTURE={}", arch));
+                parts.push(format!("{}={}", to_text_key(f::ARCHITECTURE), arch));
             }
         }
 
@@ -225,26 +226,26 @@ impl CpuInfo {
 
         w.field_object("data");
 
-        w.field_u64("logical_cpus", self.logical_cpus as u64);
-        w.field_str_opt("model_name", self.model_name.as_deref());
-        w.field_str_opt("vendor_id", self.vendor_id.as_deref());
-        w.field_u64_opt("sockets", self.sockets.map(|v| v as u64));
-        w.field_u64_opt("cores_per_socket", self.cores_per_socket.map(|v| v as u64));
+        w.field_u64(f::LOGICAL_CPUS, self.logical_cpus as u64);
+        w.field_str_opt(f::MODEL_NAME, self.model_name.as_deref());
+        w.field_str_opt(f::VENDOR_ID, self.vendor_id.as_deref());
+        w.field_u64_opt(f::SOCKETS, self.sockets.map(|v| v as u64));
+        w.field_u64_opt(f::CORES_PER_SOCKET, self.cores_per_socket.map(|v| v as u64));
         // RISC-V specific
-        w.field_str_opt("isa", self.isa.as_deref());
-        w.field_str_opt("mmu", self.mmu.as_deref());
+        w.field_str_opt(f::ISA, self.isa.as_deref());
+        w.field_str_opt(f::MMU, self.mmu.as_deref());
 
         if verbose {
-            w.field_u64_opt("cpu_family", self.cpu_family.map(|v| v as u64));
-            w.field_u64_opt("model", self.model.map(|v| v as u64));
-            w.field_u64_opt("stepping", self.stepping.map(|v| v as u64));
+            w.field_u64_opt(f::CPU_FAMILY, self.cpu_family.map(|v| v as u64));
+            w.field_u64_opt(f::MODEL, self.model.map(|v| v as u64));
+            w.field_u64_opt(f::STEPPING, self.stepping.map(|v| v as u64));
             // For MHz we'll use string to preserve precision
             if let Some(mhz) = self.cpu_mhz {
-                w.field_str("cpu_mhz", &format!("{:.2}", mhz));
+                w.field_str(f::CPU_MHZ, &format!("{:.2}", mhz));
             }
-            w.field_str_opt("cache_size", self.cache_size.as_deref());
-            w.field_str_opt("architecture", self.architecture.as_deref());
-            w.field_str_opt("flags", self.flags.as_deref());
+            w.field_str_opt(f::CACHE_SIZE, self.cache_size.as_deref());
+            w.field_str_opt(f::ARCHITECTURE, self.architecture.as_deref());
+            w.field_str_opt(f::FLAGS, self.flags.as_deref());
         }
 
         w.end_field_object();
@@ -332,24 +333,24 @@ pub fn collect(_verbose: bool) -> Option<CpuInfo> {
 pub fn write_json(w: &mut JsonWriter, info: &CpuInfo, verbose: bool) {
     w.field_object("cpu");
 
-    w.field_u64("logical_cpus", info.logical_cpus as u64);
-    w.field_str_opt("model_name", info.model_name.as_deref());
-    w.field_str_opt("vendor_id", info.vendor_id.as_deref());
-    w.field_u64_opt("sockets", info.sockets.map(|v| v as u64));
-    w.field_u64_opt("cores_per_socket", info.cores_per_socket.map(|v| v as u64));
+    w.field_u64(f::LOGICAL_CPUS, info.logical_cpus as u64);
+    w.field_str_opt(f::MODEL_NAME, info.model_name.as_deref());
+    w.field_str_opt(f::VENDOR_ID, info.vendor_id.as_deref());
+    w.field_u64_opt(f::SOCKETS, info.sockets.map(|v| v as u64));
+    w.field_u64_opt(f::CORES_PER_SOCKET, info.cores_per_socket.map(|v| v as u64));
     // RISC-V specific
-    w.field_str_opt("isa", info.isa.as_deref());
-    w.field_str_opt("mmu", info.mmu.as_deref());
+    w.field_str_opt(f::ISA, info.isa.as_deref());
+    w.field_str_opt(f::MMU, info.mmu.as_deref());
 
     if verbose {
-        w.field_u64_opt("cpu_family", info.cpu_family.map(|v| v as u64));
-        w.field_u64_opt("model", info.model.map(|v| v as u64));
-        w.field_u64_opt("stepping", info.stepping.map(|v| v as u64));
+        w.field_u64_opt(f::CPU_FAMILY, info.cpu_family.map(|v| v as u64));
+        w.field_u64_opt(f::MODEL, info.model.map(|v| v as u64));
+        w.field_u64_opt(f::STEPPING, info.stepping.map(|v| v as u64));
         if let Some(mhz) = info.cpu_mhz {
-            w.field_str("cpu_mhz", &format!("{:.2}", mhz));
+            w.field_str(f::CPU_MHZ, &format!("{:.2}", mhz));
         }
-        w.field_str_opt("cache_size", info.cache_size.as_deref());
-        w.field_str_opt("architecture", info.architecture.as_deref());
+        w.field_str_opt(f::CACHE_SIZE, info.cache_size.as_deref());
+        w.field_str_opt(f::ARCHITECTURE, info.architecture.as_deref());
     }
 
     w.end_field_object();

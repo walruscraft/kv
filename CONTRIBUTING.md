@@ -141,7 +141,7 @@ Integration tests verify all subcommands, JSON output, filters, verbose mode, an
 
 Runs on every push to `main` and on pull requests:
 
-1. **Build job** - Builds release binaries for all 5 architectures:
+1. **Build job** - Builds release binaries for all 7 architectures:
    - Native: x86_64, i686
    - Cross-compiled: aarch64, arm, riscv64
    - Runs integration tests via QEMU for cross-compiled targets
@@ -151,7 +151,7 @@ Runs on every push to `main` and on pull requests:
 
 Runs when a version tag is pushed (e.g., `git tag v0.5.0 && git push --tags`):
 
-1. Builds all 5 architecture binaries
+1. Builds all 7 architecture binaries
 2. Runs smoke tests (native and via QEMU)
 3. Creates a GitHub Release with:
    - All binaries attached (`kv-x64`, `kv-arm64`, etc.)
@@ -170,6 +170,8 @@ cargo arm64    # aarch64-unknown-linux-gnu (includes dt)
 cargo aarch64  # same as arm64
 cargo arm      # arm-unknown-linux-gnueabihf (includes dt)
 cargo riscv64  # riscv64gc-unknown-linux-gnu (includes dt)
+cargo ppc64    # powerpc64le-unknown-linux-gnu (includes dt)
+cargo mips     # mipsel-unknown-linux-gnu (includes dt)
 ```
 
 Prerequisites (Debian/Ubuntu):
@@ -179,7 +181,7 @@ Prerequisites (Debian/Ubuntu):
 rustup default nightly
 
 # Cross-linkers
-sudo apt install gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-riscv64-linux-gnu
+sudo apt install gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-riscv64-linux-gnu gcc-powerpc64le-linux-gnu gcc-mipsel-linux-gnu
 
 # QEMU for testing (optional)
 sudo apt install qemu-user-static

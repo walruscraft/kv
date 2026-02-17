@@ -138,9 +138,11 @@ cargo arm64    # aarch64-unknown-linux-gnu
 cargo aarch64  # same as arm64
 cargo arm      # arm-unknown-linux-gnueabihf (32-bit ARM)
 cargo riscv64  # riscv64gc-unknown-linux-gnu
+cargo ppc64    # powerpc64le-unknown-linux-gnu
+cargo mips     # mipsel-unknown-linux-gnu
 ```
 
-ARM and RISC-V builds automatically include the `dt` (device tree) feature.
+ARM, RISC-V, PowerPC64, and MIPS builds automatically include the `dt` (device tree) feature.
 
 Prerequisites (Debian/Ubuntu):
 
@@ -231,8 +233,28 @@ step-by-step instructions on how to submit test results or report issues.
 | aarch64-unknown-linux-gnu | `cargo arm64` / `cargo aarch64` | 64-bit ARM |
 | arm-unknown-linux-gnueabihf | `cargo arm` | 32-bit ARM, hard float |
 | riscv64gc-unknown-linux-gnu | `cargo riscv64` | 64-bit RISC-V |
+| powerpc64le-unknown-linux-gnu | `cargo ppc64` | 64-bit PowerPC (LE) |
+| mipsel-unknown-linux-gnu | `cargo mips` | 32-bit MIPS (LE) |
 
 All targets produce static binaries (~113 KB stripped) using no_std with build-std. Zero heap allocation.
+
+> **Note on big-endian PPC64/MIPS:** Big-endian variants are blocked upstream
+> by rustix (which has no linux_raw backend for these ABIs). Only little-endian
+> targets are supported. This may change when rustix adds BE support.
+
+### Known QEMU issues
+
+QEMU user-mode 10.0.7 (Debian `1:10.0.7+ds-0+deb13u1+b1`) has a bug in
+PPC64 emulation: `argv[1]` is always NULL on the initial process stack,
+regardless of what arguments are passed. `argc` is correct and `argv[0]`,
+`argv[2]`, etc. are fine -- only the second slot is zeroed. This causes any
+program that reads command-line arguments to crash.
+
+The kv binary itself is correct. CI uses GitHub Actions' QEMU which may or
+may not have this bug. If PPC64 smoke tests fail in CI with a segfault,
+this is the likely cause.
+
+MIPS LE (`qemu-mipsel`) works correctly with the same QEMU version.
 
 ## Security
 

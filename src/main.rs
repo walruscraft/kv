@@ -47,13 +47,13 @@ mod snapshot;
 
 #[cfg(all(
     feature = "dt",
-    any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64")
+    any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64", target_arch = "powerpc64", target_arch = "mips")
 ))]
 mod dt;
 
 #[cfg(all(
     feature = "dt",
-    not(any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64"))
+    not(any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64", target_arch = "powerpc64", target_arch = "mips"))
 ))]
 mod dt {
     pub fn run(_opts: &crate::cli::GlobalOptions, _args: &crate::cli::ExtraArgs) -> i32 {

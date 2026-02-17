@@ -439,6 +439,10 @@ pub fn print_version() {
     print::println("arch: arm");
     #[cfg(target_arch = "riscv64")]
     print::println("arch: riscv64");
+    #[cfg(target_arch = "powerpc64")]
+    print::println("arch: powerpc64");
+    #[cfg(target_arch = "mips")]
+    print::println("arch: mips");
 }
 
 /// Print help for a specific subcommand.

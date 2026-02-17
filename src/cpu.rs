@@ -330,12 +330,20 @@ fn detect_architecture() -> Option<StackString<16>> {
     #[cfg(target_arch = "riscv64")]
     return Some(StackString::from_str("riscv64"));
 
+    #[cfg(target_arch = "powerpc64")]
+    return Some(StackString::from_str("powerpc64"));
+
+    #[cfg(target_arch = "mips")]
+    return Some(StackString::from_str("mips"));
+
     #[cfg(not(any(
         target_arch = "x86_64",
         target_arch = "x86",
         target_arch = "aarch64",
         target_arch = "arm",
-        target_arch = "riscv64"
+        target_arch = "riscv64",
+        target_arch = "powerpc64",
+        target_arch = "mips"
     )))]
     None
 }

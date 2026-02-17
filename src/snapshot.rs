@@ -71,7 +71,7 @@ pub fn run(opts: &GlobalOptions) -> i32 {
     crate::net::write_snapshot(&mut w, verbose);
 
     // Device tree (ARM/AArch64/RISC-V only)
-    #[cfg(all(feature = "dt", any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64")))]
+    #[cfg(all(feature = "dt", any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64", target_arch = "powerpc64", target_arch = "mips")))]
     crate::dt::write_snapshot(&mut w, verbose);
 
     w.end_field_object();

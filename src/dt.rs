@@ -11,7 +11,7 @@
 //! - Search for specific device types
 //! - Inspect a specific node path
 
-#![cfg(any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64"))]
+#![cfg(any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64", target_arch = "powerpc64", target_arch = "mips"))]
 #![allow(dead_code)]
 
 use crate::cli::{ExtraArgs, GlobalOptions};

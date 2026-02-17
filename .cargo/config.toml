@@ -20,6 +20,8 @@ arm64 = "build --release --target aarch64-unknown-linux-gnu --features dt"
 aarch64 = "build --release --target aarch64-unknown-linux-gnu --features dt"
 arm = "build --release --target arm-unknown-linux-gnueabihf --features dt"
 riscv64 = "build --release --target riscv64gc-unknown-linux-gnu --features dt"
+ppc64 = "build --release --target powerpc64le-unknown-linux-gnu --features dt"
+mips = "build --release --target mipsel-unknown-linux-gnu --features dt"
 
 [target.x86_64-unknown-linux-gnu]
 rustflags = [
@@ -69,4 +71,28 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+]
+
+[target.powerpc64le-unknown-linux-gnu]
+linker = "powerpc64le-linux-gnu-gcc"
+rustflags = [
+    "-C", "link-arg=-nostartfiles",
+    "-C", "link-arg=-static",
+    "-C", "link-arg=-Wl,--gc-sections",
+    "-C", "link-arg=-Wl,--build-id=none",
+    "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "--cfg=rustix_use_experimental_asm",
+]
+
+[target.mipsel-unknown-linux-gnu]
+linker = "mipsel-linux-gnu-gcc"
+rustflags = [
+    "-C", "relocation-model=static",
+    "-C", "link-arg=-nostartfiles",
+    "-C", "link-arg=-static",
+    "-C", "link-arg=-no-pie",
+    "-C", "link-arg=-Wl,--gc-sections",
+    "-C", "link-arg=-Wl,--build-id=none",
+    "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "--cfg=rustix_use_experimental_asm",
 ]

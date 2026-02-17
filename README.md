@@ -39,7 +39,8 @@ mv kv-arm64 kv && chmod +x kv
 ```
 
 **Other architectures:**
-Use `kv-x86` (32-bit PC), `kv-arm` (32-bit ARM), or `kv-riscv64` (64-bit RISC-V).
+Use `kv-x86` (32-bit PC), `kv-arm` (32-bit ARM), `kv-riscv64` (64-bit RISC-V),
+`kv-ppc64le` (PowerPC64 LE), or `kv-mipsel` (MIPS LE).
 Each has corresponding `.sha256`, `.sig`, and `.crt` files.
 
 ### Verify Signatures (optional)

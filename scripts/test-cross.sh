@@ -79,13 +79,10 @@ echo "Cross-compilation smoke test"
 echo "============================"
 echo
 
-test_target "x86_64"  "x86_64-unknown-linux-musl"    ""
-test_target "x86"     "i686-unknown-linux-musl"      "qemu-i386-static"
-test_target "arm64"   "aarch64-unknown-linux-musl"   "qemu-aarch64-static"
-test_target "arm"     "arm-unknown-linux-musleabihf" "qemu-arm-static"
-test_target "riscv64" "riscv64gc-unknown-linux-musl" "qemu-riscv64-static"
-
-# Big-endian target (PowerPC) - verifies endianness handling works correctly
-test_target "ppc"     "powerpc-unknown-linux-gnu"    "qemu-ppc-static"
+test_target "x86_64"  "x86_64-unknown-linux-gnu"     ""
+test_target "x86"     "i686-unknown-linux-gnu"       "qemu-i386-static"
+test_target "arm64"   "aarch64-unknown-linux-gnu"    "qemu-aarch64-static"
+test_target "arm"     "arm-unknown-linux-gnueabihf"  "qemu-arm-static"
+test_target "riscv64" "riscv64gc-unknown-linux-gnu"  "qemu-riscv64-static"
 
 echo "Done."

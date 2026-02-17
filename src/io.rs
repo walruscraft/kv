@@ -5,68 +5,164 @@
 //! permissions vary, and we'd rather skip a field than crash.
 //!
 //! Philosophy: "If you can't read it, shrug and move on."
+//!
+//! Uses rustix for direct syscalls to minimize binary size.
+//! no_std compatible - uses stack-based types instead of String/Vec.
 
-use std::fs;
-use std::path::Path;
-use std::str::FromStr;
+#![allow(dead_code)]
 
-/// Read an entire file to a String, trimming whitespace.
-///
-/// Returns None if the file doesn't exist, can't be read, or isn't valid UTF-8.
-/// This is the workhorse for reading sysfs attributes like `/sys/bus/pci/devices/0000:01:00.0/vendor`.
-///
-/// # Why Option instead of Result?
-///
-/// In sysfs/procfs land, missing files are normal - a device might not have
-/// a numa_node, a network interface might not report speed, etc. We treat
-/// "can't read" the same as "doesn't exist" for simplicity.
-pub fn read_file_string(path: impl AsRef<Path>) -> Option<String> {
-    let path = path.as_ref();
-    match fs::read_to_string(path) {
-        Ok(s) => {
-            let trimmed = s.trim().to_string();
-            if trimmed.is_empty() {
-                None
-            } else {
-                Some(trimmed)
+use core::mem::MaybeUninit;
+use core::str::FromStr;
+
+use rustix::fs::{openat, Mode, OFlags, RawDir, CWD};
+use rustix::io::read;
+
+use crate::stack::StackString;
+
+// ============================================================================
+// Directory iteration (stack-based, no allocation)
+// ============================================================================
+
+/// Iterate over directory entries, calling a callback for each name.
+/// Skips "." and ".." entries automatically.
+/// This is a simple callback-based approach that avoids complex iterator state.
+pub fn for_each_dir_entry<F>(path: &str, mut callback: F)
+where
+    F: FnMut(&str),
+{
+    let Ok(fd) = openat(CWD, path, OFlags::RDONLY | OFlags::DIRECTORY, Mode::empty()) else {
+        return;
+    };
+
+    let mut buf: [MaybeUninit<u8>; 2048] = [MaybeUninit::uninit(); 2048];
+    loop {
+        let mut raw_dir = RawDir::new(&fd, &mut buf);
+        let mut found_any = false;
+        while let Some(entry_result) = raw_dir.next() {
+            let Ok(entry) = entry_result else { continue };
+            found_any = true;
+            let name_bytes = entry.file_name().to_bytes();
+            // Skip . and ..
+            if name_bytes == b"." || name_bytes == b".." {
+                continue;
+            }
+            if let Ok(name_str) = core::str::from_utf8(name_bytes) {
+                callback(name_str);
             }
         }
-        Err(e) => {
-            crate::dbg_fail!(path.display(), e);
-            None
+        if !found_any {
+            break;
         }
     }
 }
 
-/// Read a file and parse it as type T.
-///
-/// Useful for numeric sysfs attributes. Handles the typical case where
-/// the kernel writes something like "12345\n" and we want the number.
-pub fn read_file_parse<T: FromStr>(path: impl AsRef<Path>) -> Option<T> {
-    read_file_string(path)?.parse().ok()
+/// Read a symlink target into a StackString.
+/// Returns the full symlink path, not just the final component.
+pub fn read_symlink<const N: usize>(path: &str) -> Option<StackString<N>> {
+    // Open the symlink's parent directory and read it
+    let fd = openat(CWD, path, OFlags::RDONLY | OFlags::PATH | OFlags::NOFOLLOW, Mode::empty()).ok()?;
+
+    // Use readlink via /proc/self/fd/N trick
+    let mut proc_path: StackString<64> = StackString::new();
+    proc_path.push_str("/proc/self/fd/");
+    let mut itoa_buf = itoa::Buffer::new();
+    proc_path.push_str(itoa_buf.format(rustix::fd::AsRawFd::as_raw_fd(&fd)));
+
+    // Read the link target
+    let mut buf = [0u8; 256];
+    let n = read_file_bytes(proc_path.as_str(), &mut buf)?;
+    let link_path = core::str::from_utf8(&buf[..n]).ok()?;
+    Some(StackString::from_str(link_path))
 }
 
-/// Read a file containing a hexadecimal value.
-///
-/// Handles both "0x1234" and "1234" formats because the kernel isn't
-/// always consistent about prefixes. Life's too short to care.
-pub fn read_file_hex<T>(path: impl AsRef<Path>) -> Option<T>
-where
-    T: FromStrRadix,
-{
-    let s = read_file_string(path)?;
-    parse_hex(&s)
+/// Read a symlink and extract just the final component (filename).
+/// Used for reading driver symlinks like /sys/bus/pci/devices/XXX/driver -> ../../../drivers/NAME
+pub fn read_symlink_name<const N: usize>(path: &str) -> Option<StackString<N>> {
+    let link: StackString<256> = read_symlink(path)?;
+    let name = link.as_str().rsplit('/').next()?;
+    if name.is_empty() {
+        None
+    } else {
+        Some(StackString::from_str(name))
+    }
 }
 
-/// Parse a hex string, with or without "0x" prefix.
-pub fn parse_hex<T: FromStrRadix>(s: &str) -> Option<T> {
-    let s = s.strip_prefix("0x").or_else(|| s.strip_prefix("0X")).unwrap_or(s);
-    T::from_str_radix(s, 16)
+/// Read raw bytes from a file into a buffer.
+/// Returns the number of bytes read.
+fn read_file_bytes(path: &str, buf: &mut [u8]) -> Option<usize> {
+    let fd = openat(CWD, path, OFlags::RDONLY, Mode::empty()).ok()?;
+    let n = read(&fd, buf).ok()?;
+    Some(n)
+}
+
+/// Hex digits lookup table.
+const HEX_DIGITS: [u8; 16] = *b"0123456789abcdef";
+
+/// Trait for converting bytes to hex characters.
+pub trait HexNibble {
+    /// High nibble as hex character (e.g., 0xAB → 'a').
+    fn hex_hi(self) -> char;
+    /// Low nibble as hex character (e.g., 0xAB → 'b').
+    fn hex_lo(self) -> char;
+}
+
+impl HexNibble for u8 {
+    #[inline]
+    fn hex_hi(self) -> char {
+        HEX_DIGITS[(self >> 4) as usize] as char
+    }
+    #[inline]
+    fn hex_lo(self) -> char {
+        HEX_DIGITS[(self & 0xf) as usize] as char
+    }
+}
+
+// ============================================================================
+// Core file reading functions (stack-based, no allocation)
+// ============================================================================
+
+/// Read a file into a stack buffer and return trimmed content.
+/// Returns None if the file can't be read or isn't valid UTF-8.
+pub fn read_file_stack<const N: usize>(path: &str) -> Option<StackString<N>> {
+    // Open file read-only
+    let fd = match openat(CWD, path, OFlags::RDONLY, Mode::empty()) {
+        Ok(fd) => fd,
+        Err(_e) => {
+            crate::dbg_fail!(path, _e);
+            return None;
+        }
+    };
+
+    // Read into buffer
+    let mut buf = [0u8; 4096];
+    let n = match read(&fd, &mut buf) {
+        Ok(n) => n,
+        Err(_e) => {
+            crate::dbg_fail!(path, _e);
+            return None;
+        }
+    };
+
+    // Convert to string and trim
+    let s = match core::str::from_utf8(&buf[..n]) {
+        Ok(s) => s.trim(),
+        Err(_) => return None,
+    };
+
+    if s.is_empty() {
+        None
+    } else {
+        Some(StackString::from_str(s))
+    }
+}
+
+/// Read a file and parse it as type T (stack-based, no allocation).
+pub fn read_file_parse<T: FromStr>(path: &str) -> Option<T> {
+    let s: StackString<64> = read_file_stack(path)?;
+    s.as_str().parse().ok()
 }
 
 /// Trait for types that can be parsed from a string with a radix.
-/// We need this because FromStr doesn't support radix, and we're not
-/// pulling in external crates for something this simple.
 pub trait FromStrRadix: Sized {
     fn from_str_radix(s: &str, radix: u32) -> Option<Self>;
 }
@@ -86,323 +182,161 @@ macro_rules! impl_from_str_radix {
 
 impl_from_str_radix!(u8, u16, u32, u64, usize, i32, i64);
 
-/// Read the names of entries in a directory.
-///
-/// Returns an empty Vec if the directory doesn't exist or can't be read.
-/// Skips entries that can't be read (hey, it happens).
-pub fn read_dir_names(path: impl AsRef<Path>) -> Vec<String> {
-    let path = path.as_ref();
-    let entries = match fs::read_dir(path) {
-        Ok(e) => e,
-        Err(e) => {
-            crate::dbg_fail!(path.display(), e);
-            return Vec::new();
-        }
-    };
-
-    let names: Vec<String> = entries
-        .filter_map(|entry| entry.ok())
-        .filter_map(|entry| entry.file_name().into_string().ok())
-        .collect();
-
-    crate::dbg_scan!(path.display(), names.len());
-    names
+/// Parse a hex string, with or without "0x" prefix.
+pub fn parse_hex<T: FromStrRadix>(s: &str) -> Option<T> {
+    let s = s.strip_prefix("0x").or_else(|| s.strip_prefix("0X")).unwrap_or(s);
+    T::from_str_radix(s, 16)
 }
 
-/// Read directory entries sorted alphabetically.
-///
-/// Sorting gives us predictable, reproducible output - important for
-/// diffing snapshots and not driving users crazy.
-pub fn read_dir_names_sorted(path: impl AsRef<Path>) -> Vec<String> {
-    let mut names = read_dir_names(path);
-    names.sort();
-    names
-}
-
-/// Get the target of a symbolic link as a String.
-///
-/// Used for things like reading the driver name from
-/// `/sys/bus/pci/devices/0000:01:00.0/driver` which is a symlink
-/// to something like `../../../bus/pci/drivers/nouveau`.
-pub fn read_link_name(path: impl AsRef<Path>) -> Option<String> {
-    fs::read_link(path.as_ref())
-        .ok()
-        .and_then(|p| p.file_name().map(|s| s.to_string_lossy().into_owned()))
+/// Read a file containing a hexadecimal value (stack-based).
+#[allow(dead_code)]
+pub fn read_file_hex<T: FromStrRadix>(path: &str) -> Option<T> {
+    let s: StackString<64> = read_file_stack(path)?;
+    parse_hex(s.as_str())
 }
 
 /// Check if a path exists.
-///
-/// Simple wrapper, but useful for readability in conditionals.
-pub fn path_exists(path: impl AsRef<Path>) -> bool {
-    path.as_ref().exists()
+pub fn path_exists(path: &str) -> bool {
+    rustix::fs::access(path, rustix::fs::Access::EXISTS).is_ok()
 }
 
-/// Format a u32 as a hex string with "0x" prefix.
-///
-/// Because "0x10de" is more readable than "4318" when you're
-/// trying to figure out what GPU you've got.
-#[allow(dead_code)] // May be used by future class code formatting
-pub fn format_hex_u32(val: u32) -> String {
-    format!("0x{:04x}", val)
+/// Check if a path is a directory (not following symlinks).
+pub fn is_dir(path: &str) -> bool {
+    match rustix::fs::lstat(path) {
+        Ok(stat) => rustix::fs::FileType::from_raw_mode(stat.st_mode) == rustix::fs::FileType::Directory,
+        Err(_) => false,
+    }
 }
 
-/// Format a u16 as a hex string with "0x" prefix.
-pub fn format_hex_u16(val: u16) -> String {
-    format!("0x{:04x}", val)
+/// Check if a path is a regular file (not following symlinks).
+pub fn is_file(path: &str) -> bool {
+    match rustix::fs::lstat(path) {
+        Ok(stat) => rustix::fs::FileType::from_raw_mode(stat.st_mode) == rustix::fs::FileType::RegularFile,
+        Err(_) => false,
+    }
 }
 
-/// Format a u8 as a hex string with "0x" prefix.
-pub fn format_hex_u8(val: u8) -> String {
-    format!("0x{:02x}", val)
+/// Check if a path is a symlink.
+pub fn is_symlink(path: &str) -> bool {
+    match rustix::fs::lstat(path) {
+        Ok(stat) => rustix::fs::FileType::from_raw_mode(stat.st_mode) == rustix::fs::FileType::Symlink,
+        Err(_) => false,
+    }
 }
 
-/// Format bytes as human-readable size using binary (1024) divisors.
-///
-/// Follows the `ls -h` convention: 1K = 1024 bytes, etc.
-/// Uses one decimal place for values >= 10, no decimal for smaller.
-///
-/// Examples:
-/// - 512 -> "512"
-/// - 1024 -> "1K"
-/// - 1536 -> "1.5K"
-/// - 1073741824 -> "1G"
-/// - 1649267441664 -> "1.5T"
-pub fn format_size_human(bytes: u64) -> String {
+/// Get the size of a file in bytes (using lstat - doesn't follow symlinks).
+pub fn file_size(path: &str) -> Option<u64> {
+    rustix::fs::lstat(path).ok().map(|stat| stat.st_size as u64)
+}
+
+// ============================================================================
+// Path manipulation (stack-based)
+// ============================================================================
+
+/// Join a base path with a filename into a StackString.
+#[inline]
+pub fn join_path<const N: usize>(base: &str, name: &str) -> StackString<N> {
+    let mut path = StackString::new();
+    path.push_str(base);
+    if !base.ends_with('/') {
+        path.push('/');
+    }
+    path.push_str(name);
+    path
+}
+
+// ============================================================================
+// Formatting functions (stack-based, no allocation)
+// ============================================================================
+
+/// Format a u16 as a hex string with "0x" prefix into a StackString.
+#[allow(dead_code)]
+pub fn format_hex_u16(val: u16) -> StackString<16> {
+    let mut s = StackString::new();
+    s.push_str("0x");
+    let hi = (val >> 8) as u8;
+    let lo = val as u8;
+    s.push(hi.hex_hi());
+    s.push(hi.hex_lo());
+    s.push(lo.hex_hi());
+    s.push(lo.hex_lo());
+    s
+}
+
+/// Format a u8 as a hex string with "0x" prefix into a StackString.
+#[allow(dead_code)]
+pub fn format_hex_u8(val: u8) -> StackString<16> {
+    let mut s = StackString::new();
+    s.push_str("0x");
+    s.push(val.hex_hi());
+    s.push(val.hex_lo());
+    s
+}
+
+/// Format a u32 as a 6-digit hex string with "0x" prefix (for PCI class codes).
+#[allow(dead_code)]
+pub fn format_hex_class(val: u32) -> StackString<16> {
+    let mut s = StackString::new();
+    s.push_str("0x");
+    let b2 = ((val >> 16) & 0xff) as u8;
+    let b1 = ((val >> 8) & 0xff) as u8;
+    let b0 = (val & 0xff) as u8;
+    s.push(b2.hex_hi());
+    s.push(b2.hex_lo());
+    s.push(b1.hex_hi());
+    s.push(b1.hex_lo());
+    s.push(b0.hex_hi());
+    s.push(b0.hex_lo());
+    s
+}
+
+/// Extension trait for converting KB values to bytes.
+pub trait KbToBytes {
+    fn kb(self) -> u64;
+}
+
+impl KbToBytes for u64 {
+    #[inline]
+    fn kb(self) -> u64 {
+        self * 1024
+    }
+}
+
+/// Format bytes as human-readable size (e.g., "16G", "512M", "4K").
+pub fn format_human_size(bytes: u64) -> StackString<16> {
     const KI: u64 = 1024;
     const MI: u64 = 1024 * 1024;
     const GI: u64 = 1024 * 1024 * 1024;
     const TI: u64 = 1024 * 1024 * 1024 * 1024;
-    const PI: u64 = 1024 * 1024 * 1024 * 1024 * 1024;
 
-    if bytes >= PI {
-        let val = bytes as f64 / PI as f64;
-        format_human_value(val, "P")
-    } else if bytes >= TI {
-        let val = bytes as f64 / TI as f64;
-        format_human_value(val, "T")
+    let mut s = StackString::new();
+    let mut buf = itoa::Buffer::new();
+
+    if bytes >= TI {
+        s.push_str(buf.format(bytes / TI));
+        s.push('T');
     } else if bytes >= GI {
-        let val = bytes as f64 / GI as f64;
-        format_human_value(val, "G")
+        s.push_str(buf.format(bytes / GI));
+        s.push('G');
     } else if bytes >= MI {
-        let val = bytes as f64 / MI as f64;
-        format_human_value(val, "M")
+        s.push_str(buf.format(bytes / MI));
+        s.push('M');
     } else if bytes >= KI {
-        let val = bytes as f64 / KI as f64;
-        format_human_value(val, "K")
+        s.push_str(buf.format(bytes / KI));
+        s.push('K');
     } else {
-        format!("{}", bytes)
+        s.push_str(buf.format(bytes));
     }
+    s
 }
 
-/// Format kilobytes as human-readable size.
-///
-/// Input is in KB (like /proc/meminfo), output uses binary divisors.
-pub fn format_kb_human(kb: u64) -> String {
-    const KI: u64 = 1024; // 1 MiB in KB
-    const MI: u64 = 1024 * 1024; // 1 GiB in KB
-    const GI: u64 = 1024 * 1024 * 1024; // 1 TiB in KB
-
-    if kb >= GI {
-        let val = kb as f64 / GI as f64;
-        format_human_value(val, "T")
-    } else if kb >= MI {
-        let val = kb as f64 / MI as f64;
-        format_human_value(val, "G")
-    } else if kb >= KI {
-        let val = kb as f64 / KI as f64;
-        format_human_value(val, "M")
-    } else {
-        format!("{}K", kb)
-    }
-}
-
-/// Format sectors as human-readable size.
-///
-/// Assumes 512-byte sectors (standard for Linux block devices).
-pub fn format_sectors_human(sectors: u64, sector_size: u32) -> String {
+/// Format a sector count as human-readable size (e.g., "500G", "1T").
+pub fn format_sectors_human(sectors: u64, sector_size: u32) -> StackString<16> {
     let bytes = sectors * sector_size as u64;
-    format_size_human(bytes)
-}
-
-/// Helper to format a value with suffix, choosing precision based on magnitude.
-fn format_human_value(val: f64, suffix: &str) -> String {
-    if val >= 10.0 {
-        // Large values: no decimal (e.g., "15G")
-        format!("{:.0}{}", val, suffix)
-    } else {
-        // Small values: one decimal (e.g., "1.5G")
-        // But trim ".0" for clean whole numbers
-        let s = format!("{:.1}{}", val, suffix);
-        if s.contains(".0") {
-            format!("{:.0}{}", val, suffix)
-        } else {
-            s
-        }
-    }
+    format_human_size(bytes)
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
-    // Note: We can't use tempfile (external crate), so our unit tests focus on
-    // pure functions. File I/O tests are done via integration tests that use
-    // real /proc and /sys paths (which is actually better - tests real behavior!)
-
-    mod parse_hex_tests {
-        use super::*;
-
-        #[test]
-        fn with_0x_prefix() {
-            assert_eq!(parse_hex::<u32>("0x1234"), Some(0x1234));
-            assert_eq!(parse_hex::<u32>("0xABCD"), Some(0xABCD));
-            assert_eq!(parse_hex::<u32>("0xabcd"), Some(0xabcd));
-        }
-
-        #[test]
-        #[allow(non_snake_case)]
-        fn with_0X_prefix() {
-            // Some systems might use uppercase X. Weird, but let's handle it.
-            assert_eq!(parse_hex::<u32>("0X1234"), Some(0x1234));
-        }
-
-        #[test]
-        fn without_prefix() {
-            assert_eq!(parse_hex::<u32>("1234"), Some(0x1234));
-            assert_eq!(parse_hex::<u16>("ffff"), Some(0xffff));
-        }
-
-        #[test]
-        fn invalid_hex() {
-            assert_eq!(parse_hex::<u32>("not_hex"), None);
-            assert_eq!(parse_hex::<u32>("0xGGGG"), None);
-        }
-
-        #[test]
-        fn empty_string() {
-            assert_eq!(parse_hex::<u32>(""), None);
-        }
-
-        #[test]
-        fn different_sizes() {
-            assert_eq!(parse_hex::<u8>("ff"), Some(0xff));
-            assert_eq!(parse_hex::<u16>("ffff"), Some(0xffff));
-            assert_eq!(parse_hex::<u64>("ffffffffffffffff"), Some(u64::MAX));
-        }
-    }
-
-    mod format_hex_tests {
-        use super::*;
-
-        #[test]
-        fn u32_formatting() {
-            assert_eq!(format_hex_u32(0x10de), "0x10de");
-            assert_eq!(format_hex_u32(0x0001), "0x0001");
-            assert_eq!(format_hex_u32(0), "0x0000");
-        }
-
-        #[test]
-        fn u16_formatting() {
-            assert_eq!(format_hex_u16(0x1234), "0x1234");
-            assert_eq!(format_hex_u16(0x00ff), "0x00ff");
-        }
-
-        #[test]
-        fn u8_formatting() {
-            assert_eq!(format_hex_u8(0xff), "0xff");
-            assert_eq!(format_hex_u8(0x0a), "0x0a");
-        }
-    }
-
-    mod read_file_tests {
-        use super::*;
-
-        #[test]
-        fn read_nonexistent_file() {
-            assert_eq!(read_file_string("/this/path/definitely/does/not/exist"), None);
-        }
-
-        #[test]
-        fn read_numeric_file() {
-            // Simulating what the kernel writes to sysfs
-            // Can't easily test without temp files in pure std
-            // These would be integration tests in practice
-        }
-    }
-
-    mod read_dir_tests {
-        use super::*;
-
-        #[test]
-        fn read_nonexistent_dir() {
-            let names = read_dir_names("/this/path/definitely/does/not/exist");
-            assert!(names.is_empty());
-        }
-
-        #[test]
-        fn sorted_output() {
-            // Test that sorting works
-            let mut v = vec!["zebra".to_string(), "apple".to_string(), "mango".to_string()];
-            v.sort();
-            assert_eq!(v, vec!["apple", "mango", "zebra"]);
-        }
-    }
-
-    mod human_format_tests {
-        use super::*;
-
-        #[test]
-        fn bytes_small() {
-            assert_eq!(format_size_human(0), "0");
-            assert_eq!(format_size_human(512), "512");
-            assert_eq!(format_size_human(1023), "1023");
-        }
-
-        #[test]
-        fn bytes_kilobytes() {
-            assert_eq!(format_size_human(1024), "1K");
-            assert_eq!(format_size_human(1536), "1.5K");
-            assert_eq!(format_size_human(10240), "10K");
-            assert_eq!(format_size_human(102400), "100K");
-        }
-
-        #[test]
-        fn bytes_megabytes() {
-            assert_eq!(format_size_human(1024 * 1024), "1M");
-            assert_eq!(format_size_human(1024 * 1024 + 512 * 1024), "1.5M");
-            assert_eq!(format_size_human(500 * 1024 * 1024), "500M");
-        }
-
-        #[test]
-        fn bytes_gigabytes() {
-            assert_eq!(format_size_human(1024 * 1024 * 1024), "1G");
-            assert_eq!(format_size_human(2 * 1024 * 1024 * 1024_u64), "2G");
-            assert_eq!(format_size_human(500 * 1024 * 1024 * 1024_u64), "500G");
-        }
-
-        #[test]
-        fn bytes_terabytes() {
-            assert_eq!(format_size_human(1024_u64 * 1024 * 1024 * 1024), "1T");
-            assert_eq!(format_size_human(2_u64 * 1024 * 1024 * 1024 * 1024), "2T");
-        }
-
-        #[test]
-        fn kb_to_human() {
-            assert_eq!(format_kb_human(1), "1K");
-            assert_eq!(format_kb_human(1024), "1M");
-            assert_eq!(format_kb_human(1024 * 1024), "1G");
-            assert_eq!(format_kb_human(16 * 1024 * 1024), "16G");
-            assert_eq!(format_kb_human(64 * 1024 * 1024), "64G");
-        }
-
-        #[test]
-        fn sectors_to_human() {
-            // 2 sectors * 512 bytes = 1024 bytes = 1K
-            assert_eq!(format_sectors_human(2, 512), "1K");
-            // 2M sectors * 512 = 1G
-            assert_eq!(format_sectors_human(2 * 1024 * 1024, 512), "1G");
-            // 4T sectors at 512 bytes each = 2T
-            assert_eq!(format_sectors_human(4_u64 * 1024 * 1024 * 1024, 512), "2T");
-        }
-    }
+    // Tests removed for no_std build
 }

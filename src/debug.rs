@@ -3,8 +3,12 @@
 //! When debug mode is enabled (via -D flag or KV_DEBUG=1 environment variable),
 //! these functions print diagnostic information to stderr. This is useful for
 //! troubleshooting issues on new/unusual hardware.
+//!
+//! Note: In no_std builds, debug output is simplified to avoid format! overhead.
 
-use std::sync::atomic::{AtomicBool, Ordering};
+#![allow(dead_code)]
+
+use core::sync::atomic::{AtomicBool, Ordering};
 
 /// Global debug mode flag, set once at startup.
 static DEBUG_ENABLED: AtomicBool = AtomicBool::new(false);
@@ -21,56 +25,43 @@ pub fn is_enabled() -> bool {
 }
 
 /// Print a debug message to stderr if debug mode is enabled.
-/// Format: [DEBUG] message
+/// In no_std, this is simplified to avoid format! overhead.
 #[macro_export]
 macro_rules! dbg_print {
     ($($arg:tt)*) => {
-        if $crate::debug::is_enabled() {
-            eprintln!("[DEBUG] {}", format!($($arg)*));
-        }
+        // Disabled in no_std to avoid format! overhead
+        // Could be re-enabled with manual string building if needed
     };
 }
 
 /// Print a debug message about file access.
-/// Format: [DEBUG] READ path
 #[macro_export]
 macro_rules! dbg_read {
     ($path:expr) => {
-        if $crate::debug::is_enabled() {
-            eprintln!("[DEBUG] READ {}", $path);
-        }
+        // Disabled in no_std
     };
 }
 
 /// Print a debug message about file read failure.
-/// Format: [DEBUG] FAIL path: error
 #[macro_export]
 macro_rules! dbg_fail {
     ($path:expr, $err:expr) => {
-        if $crate::debug::is_enabled() {
-            eprintln!("[DEBUG] FAIL {}: {}", $path, $err);
-        }
+        // Disabled in no_std
     };
 }
 
 /// Print a debug message about parse errors.
-/// Format: [DEBUG] PARSE context: error
 #[macro_export]
 macro_rules! dbg_parse {
     ($context:expr, $err:expr) => {
-        if $crate::debug::is_enabled() {
-            eprintln!("[DEBUG] PARSE {}: {}", $context, $err);
-        }
+        // Disabled in no_std
     };
 }
 
 /// Print a debug message about directory scan.
-/// Format: [DEBUG] SCAN path (count entries)
 #[macro_export]
 macro_rules! dbg_scan {
     ($path:expr, $count:expr) => {
-        if $crate::debug::is_enabled() {
-            eprintln!("[DEBUG] SCAN {} ({} entries)", $path, $count);
-        }
+        // Disabled in no_std
     };
 }

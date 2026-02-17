@@ -12,7 +12,7 @@ intended.
 
 ## Installation
 
-Pre-built static binaries are available from [GitHub Releases](https://github.com/vak-leon/kv/releases/latest).
+Pre-built static binaries are available from [GitHub Releases](https://github.com/walruscraft/kv/releases/latest).
 
 ### Download, Verify, Install
 
@@ -21,8 +21,8 @@ Each release includes SHA256 checksums for verification.
 **x86_64** (most Linux servers and desktops):
 
 ```bash
-curl -LO https://github.com/vak-leon/kv/releases/latest/download/kv-x64
-curl -LO https://github.com/vak-leon/kv/releases/latest/download/kv-x64.sha256
+curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-x64
+curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-x64.sha256
 sha256sum -c kv-x64.sha256
 mv kv-x64 kv && chmod +x kv
 ./kv --version
@@ -31,15 +31,15 @@ mv kv-x64 kv && chmod +x kv
 **ARM64** (Raspberry Pi 4/5, Jetson, Apple Silicon VMs):
 
 ```bash
-curl -LO https://github.com/vak-leon/kv/releases/latest/download/kv-arm64
-curl -LO https://github.com/vak-leon/kv/releases/latest/download/kv-arm64.sha256
+curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-arm64
+curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-arm64.sha256
 sha256sum -c kv-arm64.sha256
 mv kv-arm64 kv && chmod +x kv
 ./kv --version
 ```
 
 **Other architectures:**
-Use `kv-x86` (32-bit PC), `kv-arm` (32-bit ARM), `kv-riscv64` (64-bit RISC-V), or `kv-ppc` (PowerPC).
+Use `kv-x86` (32-bit PC), `kv-arm` (32-bit ARM), or `kv-riscv64` (64-bit RISC-V).
 Each has corresponding `.sha256`, `.sig`, and `.crt` files.
 
 ### Verify Signatures (optional)
@@ -54,13 +54,13 @@ cosign verify-blob kv-x64 \
   --signature kv-x64.sig \
   --certificate kv-x64.crt \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
-  --certificate-identity-regexp 'https://github.com/vak-leon/kv/\.github/workflows/release\.yml@refs/tags/v.*'
+  --certificate-identity-regexp 'https://github.com/walruscraft/kv/\.github/workflows/release\.yml@refs/tags/v.*'
 ```
 
 **Quick install (skip verification):**
 
 ```bash
-curl -Lo kv https://github.com/vak-leon/kv/releases/latest/download/kv-x64 && chmod +x kv
+curl -Lo kv https://github.com/walruscraft/kv/releases/latest/download/kv-x64 && chmod +x kv
 ```
 
 **Copy to an embedded board:**
@@ -114,7 +114,7 @@ Note: `-f` takes an argument, so keep it separate from combined flags (use `-jv 
 
 ## Building from Source
 
-Requires Rust 1.85+ (uses Rust 2024 edition).
+Requires **Rust nightly** (uses build-std for no_std) and Rust 2024 edition.
 
 > [!IMPORTANT]
 > See [CONTRIBUTING.md](CONTRIBUTING.md) for full cross-compilation setup.
@@ -123,30 +123,32 @@ Requires Rust 1.85+ (uses Rust 2024 edition).
 # Debug build
 cargo build
 
-# Release build (static, recommended)
-cargo build --release --target x86_64-unknown-linux-musl
+# Release build (static, ~113 KB stripped)
+cargo build --release
 ```
 
 ### Cross-Compilation
 
-Cargo aliases for embedded targets:
+Cargo aliases for embedded targets (all use gnu targets with build-std):
 
 ```bash
-cargo x86_64   # x86_64-unknown-linux-musl
-cargo x86      # i686-unknown-linux-musl (32-bit)
-cargo arm64    # aarch64-unknown-linux-musl
+cargo x86_64   # x86_64-unknown-linux-gnu
+cargo x86      # i686-unknown-linux-gnu (32-bit)
+cargo arm64    # aarch64-unknown-linux-gnu
 cargo aarch64  # same as arm64
-cargo arm      # arm-unknown-linux-musleabihf (32-bit ARM)
-cargo riscv64  # riscv64gc-unknown-linux-musl
-cargo ppc      # powerpc-unknown-linux-gnu (big-endian)
+cargo arm      # arm-unknown-linux-gnueabihf (32-bit ARM)
+cargo riscv64  # riscv64gc-unknown-linux-gnu
 ```
 
-ARM, RISC-V, and PowerPC builds automatically include the `dt` (device tree) feature.
+ARM and RISC-V builds automatically include the `dt` (device tree) feature.
 
 Prerequisites (Debian/Ubuntu):
 
 ```bash
-rustup target add aarch64-unknown-linux-musl
+# Nightly toolchain required for build-std
+rustup default nightly
+
+# Cross-compiler for ARM64
 sudo apt install gcc-aarch64-linux-gnu
 ```
 
@@ -199,8 +201,8 @@ NAME=mmcblk0p2 TYPE=part SIZE=15G PARENT=mmcblk0 MOUNTPOINT="/"
 
 ## Design Philosophy
 
-- **No dependencies.** Zero external crates. std only.
-- **Single static binary.** Copy it anywhere, it just works.
+- **Minimal dependencies.** no_std with direct syscalls, no libc. Just 3 crates: origin (startup), rustix (syscalls), itoa (number formatting). Zero heap allocation.
+- **Single static binary.** ~113 KB stripped, copy it anywhere, it just works.
 - **Read-only.** We observe, we don't touch.
 - **Graceful degradation.** Missing /sys/bus/pci? We say so and move on.
 - **Stable output.** Scripts can depend on the format.
@@ -224,15 +226,13 @@ step-by-step instructions on how to submit test results or report issues.
 
 | Target | Alias | Notes |
 |--------|-------|-------|
-| x86_64-unknown-linux-musl | `cargo x86_64` | 64-bit x86 |
-| i686-unknown-linux-musl | `cargo x86` | 32-bit x86 |
-| aarch64-unknown-linux-musl | `cargo arm64` / `cargo aarch64` | 64-bit ARM |
-| arm-unknown-linux-musleabihf | `cargo arm` | 32-bit ARM, hard float |
-| riscv64gc-unknown-linux-musl | `cargo riscv64` | 64-bit RISC-V |
-| powerpc-unknown-linux-gnu | `cargo ppc` | 32-bit PowerPC (big-endian)* |
+| x86_64-unknown-linux-gnu | `cargo x86_64` | 64-bit x86 |
+| i686-unknown-linux-gnu | `cargo x86` | 32-bit x86 |
+| aarch64-unknown-linux-gnu | `cargo arm64` / `cargo aarch64` | 64-bit ARM |
+| arm-unknown-linux-gnueabihf | `cargo arm` | 32-bit ARM, hard float |
+| riscv64gc-unknown-linux-gnu | `cargo riscv64` | 64-bit RISC-V |
 
-*PowerPC uses GNU libc instead of musl because `powerpc-unknown-linux-musl` isn't available
-in stable Rust. The binary is still fully static but larger (~1.2 MB vs ~550 KB for musl targets).
+All targets produce static binaries (~113 KB stripped) using no_std with build-std. Zero heap allocation.
 
 ## Security
 

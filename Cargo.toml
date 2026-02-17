@@ -1,33 +1,38 @@
 [package]
 name = "kv"
-version = "0.5.0"
+version = "0.4.2"
 edition = "2024"
 rust-version = "1.85"
 description = "kv (kernel view): a portable system inspector for Linux"
 license = "MIT"
 authors = ["Leon Vak <leonvak@gmail.com>"]
-repository = "https://github.com/leonvak/kernel-view"
+repository = "https://github.com/walruscraft/kv"
 keywords = ["linux", "embedded", "sysfs", "procfs", "diagnostics"]
 categories = ["command-line-utilities", "hardware-support"]
 
 [features]
-default = ["pci", "usb", "block", "net", "cpu", "mem", "mounts", "thermal", "power", "snapshot"]
+default  = ["mem", "cpu", "mounts", "pci", "usb", "block", "thermal", "power", "net", "snapshot"]
+mem      = []
+cpu      = []
+mounts   = []
 pci      = []
 usb      = []
 block    = []
-net      = []
-cpu      = []
-mem      = []
-mounts   = []
 thermal  = []
 power    = []
-dt       = []  # Not in default - only relevant on ARM/RISC-V
 snapshot = []
+net      = []
+dt       = []
 
 [dependencies]
-# Intentionally empty - we're std-only, no external crates allowed.
-# This is a feature, not a bug. We want a single static binary that
-# works everywhere without dragging in half of crates.io.
+# Minimal dependencies for size optimization
+# origin: Program startup without libc (no_std compatible)
+# Using git main until a new crates.io release (last release: 0.26.2, May 2025)
+origin = { git = "https://github.com/sunfishcode/origin.git", default-features = false, features = ["origin-start", "optimize_for_size"] }
+# rustix: Direct Linux syscalls without libc overhead (no_std mode)
+rustix = { version = "1.0", default-features = false, features = ["fs", "stdio", "param", "runtime"] }
+# itoa: Fast integer-to-string without core::fmt bloat (no_std compatible)
+itoa = { version = "1.0", default-features = false }
 
 [dev-dependencies]
 # Also empty - we roll our own test helpers
@@ -43,3 +48,4 @@ strip = true         # Strip symbols in release
 # Keep debug builds fast
 opt-level = 0
 debug = true
+panic = "abort"  # Required for no_std with origin

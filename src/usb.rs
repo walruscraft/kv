@@ -10,20 +10,22 @@
 //! Note: USB device strings (manufacturer, product) might require special
 //! permissions to read on some systems. We gracefully handle missing strings.
 
+#![allow(dead_code)]
+
 use crate::cli::GlobalOptions;
-use crate::fields::{usb as f, to_text_key};
-use crate::filter::{opt_str, Filterable};
+use crate::fields::usb as f;
+use crate::filter::{matches_any, opt_str};
 use crate::io;
-use crate::json::{begin_kv_output, JsonWriter};
-use std::path::PathBuf;
+use crate::json::{begin_kv_output_streaming, StreamingJsonWriter};
+use crate::print::{self, TextWriter};
+use crate::stack::StackString;
 
 const USB_SYSFS_PATH: &str = "/sys/bus/usb/devices";
 
 /// Information about a USB device.
-#[derive(Debug, Clone)]
 pub struct UsbDevice {
     /// Device name in USB topology (e.g., "1-1.4")
-    pub name: String,
+    pub name: StackString<16>,
     /// Vendor ID
     pub vendor_id: u16,
     /// Product ID
@@ -37,13 +39,13 @@ pub struct UsbDevice {
     /// USB speed (in Mbps: 1.5, 12, 480, 5000, 10000, 20000)
     pub speed_mbps: Option<u32>,
     /// Manufacturer string
-    pub manufacturer: Option<String>,
+    pub manufacturer: Option<StackString<64>>,
     /// Product string
-    pub product: Option<String>,
+    pub product: Option<StackString<64>>,
     /// Serial number
-    pub serial: Option<String>,
+    pub serial: Option<StackString<64>>,
     /// USB version (e.g., "2.00", "3.10")
-    pub usb_version: Option<String>,
+    pub usb_version: Option<StackString<16>>,
     /// Number of configurations
     pub num_configurations: Option<u8>,
     /// Current configuration value
@@ -51,34 +53,12 @@ pub struct UsbDevice {
     /// Maximum power consumption in mA
     pub max_power_ma: Option<u32>,
     /// Bound driver
-    pub driver: Option<String>,
-}
-
-impl Filterable for UsbDevice {
-    fn filter_fields(&self) -> Vec<&str> {
-        vec![&self.name, opt_str(&self.manufacturer), opt_str(&self.product)]
-    }
-
-    fn matches_filter(&self, pattern: &str, case_insensitive: bool) -> bool {
-        // Override default to include hex IDs which need formatting
-        let vendor_hex = io::format_hex_u16(self.vendor_id);
-        let product_hex = io::format_hex_u16(self.product_id);
-        let fields = [
-            self.name.as_str(),
-            opt_str(&self.manufacturer),
-            opt_str(&self.product),
-            &vendor_hex,
-            &product_hex,
-        ];
-        crate::filter::matches_any(&fields, pattern, case_insensitive)
-    }
+    pub driver: Option<StackString<32>>,
 }
 
 impl UsbDevice {
     /// Read a USB device from sysfs.
     pub fn read(name: &str) -> Option<Self> {
-        let base = PathBuf::from(USB_SYSFS_PATH).join(name);
-
         // Skip root hubs (usb1, usb2, etc.) - they're not real devices
         if name.starts_with("usb") {
             return None;
@@ -89,37 +69,54 @@ impl UsbDevice {
             return None;
         }
 
-        // Must have vendor and product IDs
-        let vendor_id = io::read_file_hex::<u16>(base.join("idVendor"))?;
-        let product_id = io::read_file_hex::<u16>(base.join("idProduct"))?;
+        let base: StackString<64> = io::join_path(USB_SYSFS_PATH, name);
 
-        let device_class = io::read_file_hex(base.join("bDeviceClass")).unwrap_or(0);
-        let busnum = io::read_file_parse(base.join("busnum")).unwrap_or(0);
-        let devnum = io::read_file_parse(base.join("devnum")).unwrap_or(0);
+        // Must have vendor and product IDs
+        let vendor_path: StackString<128> = io::join_path(base.as_str(), "idVendor");
+        let product_path: StackString<128> = io::join_path(base.as_str(), "idProduct");
+        let vendor_id: u16 = io::read_file_hex(vendor_path.as_str())?;
+        let product_id: u16 = io::read_file_hex(product_path.as_str())?;
+
+        let class_path: StackString<128> = io::join_path(base.as_str(), "bDeviceClass");
+        let busnum_path: StackString<128> = io::join_path(base.as_str(), "busnum");
+        let devnum_path: StackString<128> = io::join_path(base.as_str(), "devnum");
+        let device_class: u8 = io::read_file_hex(class_path.as_str()).unwrap_or(0);
+        let busnum: u8 = io::read_file_parse(busnum_path.as_str()).unwrap_or(0);
+        let devnum: u8 = io::read_file_parse(devnum_path.as_str()).unwrap_or(0);
 
         // Speed is reported as a string like "480" or "5000"
-        let speed_mbps = io::read_file_parse(base.join("speed"));
+        let speed_path: StackString<128> = io::join_path(base.as_str(), "speed");
+        let speed_mbps: Option<u32> = io::read_file_parse(speed_path.as_str());
 
         // These may require elevated permissions
-        let manufacturer = io::read_file_string(base.join("manufacturer"));
-        let product = io::read_file_string(base.join("product"));
-        let serial = io::read_file_string(base.join("serial"));
+        let mfr_path: StackString<128> = io::join_path(base.as_str(), "manufacturer");
+        let prod_path: StackString<128> = io::join_path(base.as_str(), "product");
+        let serial_path: StackString<128> = io::join_path(base.as_str(), "serial");
+        let manufacturer: Option<StackString<64>> = io::read_file_stack(mfr_path.as_str());
+        let product: Option<StackString<64>> = io::read_file_stack(prod_path.as_str());
+        let serial: Option<StackString<64>> = io::read_file_stack(serial_path.as_str());
 
-        let usb_version = io::read_file_string(base.join("version")).map(|s| s.trim().to_string());
-        let num_configurations = io::read_file_parse(base.join("bNumConfigurations"));
-        let configuration = io::read_file_parse(base.join("bConfigurationValue"));
+        let version_path: StackString<128> = io::join_path(base.as_str(), "version");
+        let usb_version: Option<StackString<16>> = io::read_file_stack(version_path.as_str());
+
+        let numconf_path: StackString<128> = io::join_path(base.as_str(), "bNumConfigurations");
+        let confval_path: StackString<128> = io::join_path(base.as_str(), "bConfigurationValue");
+        let num_configurations: Option<u8> = io::read_file_parse(numconf_path.as_str());
+        let configuration: Option<u8> = io::read_file_parse(confval_path.as_str());
 
         // Max power is in mA but sometimes reported as "500mA" string
-        let max_power_ma = io::read_file_string(base.join("bMaxPower"))
+        let power_path: StackString<128> = io::join_path(base.as_str(), "bMaxPower");
+        let max_power_ma: Option<u32> = io::read_file_stack::<16>(power_path.as_str())
             .and_then(|s| {
-                let s = s.trim().strip_suffix("mA").unwrap_or(&s);
-                s.parse().ok()
+                let trimmed = s.as_str().strip_suffix("mA").unwrap_or(s.as_str());
+                trimmed.parse().ok()
             });
 
-        let driver = io::read_link_name(base.join("driver"));
+        let driver_path: StackString<128> = io::join_path(base.as_str(), "driver");
+        let driver: Option<StackString<32>> = io::read_symlink_name(driver_path.as_str());
 
         Some(UsbDevice {
-            name: name.to_string(),
+            name: StackString::from_str(name),
             vendor_id,
             product_id,
             device_class,
@@ -137,229 +134,167 @@ impl UsbDevice {
         })
     }
 
-    /// Get a human-readable speed description.
-    #[allow(dead_code)] // Useful for verbose/debug output in future
-    pub fn speed_name(&self) -> Option<&'static str> {
-        self.speed_mbps.map(|speed| match speed {
-            1 | 2 => "Low Speed (1.5 Mbps)",    // 1.5 reported as 1 or 2
-            12 => "Full Speed (12 Mbps)",
-            480 => "High Speed (480 Mbps)",
-            5000 => "SuperSpeed (5 Gbps)",
-            10000 => "SuperSpeed+ (10 Gbps)",
-            20000 => "SuperSpeed+ (20 Gbps)",
-            _ => "Unknown",
-        })
+    /// Check if this device matches the filter pattern.
+    fn matches_filter(&self, pattern: &str, case_insensitive: bool) -> bool {
+        let vendor_hex = io::format_hex_u16(self.vendor_id);
+        let product_hex = io::format_hex_u16(self.product_id);
+        let fields = [
+            self.name.as_str(),
+            opt_str(&self.manufacturer),
+            opt_str(&self.product),
+            vendor_hex.as_str(),
+            product_hex.as_str(),
+        ];
+        matches_any(&fields, pattern, case_insensitive)
     }
 
     /// Output as text.
-    pub fn print_text(&self, verbose: bool) {
-        let mut parts = Vec::new();
+    fn print_text(&self, verbose: bool) {
+        let mut w = TextWriter::new();
 
-        parts.push(format!("{}={}", to_text_key(f::NAME), self.name));
-        parts.push(format!("{}={}", to_text_key(f::VENDOR_ID), io::format_hex_u16(self.vendor_id)));
-        parts.push(format!("{}={}", to_text_key(f::PRODUCT_ID), io::format_hex_u16(self.product_id)));
+        w.field_str(f::NAME, self.name.as_str());
+        w.field_str(f::VENDOR_ID, io::format_hex_u16(self.vendor_id).as_str());
+        w.field_str(f::PRODUCT_ID, io::format_hex_u16(self.product_id).as_str());
 
         if let Some(ref mfr) = self.manufacturer {
-            parts.push(format!("{}=\"{}\"", to_text_key(f::MANUFACTURER), mfr));
+            w.field_quoted(f::MANUFACTURER, mfr.as_str());
         }
         if let Some(ref prod) = self.product {
-            parts.push(format!("{}=\"{}\"", to_text_key(f::PRODUCT), prod));
+            w.field_quoted(f::PRODUCT, prod.as_str());
         }
         if let Some(speed) = self.speed_mbps {
-            parts.push(format!("{}={}", to_text_key(f::SPEED_MBPS), speed));
+            w.field_u64(f::SPEED_MBPS, speed as u64);
         }
 
         if verbose {
-            parts.push(format!("{}={}", to_text_key(f::CLASS), io::format_hex_u8(self.device_class)));
-            parts.push(format!("{}={}", to_text_key(f::BUS), self.busnum));
-            parts.push(format!("{}={}", to_text_key(f::DEV), self.devnum));
+            w.field_str(f::DEVICE_CLASS, io::format_hex_u8(self.device_class).as_str());
+            w.field_u64(f::BUSNUM, self.busnum as u64);
+            w.field_u64(f::DEVNUM, self.devnum as u64);
             if let Some(ref serial) = self.serial {
-                parts.push(format!("{}=\"{}\"", to_text_key(f::SERIAL), serial));
+                w.field_quoted(f::SERIAL, serial.as_str());
             }
             if let Some(ref version) = self.usb_version {
-                parts.push(format!("{}={}", to_text_key(f::USB_VERSION), version));
+                w.field_str(f::USB_VERSION, version.as_str());
             }
             if let Some(power) = self.max_power_ma {
-                parts.push(format!("{}={}", to_text_key(f::MAX_POWER_MA), power));
+                w.field_u64(f::MAX_POWER_MA, power as u64);
             }
             if let Some(ref driver) = self.driver {
-                parts.push(format!("{}={}", to_text_key(f::DRIVER), driver));
+                w.field_str(f::DRIVER, driver.as_str());
             }
         }
 
-        println!("{}", parts.join(" "));
+        w.finish();
     }
-}
 
-/// Read all USB devices.
-pub fn read_usb_devices() -> Vec<UsbDevice> {
-    let names = io::read_dir_names_sorted(USB_SYSFS_PATH);
-    names.iter().filter_map(|name| UsbDevice::read(name)).collect()
+    /// Write as JSON object.
+    fn write_json(&self, w: &mut StreamingJsonWriter, verbose: bool) {
+        w.array_object_begin();
+
+        w.field_str(f::NAME, self.name.as_str());
+        w.field_str(f::VENDOR_ID, io::format_hex_u16(self.vendor_id).as_str());
+        w.field_str(f::PRODUCT_ID, io::format_hex_u16(self.product_id).as_str());
+        w.field_str_opt(f::MANUFACTURER, self.manufacturer.as_ref().map(|s| s.as_str()));
+        w.field_str_opt(f::PRODUCT, self.product.as_ref().map(|s| s.as_str()));
+        w.field_u64_opt(f::SPEED_MBPS, self.speed_mbps.map(|v| v as u64));
+
+        if verbose {
+            w.field_str(f::DEVICE_CLASS, io::format_hex_u8(self.device_class).as_str());
+            w.field_u64(f::BUSNUM, self.busnum as u64);
+            w.field_u64(f::DEVNUM, self.devnum as u64);
+            w.field_str_opt(f::SERIAL, self.serial.as_ref().map(|s| s.as_str()));
+            w.field_str_opt(f::USB_VERSION, self.usb_version.as_ref().map(|s| s.as_str()));
+            w.field_u64_opt(f::NUM_CONFIGURATIONS, self.num_configurations.map(|v| v as u64));
+            w.field_u64_opt(f::CONFIGURATION, self.configuration.map(|v| v as u64));
+            w.field_u64_opt(f::MAX_POWER_MA, self.max_power_ma.map(|v| v as u64));
+            w.field_str_opt(f::DRIVER, self.driver.as_ref().map(|s| s.as_str()));
+        }
+
+        w.array_object_end();
+    }
 }
 
 /// Entry point for `kv usb` subcommand.
 pub fn run(opts: &GlobalOptions) -> i32 {
     if !io::path_exists(USB_SYSFS_PATH) {
         if opts.json {
-            let mut w = begin_kv_output(opts.pretty, "usb");
+            let mut w = begin_kv_output_streaming(opts.pretty, "usb");
             w.field_array("data");
             w.end_field_array();
             w.end_object();
-            println!("{}", w.finish());
+            w.finish();
         } else {
-            println!("usb: no USB bus found (missing {})", USB_SYSFS_PATH);
+            print::println("usb: no USB bus found");
         }
         return 0;
     }
 
-    let devices = read_usb_devices();
-
-    // Apply filter if specified
-    let devices: Vec<_> = if let Some(ref pattern) = opts.filter {
-        devices
-            .into_iter()
-            .filter(|d| d.matches_filter(pattern, opts.filter_case_insensitive))
-            .collect()
-    } else {
-        devices
-    };
-
-    if devices.is_empty() {
-        if opts.json {
-            let mut w = begin_kv_output(opts.pretty, "usb");
-            w.field_array("data");
-            w.end_field_array();
-            w.end_object();
-            println!("{}", w.finish());
-        } else if opts.filter.is_some() {
-            println!("usb: no matching devices");
-        } else {
-            println!("usb: no USB devices found");
-        }
-        return 0;
-    }
+    let filter = opts.filter.as_ref().map(|s| s.as_str());
+    let case_insensitive = opts.filter_case_insensitive;
 
     if opts.json {
-        print_json(&devices, opts.pretty, opts.verbose);
+        let mut w = begin_kv_output_streaming(opts.pretty, "usb");
+        w.field_array("data");
+
+        let mut count = 0;
+        io::for_each_dir_entry(USB_SYSFS_PATH, |name| {
+            if let Some(dev) = UsbDevice::read(name) {
+                if let Some(pattern) = filter {
+                    if !dev.matches_filter(pattern, case_insensitive) {
+                        return;
+                    }
+                }
+                dev.write_json(&mut w, opts.verbose);
+                count += 1;
+            }
+        });
+
+        w.end_field_array();
+        w.end_object();
+        w.finish();
+
+        if count == 0 && filter.is_some() {
+            // Empty filtered result is fine
+        }
     } else {
-        for dev in &devices {
-            dev.print_text(opts.verbose);
+        let mut count = 0;
+        io::for_each_dir_entry(USB_SYSFS_PATH, |name| {
+            if let Some(dev) = UsbDevice::read(name) {
+                if let Some(pattern) = filter {
+                    if !dev.matches_filter(pattern, case_insensitive) {
+                        return;
+                    }
+                }
+                dev.print_text(opts.verbose);
+                count += 1;
+            }
+        });
+
+        if count == 0 {
+            if filter.is_some() {
+                print::println("usb: no matching devices");
+            } else {
+                print::println("usb: no USB devices found");
+            }
         }
     }
 
     0
 }
 
-/// Print devices as JSON.
-fn print_json(devices: &[UsbDevice], pretty: bool, verbose: bool) {
-    let mut w = begin_kv_output(pretty, "usb");
-
-    w.field_array("data");
-    for dev in devices {
-        write_device_json(&mut w, dev, verbose);
-    }
-    w.end_field_array();
-
-    w.end_object();
-    println!("{}", w.finish());
-}
-
-/// Write a single device to JSON.
-fn write_device_json(w: &mut JsonWriter, dev: &UsbDevice, verbose: bool) {
-    w.array_object_begin();
-
-    w.field_str(f::NAME, &dev.name);
-    w.field_str(f::VENDOR_ID, &io::format_hex_u16(dev.vendor_id));
-    w.field_str(f::PRODUCT_ID, &io::format_hex_u16(dev.product_id));
-    w.field_str_opt(f::MANUFACTURER, dev.manufacturer.as_deref());
-    w.field_str_opt(f::PRODUCT, dev.product.as_deref());
-    w.field_u64_opt(f::SPEED_MBPS, dev.speed_mbps.map(|v| v as u64));
-
-    if verbose {
-        w.field_str(f::DEVICE_CLASS, &io::format_hex_u8(dev.device_class));
-        w.field_u64(f::BUSNUM, dev.busnum as u64);
-        w.field_u64(f::DEVNUM, dev.devnum as u64);
-        w.field_str_opt(f::SERIAL, dev.serial.as_deref());
-        w.field_str_opt(f::USB_VERSION, dev.usb_version.as_deref());
-        w.field_u64_opt(f::NUM_CONFIGURATIONS, dev.num_configurations.map(|v| v as u64));
-        w.field_u64_opt(f::CONFIGURATION, dev.configuration.map(|v| v as u64));
-        w.field_u64_opt(f::MAX_POWER_MA, dev.max_power_ma.map(|v| v as u64));
-        w.field_str_opt(f::DRIVER, dev.driver.as_deref());
-    }
-
-    w.array_object_end();
-}
-
-/// Collect USB devices for snapshot.
-#[cfg(feature = "snapshot")]
-pub fn collect() -> Vec<UsbDevice> {
-    if io::path_exists(USB_SYSFS_PATH) {
-        read_usb_devices()
-    } else {
-        Vec::new()
-    }
-}
-
 /// Write USB devices to JSON writer (for snapshot).
 #[cfg(feature = "snapshot")]
-pub fn write_json_snapshot(w: &mut JsonWriter, devices: &[UsbDevice], verbose: bool) {
-    w.field_array("usb");
-    for dev in devices {
-        write_device_json(w, dev, verbose);
-    }
-    w.end_field_array();
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn speed_names() {
-        let mut dev = UsbDevice {
-            name: "1-1".to_string(),
-            vendor_id: 0,
-            product_id: 0,
-            device_class: 0,
-            busnum: 1,
-            devnum: 1,
-            speed_mbps: Some(480),
-            manufacturer: None,
-            product: None,
-            serial: None,
-            usb_version: None,
-            num_configurations: None,
-            configuration: None,
-            max_power_ma: None,
-            driver: None,
-        };
-
-        assert_eq!(dev.speed_name(), Some("High Speed (480 Mbps)"));
-
-        dev.speed_mbps = Some(5000);
-        assert_eq!(dev.speed_name(), Some("SuperSpeed (5 Gbps)"));
-
-        dev.speed_mbps = Some(12);
-        assert_eq!(dev.speed_name(), Some("Full Speed (12 Mbps)"));
+pub fn write_snapshot(w: &mut StreamingJsonWriter, verbose: bool) {
+    if !io::path_exists(USB_SYSFS_PATH) {
+        return;
     }
 
-    #[test]
-    fn skip_root_hubs() {
-        // Root hub names start with "usb" - we should skip them
-        assert!(UsbDevice::read("usb1").is_none());
-    }
-
-    #[test]
-    fn skip_interfaces() {
-        // Interface names contain ':' like "1-1:1.0" - we should skip them
-        // (Can't test directly without creating sysfs entries, but the logic is in read())
-        assert!("1-1:1.0".contains(':'));
-    }
-
-    #[test]
-    fn read_devices_doesnt_panic() {
-        // Even on systems with no USB (like WSL), this shouldn't panic
-        let devices = read_usb_devices();
-        println!("Found {} USB devices", devices.len());
-    }
+    w.key("usb");
+    w.begin_array();
+    io::for_each_dir_entry(USB_SYSFS_PATH, |name| {
+        if let Some(dev) = UsbDevice::read(name) {
+            dev.write_json(w, verbose);
+        }
+    });
+    w.end_array();
 }

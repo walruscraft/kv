@@ -20,7 +20,3 @@ target
 
 # Irrelevant directories
 .*/
-
-# Required hidden directories
-!.github/
-!.cargo/

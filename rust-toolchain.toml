@@ -1,0 +1,3 @@
+# Use nightly toolchain for build-std support
+[toolchain]
+channel = "nightly"

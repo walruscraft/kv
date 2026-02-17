@@ -7,20 +7,24 @@
 //! We handle the somewhat odd sysfs layout where partitions can appear
 //! either as subdirectories of /sys/block/<disk>/ or as separate entries.
 
+#![allow(dead_code)]
+
 use crate::cli::GlobalOptions;
-use crate::fields::{block as f, to_text_key};
-use crate::filter::{opt_str, Filterable};
+use crate::fields::block as f;
+use crate::filter::{matches_any, opt_str};
 use crate::io;
-use crate::json::{begin_kv_output, JsonWriter};
-use std::collections::HashMap;
-use std::path::PathBuf;
+use crate::json::{begin_kv_output_streaming, StreamingJsonWriter};
+use crate::print::{self, TextWriter};
+use crate::stack::StackString;
 
 const BLOCK_SYSFS_PATH: &str = "/sys/block";
 const MOUNTS_PATH: &str = "/proc/self/mounts";
 
+/// Maximum number of mount entries we track.
+const MAX_MOUNT_ENTRIES: usize = 128;
+
 /// Type of block device.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[allow(dead_code)] // Other reserved for future device types
 pub enum BlockType {
     Disk,
     Part,
@@ -41,11 +45,69 @@ impl BlockType {
     }
 }
 
+/// Stack-based mountpoint lookup table.
+/// Maps device paths (like "/dev/sda1") to mount points (like "/mnt/data").
+struct MountpointMap {
+    /// Device path -> mount point pairs.
+    entries: [(StackString<64>, StackString<256>); MAX_MOUNT_ENTRIES],
+    count: usize,
+}
+
+impl MountpointMap {
+    /// Create an empty mountpoint map.
+    fn new() -> Self {
+        Self {
+            entries: core::array::from_fn(|_| (StackString::new(), StackString::new())),
+            count: 0,
+        }
+    }
+
+    /// Add an entry to the map.
+    fn insert(&mut self, device: &str, mountpoint: &str) {
+        if self.count < MAX_MOUNT_ENTRIES {
+            self.entries[self.count].0 = StackString::from_str(device);
+            self.entries[self.count].1 = StackString::from_str(mountpoint);
+            self.count += 1;
+        }
+    }
+
+    /// Look up a device's mount point.
+    fn get(&self, device: &str) -> Option<&str> {
+        for i in 0..self.count {
+            if self.entries[i].0.as_str() == device {
+                return Some(self.entries[i].1.as_str());
+            }
+        }
+        None
+    }
+
+    /// Read mount points from /proc/self/mounts.
+    fn from_mounts() -> Self {
+        let mut map = Self::new();
+
+        let contents: Option<StackString<8192>> = io::read_file_stack(MOUNTS_PATH);
+        let Some(contents) = contents else {
+            return map;
+        };
+
+        for line in contents.as_str().lines() {
+            let mut parts = line.split_whitespace();
+            if let (Some(device), Some(mountpoint)) = (parts.next(), parts.next()) {
+                // Only track /dev/* devices
+                if device.starts_with("/dev/") {
+                    map.insert(device, mountpoint);
+                }
+            }
+        }
+
+        map
+    }
+}
+
 /// Information about a block device or partition.
-#[derive(Debug, Clone)]
 pub struct BlockDevice {
     /// Device name (e.g., "sda", "sda1", "nvme0n1p1")
-    pub name: String,
+    pub name: StackString<32>,
     /// Device type
     pub dev_type: BlockType,
     /// Major device number
@@ -61,26 +123,15 @@ pub struct BlockDevice {
     /// Is the device read-only?
     pub ro: bool,
     /// Parent device name (for partitions)
-    pub parent: Option<String>,
+    pub parent: Option<StackString<32>>,
     /// Mount point (if mounted)
-    pub mountpoint: Option<String>,
+    pub mountpoint: Option<StackString<256>>,
     /// Device model (for disks, if available)
-    pub model: Option<String>,
+    pub model: Option<StackString<64>>,
     /// Rotational device (HDD) or not (SSD)?
     pub rotational: Option<bool>,
     /// Scheduler in use
-    pub scheduler: Option<String>,
-}
-
-impl Filterable for BlockDevice {
-    fn filter_fields(&self) -> Vec<&str> {
-        vec![
-            &self.name,
-            opt_str(&self.model),
-            opt_str(&self.mountpoint),
-            self.dev_type.as_str(),
-        ]
-    }
+    pub scheduler: Option<StackString<32>>,
 }
 
 impl BlockDevice {
@@ -89,21 +140,24 @@ impl BlockDevice {
     /// For partitions, most attributes (removable, queue/*, model) don't exist -
     /// they inherit physical characteristics from the parent disk. We skip reading
     /// them to avoid noisy debug output.
-    pub fn read(name: &str, parent: Option<&str>, mountpoints: &HashMap<String, String>) -> Option<Self> {
-        let base = if let Some(p) = parent {
-            PathBuf::from(BLOCK_SYSFS_PATH).join(p).join(name)
+    fn read(name: &str, parent: Option<&str>, mountpoints: &MountpointMap) -> Option<Self> {
+        let base: StackString<128> = if let Some(p) = parent {
+            let parent_path: StackString<64> = io::join_path(BLOCK_SYSFS_PATH, p);
+            io::join_path(parent_path.as_str(), name)
         } else {
-            PathBuf::from(BLOCK_SYSFS_PATH).join(name)
+            io::join_path(BLOCK_SYSFS_PATH, name)
         };
 
         // Must have at least size and dev (major:minor)
-        if !base.join("size").exists() {
+        let size_path: StackString<256> = io::join_path(base.as_str(), "size");
+        if !io::path_exists(size_path.as_str()) {
             return None;
         }
 
-        let size_sectors: u64 = io::read_file_parse(base.join("size")).unwrap_or(0);
-        let dev_str = io::read_file_string(base.join("dev"))?;
-        let (major, minor) = parse_dev(&dev_str)?;
+        let size_sectors: u64 = io::read_file_parse(size_path.as_str()).unwrap_or(0);
+        let dev_path: StackString<256> = io::join_path(base.as_str(), "dev");
+        let dev_str: Option<StackString<16>> = io::read_file_stack(dev_path.as_str());
+        let (major, minor) = parse_dev(dev_str.as_ref()?.as_str())?;
 
         // Determine device type
         let is_partition = parent.is_some();
@@ -122,41 +176,52 @@ impl BlockDevice {
         let (removable, sector_size, model, rotational, scheduler) = if is_partition {
             (false, 512, None, None, None)
         } else {
-            let removable = io::read_file_parse::<u8>(base.join("removable"))
+            let removable_path: StackString<256> = io::join_path(base.as_str(), "removable");
+            let removable = io::read_file_parse::<u8>(removable_path.as_str())
                 .map(|v| v != 0)
                 .unwrap_or(false);
 
             // Sector size - try hw_sector_size first, fall back to logical
-            let sector_size = io::read_file_parse(base.join("queue/hw_sector_size"))
-                .or_else(|| io::read_file_parse(base.join("queue/logical_block_size")))
+            let hw_sector_path: StackString<256> = io::join_path(base.as_str(), "queue/hw_sector_size");
+            let logical_path: StackString<256> = io::join_path(base.as_str(), "queue/logical_block_size");
+            let sector_size = io::read_file_parse(hw_sector_path.as_str())
+                .or_else(|| io::read_file_parse(logical_path.as_str()))
                 .unwrap_or(512);
 
             // Model - try device/model first (SCSI/NVMe), then device/name (MMC/SD)
-            let model = io::read_file_string(base.join("device/model"))
-                .or_else(|| io::read_file_string(base.join("device/name")));
+            let model_path: StackString<256> = io::join_path(base.as_str(), "device/model");
+            let name_path: StackString<256> = io::join_path(base.as_str(), "device/name");
+            let model: Option<StackString<64>> = io::read_file_stack(model_path.as_str())
+                .or_else(|| io::read_file_stack(name_path.as_str()));
 
             // Rotational flag
-            let rotational = io::read_file_parse::<u8>(base.join("queue/rotational"))
+            let rot_path: StackString<256> = io::join_path(base.as_str(), "queue/rotational");
+            let rotational = io::read_file_parse::<u8>(rot_path.as_str())
                 .map(|v| v != 0);
 
             // Scheduler (e.g., "[mq-deadline] none" - extract the active one)
-            let scheduler = io::read_file_string(base.join("queue/scheduler"))
-                .and_then(|s| extract_active_scheduler(&s));
+            let sched_path: StackString<256> = io::join_path(base.as_str(), "queue/scheduler");
+            let scheduler: Option<StackString<32>> = io::read_file_stack::<64>(sched_path.as_str())
+                .and_then(|s| extract_active_scheduler(s.as_str()));
 
             (removable, sector_size, model, rotational, scheduler)
         };
 
         // ro is valid for both disks and partitions
-        let ro = io::read_file_parse::<u8>(base.join("ro"))
+        let ro_path: StackString<256> = io::join_path(base.as_str(), "ro");
+        let ro = io::read_file_parse::<u8>(ro_path.as_str())
             .map(|v| v != 0)
             .unwrap_or(false);
 
         // Look up mount point by device path
-        let dev_path = format!("/dev/{}", name);
-        let mountpoint = mountpoints.get(&dev_path).cloned();
+        let mut dev_path_buf: StackString<64> = StackString::new();
+        dev_path_buf.push_str("/dev/");
+        dev_path_buf.push_str(name);
+        let mountpoint = mountpoints.get(dev_path_buf.as_str())
+            .map(StackString::from_str);
 
         Some(BlockDevice {
-            name: name.to_string(),
+            name: StackString::from_str(name),
             dev_type,
             major,
             minor,
@@ -164,7 +229,7 @@ impl BlockDevice {
             sector_size,
             removable,
             ro,
-            parent: parent.map(|s| s.to_string()),
+            parent: parent.map(StackString::from_str),
             mountpoint,
             model,
             rotational,
@@ -172,54 +237,101 @@ impl BlockDevice {
         })
     }
 
-    /// Calculate size in bytes.
-    #[allow(dead_code)] // Useful utility for human-readable output
-    pub fn size_bytes(&self) -> u64 {
-        self.size_sectors * self.sector_size as u64
+    /// Check if this device matches the filter pattern.
+    fn matches_filter(&self, pattern: &str, case_insensitive: bool) -> bool {
+        let fields = [
+            self.name.as_str(),
+            opt_str(&self.model),
+            opt_str(&self.mountpoint),
+            self.dev_type.as_str(),
+        ];
+        matches_any(&fields, pattern, case_insensitive)
     }
 
     /// Output as text.
-    pub fn print_text(&self, verbose: bool, human: bool) {
-        let mut parts = Vec::new();
+    fn print_text(&self, verbose: bool, human: bool) {
+        let mut w = TextWriter::new();
 
-        parts.push(format!("{}={}", to_text_key(f::NAME), self.name));
-        parts.push(format!("{}={}", to_text_key(f::TYPE), self.dev_type.as_str()));
-        parts.push(format!("{}={}:{}", to_text_key(f::MAJMIN), self.major, self.minor));
+        w.field_str(f::NAME, self.name.as_str());
+        w.field_str(f::TYPE, self.dev_type.as_str());
+
+        // majmin as "8:0"
+        let mut majmin: StackString<16> = StackString::new();
+        let mut buf = itoa::Buffer::new();
+        majmin.push_str(buf.format(self.major));
+        majmin.push(':');
+        majmin.push_str(buf.format(self.minor));
+        w.field_str(f::MAJMIN, majmin.as_str());
 
         if human {
             let size = io::format_sectors_human(self.size_sectors, self.sector_size);
-            parts.push(format!("{}={}", to_text_key(f::SIZE), size));
+            w.field_str(f::SIZE, size.as_str());
         } else {
-            parts.push(format!("{}={}", to_text_key(f::SIZE_SECTORS), self.size_sectors));
+            w.field_u64(f::SIZE_SECTORS, self.size_sectors);
         }
 
         if let Some(ref parent) = self.parent {
-            parts.push(format!("{}={}", to_text_key(f::PARENT), parent));
+            w.field_str(f::PARENT, parent.as_str());
         }
 
         if let Some(ref mp) = self.mountpoint {
-            parts.push(format!("{}=\"{}\"", to_text_key(f::MOUNTPOINT), mp));
+            w.field_quoted(f::MOUNTPOINT, mp.as_str());
         }
 
         if verbose {
             if !human {
-                parts.push(format!("{}={}", to_text_key(f::SECTOR_SIZE), self.sector_size));
+                w.field_u64(f::SECTOR_SIZE, self.sector_size as u64);
             }
-            parts.push(format!("{}={}", to_text_key(f::REMOVABLE), if self.removable { 1 } else { 0 }));
-            parts.push(format!("{}={}", to_text_key(f::RO), if self.ro { 1 } else { 0 }));
+            w.field_u64(f::REMOVABLE, if self.removable { 1 } else { 0 });
+            w.field_u64(f::RO, if self.ro { 1 } else { 0 });
 
             if let Some(ref model) = self.model {
-                parts.push(format!("{}=\"{}\"", to_text_key(f::MODEL), model.trim()));
+                w.field_quoted(f::MODEL, model.as_str());
             }
             if let Some(rot) = self.rotational {
-                parts.push(format!("{}={}", to_text_key(f::ROTATIONAL), if rot { 1 } else { 0 }));
+                w.field_u64(f::ROTATIONAL, if rot { 1 } else { 0 });
             }
             if let Some(ref sched) = self.scheduler {
-                parts.push(format!("{}={}", to_text_key(f::SCHEDULER), sched));
+                w.field_str(f::SCHEDULER, sched.as_str());
             }
         }
 
-        println!("{}", parts.join(" "));
+        w.finish();
+    }
+
+    /// Write as JSON object.
+    fn write_json(&self, w: &mut StreamingJsonWriter, verbose: bool, human: bool) {
+        w.array_object_begin();
+
+        w.field_str(f::NAME, self.name.as_str());
+        w.field_str(f::TYPE, self.dev_type.as_str());
+        w.field_u64(f::MAJOR, self.major as u64);
+        w.field_u64(f::MINOR, self.minor as u64);
+
+        if human {
+            let size = io::format_sectors_human(self.size_sectors, self.sector_size);
+            w.field_str(f::SIZE, size.as_str());
+        } else {
+            w.field_u64(f::SIZE_SECTORS, self.size_sectors);
+        }
+
+        w.field_str_opt(f::PARENT, self.parent.as_ref().map(|s| s.as_str()));
+        w.field_str_opt(f::MOUNTPOINT, self.mountpoint.as_ref().map(|s| s.as_str()));
+
+        if verbose {
+            if !human {
+                w.field_u64(f::SECTOR_SIZE, self.sector_size as u64);
+            }
+            w.field_bool(f::REMOVABLE, self.removable);
+            w.field_bool(f::RO, self.ro);
+            w.field_str_opt(f::MODEL, self.model.as_ref().map(|s| s.as_str()));
+            if let Some(rot) = self.rotational {
+                w.field_bool(f::ROTATIONAL, rot);
+            }
+            w.field_str_opt(f::SCHEDULER, self.scheduler.as_ref().map(|s| s.as_str()));
+        }
+
+        w.array_object_end();
     }
 }
 
@@ -230,212 +342,172 @@ fn parse_dev(s: &str) -> Option<(u32, u32)> {
 }
 
 /// Extract active scheduler from scheduler file content.
-/// Format: "mq-deadline [none]" -> "none"
-fn extract_active_scheduler(s: &str) -> Option<String> {
+/// Format: "mq-deadline kyber [none]" -> "none"
+fn extract_active_scheduler(s: &str) -> Option<StackString<32>> {
     // Active scheduler is in brackets
     let start = s.find('[')?;
     let end = s.find(']')?;
     if start < end {
-        Some(s[start + 1..end].to_string())
+        Some(StackString::from_str(&s[start + 1..end]))
     } else {
         None
     }
 }
 
-/// Read mount points from /proc/self/mounts.
-/// Returns map of device path -> mount point.
-fn read_mountpoints() -> HashMap<String, String> {
-    let mut map = HashMap::new();
-
-    let Some(contents) = io::read_file_string(MOUNTS_PATH) else {
-        return map;
-    };
-
-    for line in contents.lines() {
-        let parts: Vec<&str> = line.split_whitespace().collect();
-        if parts.len() >= 2 {
-            map.insert(parts[0].to_string(), parts[1].to_string());
-        }
-    }
-
-    map
-}
-
-/// Read all block devices with their partitions.
-pub fn read_block_devices() -> Vec<BlockDevice> {
-    let mountpoints = read_mountpoints();
-    let mut devices = Vec::new();
-
-    let disk_names = io::read_dir_names_sorted(BLOCK_SYSFS_PATH);
-
-    for disk_name in &disk_names {
-        // Read the disk itself
-        if let Some(disk) = BlockDevice::read(disk_name, None, &mountpoints) {
-            // Skip loop devices with size 0 (unbound) unless verbose
-            if disk.dev_type == BlockType::Loop && disk.size_sectors == 0 {
-                continue;
-            }
-
-            let parent_name = disk.name.clone();
-            devices.push(disk);
-
-            // Look for partitions as subdirectories
-            let disk_path = PathBuf::from(BLOCK_SYSFS_PATH).join(&parent_name);
-            for entry_name in io::read_dir_names_sorted(&disk_path) {
-                // Partition directories start with the disk name
-                if entry_name.starts_with(&parent_name) {
-                    if let Some(part) = BlockDevice::read(&entry_name, Some(&parent_name), &mountpoints) {
-                        devices.push(part);
-                    }
-                }
-            }
-        }
-    }
-
-    devices
-}
-
 /// Entry point for `kv block` subcommand.
 pub fn run(opts: &GlobalOptions) -> i32 {
-    let devices = read_block_devices();
-
-    // Apply filter if specified
-    let devices: Vec<_> = if let Some(ref pattern) = opts.filter {
-        devices
-            .into_iter()
-            .filter(|d| d.matches_filter(pattern, opts.filter_case_insensitive))
-            .collect()
-    } else {
-        devices
-    };
-
-    if devices.is_empty() {
+    if !io::path_exists(BLOCK_SYSFS_PATH) {
         if opts.json {
-            let mut w = begin_kv_output(opts.pretty, "block");
+            let mut w = begin_kv_output_streaming(opts.pretty, "block");
             w.field_array("data");
             w.end_field_array();
             w.end_object();
-            println!("{}", w.finish());
-        } else if opts.filter.is_some() {
-            println!("block: no matching devices");
+            w.finish();
         } else {
-            println!("block: no block devices found");
+            print::println("block: no block devices found");
         }
         return 0;
     }
 
+    let mountpoints = MountpointMap::from_mounts();
+    let filter = opts.filter.as_ref().map(|s| s.as_str());
+    let case_insensitive = opts.filter_case_insensitive;
+
     if opts.json {
-        print_json(&devices, opts.pretty, opts.verbose, opts.human);
+        let mut w = begin_kv_output_streaming(opts.pretty, "block");
+        w.field_array("data");
+
+        let mut count = 0;
+        io::for_each_dir_entry(BLOCK_SYSFS_PATH, |disk_name| {
+            if let Some(disk) = BlockDevice::read(disk_name, None, &mountpoints) {
+                // Skip loop devices with size 0 (unbound)
+                if disk.dev_type == BlockType::Loop && disk.size_sectors == 0 {
+                    return;
+                }
+
+                // Output disk if it matches filter (or no filter)
+                if let Some(pattern) = filter {
+                    if disk.matches_filter(pattern, case_insensitive) {
+                        disk.write_json(&mut w, opts.verbose, opts.human);
+                        count += 1;
+                    }
+                } else {
+                    disk.write_json(&mut w, opts.verbose, opts.human);
+                    count += 1;
+                }
+
+                // Look for partitions as subdirectories
+                let disk_path: StackString<64> = io::join_path(BLOCK_SYSFS_PATH, disk_name);
+                io::for_each_dir_entry(disk_path.as_str(), |entry_name| {
+                    // Partition directories start with the disk name
+                    if entry_name.starts_with(disk_name) {
+                        if let Some(part) = BlockDevice::read(entry_name, Some(disk_name), &mountpoints) {
+                            if let Some(pattern) = filter {
+                                if part.matches_filter(pattern, case_insensitive) {
+                                    part.write_json(&mut w, opts.verbose, opts.human);
+                                    count += 1;
+                                }
+                            } else {
+                                part.write_json(&mut w, opts.verbose, opts.human);
+                                count += 1;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        w.end_field_array();
+        w.end_object();
+        w.finish();
+
+        if count == 0 && filter.is_some() {
+            // Empty filtered result is fine
+        }
     } else {
-        for dev in &devices {
-            dev.print_text(opts.verbose, opts.human);
+        let mut count = 0;
+        io::for_each_dir_entry(BLOCK_SYSFS_PATH, |disk_name| {
+            if let Some(disk) = BlockDevice::read(disk_name, None, &mountpoints) {
+                // Skip loop devices with size 0 (unbound)
+                if disk.dev_type == BlockType::Loop && disk.size_sectors == 0 {
+                    return;
+                }
+
+                // Output disk if it matches filter (or no filter)
+                if let Some(pattern) = filter {
+                    if disk.matches_filter(pattern, case_insensitive) {
+                        disk.print_text(opts.verbose, opts.human);
+                        count += 1;
+                    }
+                } else {
+                    disk.print_text(opts.verbose, opts.human);
+                    count += 1;
+                }
+
+                // Look for partitions as subdirectories
+                let disk_path: StackString<64> = io::join_path(BLOCK_SYSFS_PATH, disk_name);
+                io::for_each_dir_entry(disk_path.as_str(), |entry_name| {
+                    // Partition directories start with the disk name
+                    if entry_name.starts_with(disk_name) {
+                        if let Some(part) = BlockDevice::read(entry_name, Some(disk_name), &mountpoints) {
+                            if let Some(pattern) = filter {
+                                if part.matches_filter(pattern, case_insensitive) {
+                                    part.print_text(opts.verbose, opts.human);
+                                    count += 1;
+                                }
+                            } else {
+                                part.print_text(opts.verbose, opts.human);
+                                count += 1;
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        if count == 0 {
+            if filter.is_some() {
+                print::println("block: no matching devices");
+            } else {
+                print::println("block: no block devices found");
+            }
         }
     }
 
     0
 }
 
-/// Print devices as JSON.
-fn print_json(devices: &[BlockDevice], pretty: bool, verbose: bool, human: bool) {
-    let mut w = begin_kv_output(pretty, "block");
-
-    w.field_array("data");
-    for dev in devices {
-        write_device_json(&mut w, dev, verbose, human);
-    }
-    w.end_field_array();
-
-    w.end_object();
-    println!("{}", w.finish());
-}
-
-/// Write a single device to JSON.
-fn write_device_json(w: &mut JsonWriter, dev: &BlockDevice, verbose: bool, human: bool) {
-    w.array_object_begin();
-
-    w.field_str(f::NAME, &dev.name);
-    w.field_str(f::TYPE, dev.dev_type.as_str());
-    w.field_u64(f::MAJOR, dev.major as u64);
-    w.field_u64(f::MINOR, dev.minor as u64);
-
-    if human {
-        let size = io::format_sectors_human(dev.size_sectors, dev.sector_size);
-        w.field_str(f::SIZE, &size);
-    } else {
-        w.field_u64(f::SIZE_SECTORS, dev.size_sectors);
-    }
-
-    w.field_str_opt(f::PARENT, dev.parent.as_deref());
-    w.field_str_opt(f::MOUNTPOINT, dev.mountpoint.as_deref());
-
-    if verbose {
-        if !human {
-            w.field_u64(f::SECTOR_SIZE, dev.sector_size as u64);
-        }
-        w.field_bool(f::REMOVABLE, dev.removable);
-        w.field_bool(f::RO, dev.ro);
-        w.field_str_opt(f::MODEL, dev.model.as_deref());
-        if let Some(rot) = dev.rotational {
-            w.field_bool(f::ROTATIONAL, rot);
-        }
-        w.field_str_opt(f::SCHEDULER, dev.scheduler.as_deref());
-    }
-
-    w.array_object_end();
-}
-
-/// Collect block devices for snapshot.
-#[cfg(feature = "snapshot")]
-pub fn collect() -> Vec<BlockDevice> {
-    read_block_devices()
-}
-
 /// Write block devices to JSON writer (for snapshot).
 #[cfg(feature = "snapshot")]
-pub fn write_json_snapshot(w: &mut JsonWriter, devices: &[BlockDevice], verbose: bool) {
-    w.field_array("block");
-    for dev in devices {
-        write_device_json(w, dev, verbose, false); // snapshot uses raw values
-    }
-    w.end_field_array();
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn parse_dev_string() {
-        assert_eq!(parse_dev("8:0"), Some((8, 0)));
-        assert_eq!(parse_dev("259:1"), Some((259, 1)));
-        assert_eq!(parse_dev("invalid"), None);
+pub fn write_snapshot(w: &mut StreamingJsonWriter, verbose: bool) {
+    if !io::path_exists(BLOCK_SYSFS_PATH) {
+        return;
     }
 
-    #[test]
-    fn extract_scheduler() {
-        assert_eq!(
-            extract_active_scheduler("mq-deadline kyber [none]"),
-            Some("none".to_string())
-        );
-        assert_eq!(
-            extract_active_scheduler("[mq-deadline] kyber none"),
-            Some("mq-deadline".to_string())
-        );
-    }
+    let mountpoints = MountpointMap::from_mounts();
 
-    #[test]
-    fn read_some_devices() {
-        // On any Linux system, we should have at least some block devices
-        let devices = read_block_devices();
-        // This might be empty in some containers, but usually there's at least something
-        // Let's just make sure it doesn't panic
-        println!("Found {} block devices", devices.len());
-    }
+    w.key("block");
+    w.begin_array();
+    io::for_each_dir_entry(BLOCK_SYSFS_PATH, |disk_name| {
+        if let Some(disk) = BlockDevice::read(disk_name, None, &mountpoints) {
+            // Skip loop devices with size 0 (unbound)
+            if disk.dev_type == BlockType::Loop && disk.size_sectors == 0 {
+                return;
+            }
 
-    #[test]
-    fn block_type_strings() {
-        assert_eq!(BlockType::Disk.as_str(), "disk");
-        assert_eq!(BlockType::Part.as_str(), "part");
-        assert_eq!(BlockType::Loop.as_str(), "loop");
-    }
+            disk.write_json(w, verbose, false);
+
+            // Look for partitions as subdirectories
+            let disk_path: StackString<64> = io::join_path(BLOCK_SYSFS_PATH, disk_name);
+            io::for_each_dir_entry(disk_path.as_str(), |entry_name| {
+                // Partition directories start with the disk name
+                if entry_name.starts_with(disk_name) {
+                    if let Some(part) = BlockDevice::read(entry_name, Some(disk_name), &mountpoints) {
+                        part.write_json(w, verbose, false);
+                    }
+                }
+            });
+        }
+    });
+    w.end_array();
 }

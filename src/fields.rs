@@ -1,18 +1,13 @@
 //! Canonical field names for consistent output across text and JSON formats.
 //!
 //! All field names are defined once here in lowercase_with_underscores format.
-//! For text output (KEY=VALUE), use `to_text_key()` to convert to UPPERCASE.
-//! For JSON output, use the constant directly.
+//! TextWriter handles uppercase conversion for text output automatically.
 //!
 //! This ensures the field name `state` produces:
 //! - Text: `STATE=up`
 //! - JSON: `"state": "up"`
 
-/// Convert a lowercase field name to UPPERCASE for text output.
-#[inline]
-pub fn to_text_key(field: &str) -> String {
-    field.to_ascii_uppercase()
-}
+#![allow(dead_code)]
 
 /// Network interface fields (kv net)
 pub mod net {
@@ -209,6 +204,18 @@ pub mod usb {
     pub const DRIVER: &str = "driver";
 }
 
+/// Device tree fields (kv dt)
+pub mod dt {
+    pub const PATH: &str = "path";
+    pub const NAME: &str = "name";
+    pub const COMPATIBLE: &str = "compatible";
+    pub const STATUS: &str = "status";
+    pub const MODEL: &str = "model";
+    pub const NODE_COUNT: &str = "node_count";
+    pub const PROPERTIES: &str = "properties";
+    pub const REG: &str = "reg";
+}
+
 /// Mount point fields (kv mounts)
 pub mod mounts {
     pub const SOURCE: &str = "source";
@@ -222,13 +229,6 @@ pub mod mounts {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn to_text_key_works() {
-        assert_eq!(to_text_key("state"), "STATE");
-        assert_eq!(to_text_key("mac"), "MAC");
-        assert_eq!(to_text_key("speed"), "SPEED");
-    }
 
     #[test]
     fn field_constants_are_lowercase() {

@@ -75,7 +75,7 @@ That's it! We'll take it from there.
 **Option 2: Submit a Pull Request (if you know git)**
 
 1. Fork this repository (click "Fork" button at top right)
-2. Clone your fork: `git clone https://github.com/vak-leon/kv.git`
+2. Clone your fork: `git clone https://github.com/walruscraft/kv.git`
 3. Add your test file to `test_results/`
 4. Commit and push: `git add . && git commit -m "Add test results for MY_BOARD" && git push`
 5. Go to your fork on GitHub and click **"Contribute" -> "Open pull request"**
@@ -105,15 +105,15 @@ kv pci -D              # Same thing, via flag
 ### Development Setup
 
 ```bash
-git clone https://github.com/vak-leon/kv.git
+git clone https://github.com/walruscraft/kv.git
 cd kv
 cargo build
-cargo test
+./build.sh && ./scripts/test.sh   # Build and run integration tests
 ```
 
 ### Code Style
 
-- **No external crates** - std only, no exceptions
+- **Minimal crates** - only origin (startup), rustix (syscalls), itoa (number formatting)
 - **Human-readable comments** - Not cold/dry generated text
 - **Small focused functions** - Each does one thing well
 - **Explicit types** - For public structs and complex signatures
@@ -122,14 +122,15 @@ cargo test
 
 ### Testing
 
+The project uses shell-based integration tests (no_std is incompatible with Rust's test harness):
+
 ```bash
-cargo test              # Unit + integration tests
-cargo test test_name    # Run specific test
+./build.sh              # Build release binary
+./scripts/test.sh       # Run integration tests (21 tests)
 ./scripts/test-cross.sh # Build all targets, QEMU smoke tests
 ```
 
-Unit tests use mock data strings. Integration tests (`tests/integration.rs`) run the
-actual binary against real /sys and /proc, verifying output format and exit codes.
+Integration tests verify all subcommands, JSON output, filters, verbose mode, and human-readable sizes against real /sys and /proc.
 
 > [!TIP]
 > Chuck Norris tests in production.
@@ -140,10 +141,9 @@ actual binary against real /sys and /proc, verifying output format and exit code
 
 Runs on every push to `main` and on pull requests:
 
-1. **Test job** - Runs `cargo test` (unit + integration tests)
-2. **Build job** - Builds release binaries for all 6 architectures:
+1. **Build job** - Builds release binaries for all 5 architectures:
    - Native: x86_64, i686
-   - Cross-compiled: aarch64, arm, riscv64, powerpc
+   - Cross-compiled: aarch64, arm, riscv64
    - Runs integration tests via QEMU for cross-compiled targets
    - Uploads binaries as artifacts (available for 90 days)
 
@@ -151,7 +151,7 @@ Runs on every push to `main` and on pull requests:
 
 Runs when a version tag is pushed (e.g., `git tag v0.5.0 && git push --tags`):
 
-1. Builds all 6 architecture binaries
+1. Builds all 5 architecture binaries
 2. Runs smoke tests (native and via QEMU)
 3. Creates a GitHub Release with:
    - All binaries attached (`kv-x64`, `kv-arm64`, etc.)
@@ -161,34 +161,25 @@ Runs when a version tag is pushed (e.g., `git tag v0.5.0 && git push --tags`):
 
 ### Cross-Compilation
 
-Cargo aliases for common targets:
+Cargo aliases for common targets (all use gnu targets with build-std):
 
 ```bash
-cargo x86_64   # x86_64-unknown-linux-musl
-cargo x86      # i686-unknown-linux-musl
-cargo arm64    # aarch64-unknown-linux-musl (includes dt)
+cargo x86_64   # x86_64-unknown-linux-gnu
+cargo x86      # i686-unknown-linux-gnu
+cargo arm64    # aarch64-unknown-linux-gnu (includes dt)
 cargo aarch64  # same as arm64
-cargo arm      # arm-unknown-linux-musleabihf (includes dt)
-cargo riscv64  # riscv64gc-unknown-linux-musl (includes dt)
-cargo ppc      # powerpc-unknown-linux-gnu (big-endian, includes dt, uses glibc*)
+cargo arm      # arm-unknown-linux-gnueabihf (includes dt)
+cargo riscv64  # riscv64gc-unknown-linux-gnu (includes dt)
 ```
-
-*PowerPC uses GNU libc because `powerpc-unknown-linux-musl` isn't available in stable Rust.
-The binary is still static but larger (~1.2 MB vs ~550 KB for musl targets).
 
 Prerequisites (Debian/Ubuntu):
 
 ```bash
-# Rust targets
-rustup target add x86_64-unknown-linux-musl
-rustup target add aarch64-unknown-linux-musl
-rustup target add arm-unknown-linux-musleabihf
-rustup target add riscv64gc-unknown-linux-musl
-rustup target add powerpc-unknown-linux-gnu
+# Nightly toolchain required for build-std
+rustup default nightly
 
 # Cross-linkers
-sudo apt install gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf \
-                 gcc-riscv64-linux-gnu gcc-powerpc-linux-gnu
+sudo apt install gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-riscv64-linux-gnu
 
 # QEMU for testing (optional)
 sudo apt install qemu-user-static
@@ -216,7 +207,7 @@ See README.md "Security & Defensive Programming" section for what's already impl
 ### Pull Request Process
 
 1. **Fork** the repository (click "Fork" at top right of the GitHub page)
-2. **Clone** your fork: `git clone https://github.com/vak-leon/kv.git`
+2. **Clone** your fork: `git clone https://github.com/walruscraft/kv.git`
 3. **Create a branch**: `git checkout -b my-feature`
 4. **Make your changes** and test them: `cargo test`
 5. **Commit**: `git add . && git commit -m "Description of changes"`

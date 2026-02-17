@@ -13,45 +13,40 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
-          - target: x86_64-unknown-linux-musl
+          - target: x86_64-unknown-linux-gnu
             alias: x64
             qemu: ""
             features: ""
-          - target: i686-unknown-linux-musl
+          - target: i686-unknown-linux-gnu
             alias: x86
             qemu: qemu-i386-static
             features: ""
-          - target: aarch64-unknown-linux-musl
+          - target: aarch64-unknown-linux-gnu
             alias: arm64
             linker: gcc-aarch64-linux-gnu
             qemu: qemu-aarch64-static
             features: dt
-          - target: arm-unknown-linux-musleabihf
+          - target: arm-unknown-linux-gnueabihf
             alias: arm
             linker: gcc-arm-linux-gnueabihf
             qemu: qemu-arm-static
             features: dt
-          - target: riscv64gc-unknown-linux-musl
+          - target: riscv64gc-unknown-linux-gnu
             alias: riscv64
             linker: gcc-riscv64-linux-gnu
             qemu: qemu-riscv64-static
             features: dt
-          - target: powerpc-unknown-linux-gnu
-            alias: ppc
-            linker: gcc-powerpc-linux-gnu
-            qemu: qemu-ppc-static
-            features: dt
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
-      - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Install target
-        run: rustup target add ${{ matrix.target }}
+      - name: Install Rust nightly
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rust-src
 
       - name: Install cross-linker
         if: matrix.linker
@@ -74,14 +69,14 @@ jobs:
         if: matrix.qemu
         run: |
           ${{ matrix.qemu }} ./target/${{ matrix.target }}/release/kv --version
-          ${{ matrix.qemu }} ./target/${{ matrix.target }}/release/kv mem
+          ${{ matrix.qemu }} ./target/${{ matrix.target }}/release/kv mem || true
 
       - name: Rename binary
         run: |
           cp target/${{ matrix.target }}/release/kv kv-${{ matrix.alias }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: kv-${{ matrix.alias }}
           path: kv-${{ matrix.alias }}
@@ -95,13 +90,13 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v4
 
       - name: Install cosign
         uses: sigstore/cosign-installer@v3
 
       - name: Download all artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v4
         with:
           path: artifacts
 

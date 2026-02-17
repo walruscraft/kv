@@ -3,6 +3,12 @@
 //! A tiny, dependency-free system inspector for embedded Linux.
 //! See README.md for full documentation.
 
+#![no_std]
+#![no_main]
+
+// Force link origin to get startup code and mem functions
+extern crate origin;
+
 mod cli;
 #[macro_use]
 mod debug;
@@ -10,69 +16,71 @@ mod fields;
 mod filter;
 mod io;
 mod json;
+mod print;
+mod stack;
 
 // Subcommand modules - conditionally compiled based on features.
-// If you don't need USB support, don't compile it. Simple.
-
-#[cfg(feature = "pci")]
-mod pci;
-
-#[cfg(feature = "usb")]
-mod usb;
-
-#[cfg(feature = "block")]
-mod block;
-
-#[cfg(feature = "net")]
-mod net;
-
-#[cfg(feature = "cpu")]
-mod cpu;
+// For now, we only enable mem for the no_std conversion.
 
 #[cfg(feature = "mem")]
 mod mem;
 
+// Stub modules for disabled features
+#[cfg(feature = "pci")]
+mod pci;
+#[cfg(feature = "usb")]
+mod usb;
+#[cfg(feature = "block")]
+mod block;
+#[cfg(feature = "net")]
+mod net;
+#[cfg(feature = "cpu")]
+mod cpu;
 #[cfg(feature = "mounts")]
 mod mounts;
-
 #[cfg(feature = "thermal")]
 mod thermal;
-
 #[cfg(feature = "power")]
 mod power;
+#[cfg(feature = "snapshot")]
+mod snapshot;
 
-// dt module is special - only compile on architectures where devicetree makes sense
 #[cfg(all(
     feature = "dt",
     any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64")
 ))]
 mod dt;
 
-// For x86 with dt feature, we still compile a stub that gracefully reports no DT
 #[cfg(all(
     feature = "dt",
     not(any(target_arch = "arm", target_arch = "aarch64", target_arch = "riscv64"))
 ))]
 mod dt {
-    pub fn run(_opts: &crate::cli::GlobalOptions, _args: &[String]) -> i32 {
-        // On x86, devicetree is basically never used (except some odd UEFI cases)
-        println!("dt: devicetree not typically available on this architecture");
+    pub fn run(_opts: &crate::cli::GlobalOptions, _args: &crate::cli::ExtraArgs) -> i32 {
+        crate::print::println("dt: devicetree not typically available on this architecture");
         0
     }
 }
 
-#[cfg(feature = "snapshot")]
-mod snapshot;
-
 use cli::{Invocation, print_help, print_version, print_subcommand_help};
 
-fn main() {
-    let exit_code = run();
-    std::process::exit(exit_code);
+/// Panic handler - minimal, just exits
+#[panic_handler]
+fn panic(_info: &core::panic::PanicInfo) -> ! {
+    // In release builds, just exit immediately
+    rustix::runtime::exit_group(101)
 }
 
-fn run() -> i32 {
-    let inv = Invocation::parse();
+/// Entry point called by origin.
+/// Origin calls this after performing program initialization.
+#[unsafe(no_mangle)]
+unsafe fn origin_main(argc: usize, argv: *mut *mut u8, _envp: *mut *mut u8) -> i32 {
+    // SAFETY: origin guarantees argc/argv are valid
+    let inv = unsafe { Invocation::parse_from_raw(argc as i32, argv as *const *const u8) };
+    run(inv)
+}
+
+fn run(inv: Invocation) -> i32 {
 
     // Initialize debug mode from CLI flag (env var is checked during parse)
     debug::set_enabled(inv.options.debug);
@@ -99,9 +107,9 @@ fn run() -> i32 {
 
     // No subcommand? Print usage and exit with error.
     let Some(ref subcommand) = inv.subcommand else {
-        eprintln!("Error: no subcommand specified");
-        eprintln!();
-        eprintln!("Run 'kv --help' for usage information.");
+        print::eprintln("Error: no subcommand specified");
+        print::eprintln_empty();
+        print::eprintln("Run 'kv --help' for usage information.");
         return 1;
     };
 
@@ -141,24 +149,10 @@ fn run() -> i32 {
         #[cfg(feature = "snapshot")]
         "snapshot" => snapshot::run(&inv.options),
 
-        unknown => {
-            eprintln!("Error: unknown subcommand '{}'", unknown);
-            eprintln!();
-
-            // Be helpful - maybe it's a feature that wasn't compiled in?
-            let maybe_disabled = matches!(
-                unknown,
-                "pci" | "usb" | "block" | "net" | "cpu" | "mem" | "mounts" | "thermal" | "power" | "dt" | "snapshot"
-            );
-
-            if maybe_disabled {
-                eprintln!(
-                    "Note: '{}' might be disabled in this build. Run 'kv --version' to see enabled features.",
-                    unknown
-                );
-            } else {
-                eprintln!("Run 'kv --help' for a list of available subcommands.");
-            }
+        _unknown => {
+            print::eprintln("Error: unknown subcommand");
+            print::eprintln_empty();
+            print::eprintln("Run 'kv --help' for a list of available subcommands.");
             1
         }
     }

@@ -21,10 +21,10 @@ Each release includes SHA256 checksums for verification.
 **x86_64** (most Linux servers and desktops):
 
 ```bash
-curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-x64
-curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-x64.sha256
-sha256sum -c kv-x64.sha256
-mv kv-x64 kv && chmod +x kv
+curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-x86_64
+curl -LO https://github.com/walruscraft/kv/releases/latest/download/kv-x86_64.sha256
+sha256sum -c kv-x86_64.sha256
+mv kv-x86_64 kv && chmod +x kv
 ./kv --version
 ```
 
@@ -51,9 +51,9 @@ This proves the binary was built by the official release workflow, not a comprom
 ```bash
 # Install cosign (https://docs.sigstore.dev/cosign/system_config/installation/)
 # Then verify:
-cosign verify-blob kv-x64 \
-  --signature kv-x64.sig \
-  --certificate kv-x64.crt \
+cosign verify-blob kv-x86_64 \
+  --signature kv-x86_64.sig \
+  --certificate kv-x86_64.crt \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com \
   --certificate-identity-regexp 'https://github.com/walruscraft/kv/\.github/workflows/release\.yml@refs/tags/v.*'
 ```
@@ -61,7 +61,7 @@ cosign verify-blob kv-x64 \
 **Quick install (skip verification):**
 
 ```bash
-curl -Lo kv https://github.com/walruscraft/kv/releases/latest/download/kv-x64 && chmod +x kv
+curl -Lo kv https://github.com/walruscraft/kv/releases/latest/download/kv-x86_64 && chmod +x kv
 ```
 
 **Copy to an embedded board:**

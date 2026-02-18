@@ -154,7 +154,7 @@ Runs when a version tag is pushed (e.g., `git tag v0.5.0 && git push --tags`):
 1. Builds all 7 architecture binaries
 2. Runs smoke tests (native and via QEMU)
 3. Creates a GitHub Release with:
-   - All binaries attached (`kv-x64`, `kv-arm64`, etc.)
+   - All binaries attached (`kv-x86_64`, `kv-arm64`, etc.)
    - Auto-generated release notes from commits
 
 **Manual triggers**: Both workflows can be run manually from the GitHub Actions tab.

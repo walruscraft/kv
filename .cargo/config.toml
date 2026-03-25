@@ -42,6 +42,8 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "-Z", "location-detail=none",
+    "-Z", "fmt-debug=none",
 ]
 
 [target.i686-unknown-linux-gnu]
@@ -51,6 +53,8 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "-Z", "location-detail=none",
+    "-Z", "fmt-debug=none",
 ]
 
 [target.arm-unknown-linux-gnueabihf]
@@ -61,6 +65,8 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "-Z", "location-detail=none",
+    "-Z", "fmt-debug=none",
 ]
 
 [target.riscv64gc-unknown-linux-gnu]
@@ -71,6 +77,8 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "-Z", "location-detail=none",
+    "-Z", "fmt-debug=none",
 ]
 
 [target.powerpc64le-unknown-linux-gnu]
@@ -81,6 +89,8 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "-Z", "location-detail=none",
+    "-Z", "fmt-debug=none",
     "--cfg=rustix_use_experimental_asm",
 ]
 
@@ -94,5 +104,7 @@ rustflags = [
     "-C", "link-arg=-Wl,--gc-sections",
     "-C", "link-arg=-Wl,--build-id=none",
     "-C", "link-arg=-Wl,--no-eh-frame-hdr",
+    "-Z", "location-detail=none",
+    "-Z", "fmt-debug=none",
     "--cfg=rustix_use_experimental_asm",
 ]

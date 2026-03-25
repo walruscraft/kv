@@ -180,12 +180,45 @@ Prerequisites (Debian/Ubuntu):
 # Nightly toolchain required for build-std
 rustup default nightly
 
-# Cross-linkers
+# Cross-linkers (from an x86_64 host)
 sudo apt install gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf gcc-riscv64-linux-gnu gcc-powerpc64le-linux-gnu gcc-mipsel-linux-gnu
 
 # QEMU for testing (optional)
 sudo apt install qemu-user-static
 ```
+
+**Building from a non-x86 host (e.g., aarch64):**
+
+The x86_64 and i686 targets don't have a `linker` set in `.cargo/config.toml`
+because CI runs on x86_64 where `cc` works natively. On other hosts, you need
+cross-linkers for those two as well:
+
+```bash
+# Install x86 cross-linkers
+sudo apt install gcc-x86-64-linux-gnu gcc-i686-linux-gnu
+
+# Then either set env vars when building:
+CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=x86_64-linux-gnu-gcc cargo x86_64
+CARGO_TARGET_I686_UNKNOWN_LINUX_GNU_LINKER=i686-linux-gnu-gcc cargo x86
+
+# Or export them for the session:
+export CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER=x86_64-linux-gnu-gcc
+export CARGO_TARGET_I686_UNKNOWN_LINUX_GNU_LINKER=i686-linux-gnu-gcc
+cargo x86_64
+cargo x86
+```
+
+Alternatively, you can add the linkers to `.cargo/config.toml` directly:
+
+```toml
+[target.x86_64-unknown-linux-gnu]
+linker = "x86_64-linux-gnu-gcc"
+
+[target.i686-unknown-linux-gnu]
+linker = "i686-linux-gnu-gcc"
+```
+
+This works everywhere but requires the cross-compiler packages even on x86 hosts.
 
 ### Security Guidelines
 
@@ -217,28 +250,6 @@ See README.md "Security & Defensive Programming" section for what's already impl
 7. **Open a PR**: Go to your fork on GitHub, click "Contribute" -> "Open pull request"
 
 Not sure about something? Open a [Discussion](../../discussions) first - we're happy to help!
-
-## Project Structure
-
-```
-src/
-├── main.rs      # CLI parsing, subcommand dispatch
-├── cli.rs       # Argument parsing
-├── io.rs        # File/directory reading helpers
-├── json.rs      # Manual JSON serialization (no serde!)
-├── filter.rs    # Pattern matching for -f flag
-├── pci.rs       # kv pci - PCI devices
-├── usb.rs       # kv usb - USB devices
-├── block.rs     # kv block - Block devices/partitions
-├── net.rs       # kv net - Network interfaces
-├── cpu.rs       # kv cpu - CPU info
-├── mem.rs       # kv mem - Memory info
-├── mounts.rs    # kv mounts - Mount points
-├── thermal.rs   # kv thermal - Temperature sensors
-├── power.rs     # kv power - Power supplies/batteries
-├── dt.rs        # kv dt - Device tree (ARM/RISC-V)
-└── snapshot.rs  # kv snapshot - Combined JSON dump
-```
 
 ## Need Help?
 

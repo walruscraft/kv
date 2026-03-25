@@ -2,7 +2,7 @@
 name = "kv"
 version = "0.5.2"
 edition = "2024"
-rust-version = "1.85"
+rust-version = "1.88"
 description = "kv (kernel view): a portable system inspector for Linux"
 license = "MIT"
 authors = ["Leon Vak <leonvak@gmail.com>"]

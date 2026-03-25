@@ -26,7 +26,7 @@ checksum = "92ecc6618181def0457392ccd0ee51198e065e016d1d527a7ac1b6dc7c1f09d2"
 
 [[package]]
 name = "kv"
-version = "0.5.1"
+version = "0.5.2"
 dependencies = [
  "itoa",
  "origin",
@@ -54,7 +54,7 @@ checksum = "32a66949e030da00e8c7d4434b251670a91556f4144941d37452769c25d58a53"
 [[package]]
 name = "origin"
 version = "0.26.2"
-source = "git+https://github.com/sunfishcode/origin.git#6aff4f5998197dcba918f9149f2f844f5c814ef9"
+source = "git+https://github.com/sunfishcode/origin.git#00afc4488f81a6b2abbcd52856ee2fb4e44ac0cb"
 dependencies = [
  "bitflags",
  "linux-raw-sys 0.12.1",
